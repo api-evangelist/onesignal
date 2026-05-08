@@ -2,28 +2,89 @@ aid: onesignal
 url: https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml
 name: OneSignal
 x-type: company
-description: >-
-  OneSignal is a customer engagement platform with push notifications, in-app messaging, email, SMS, and live activities. Free tier serves billions of messages monthly.
+description: OneSignal is a customer engagement platform with push notifications, in-app messaging, email, SMS, and live activities.
+  Free tier serves billions of messages monthly.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Notifications
-  - Push
-  - Email
-  - SMS
-  - Mobile
+- Notifications
+- Push
+- Email
+- SMS
+- Mobile
 created: '2026-05-08'
 modified: '2026-05-08'
 specificationVersion: '0.19'
-apis: []
+apis:
+- name: OneSignal Messages API
+  description: Send push, email, SMS, and Live Activity messages.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Push
+  - Email
+  - SMS
+  properties:
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: OpenAPI
+    url: openapi/onesignal-openapi.yml
+- name: OneSignal Users & Subscriptions API
+  description: Create, update, view and delete users and their subscriptions.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Users
+  - Subscriptions
+  properties:
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: OpenAPI
+    url: openapi/onesignal-openapi.yml
+- name: OneSignal Segments API
+  description: Create and manage dynamic and saved segments for targeting.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Segmentation
+  - Targeting
+  properties:
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: OpenAPI
+    url: openapi/onesignal-openapi.yml
+- name: OneSignal Apps & Keys API
+  description: Manage apps, API keys and templates at the org level.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Apps
+  - Configuration
+  properties:
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: OpenAPI
+    url: openapi/onesignal-openapi.yml
+- name: OneSignal Exports & Analytics API
+  description: CSV export of subscriptions and events plus message analytics.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Export
+  - Analytics
+  properties:
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: OpenAPI
+    url: openapi/onesignal-openapi.yml
 common:
-  - type: Website
-    url: https://onesignal.com/
-  - type: Plans
-    url: plans/onesignal-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/onesignal-rate-limits.yml
-  - type: FinOps
-    url: finops/onesignal-finops.yml
+- type: Website
+  url: https://onesignal.com/
+- type: Plans
+  url: plans/onesignal-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/onesignal-rate-limits.yml
+- type: FinOps
+  url: finops/onesignal-finops.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
