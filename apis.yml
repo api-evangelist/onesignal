@@ -1,0 +1,29 @@
+aid: onesignal
+url: https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml
+name: OneSignal
+x-type: company
+description: >-
+  OneSignal is a customer engagement platform with push notifications, in-app messaging, email, SMS, and live activities. Free tier serves billions of messages monthly.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Notifications
+  - Push
+  - Email
+  - SMS
+  - Mobile
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://onesignal.com/
+  - type: Plans
+    url: plans/onesignal-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/onesignal-rate-limits.yml
+  - type: FinOps
+    url: finops/onesignal-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
