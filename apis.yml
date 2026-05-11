@@ -85,6 +85,14 @@ common:
   url: rate-limits/onesignal-rate-limits.yml
 - type: FinOps
   url: finops/onesignal-finops.yml
+- type: Integrations
+  url: https://onesignal.com/integrations
+integrations:
+  - name: Adapty In-app subscriptions made profitable
+  - name: Brew Lovable for email marketing
+  - name: Mailgun The email service for developers
+  - name: Monkedo Monkey see, monkey do
+  - name: RudderStack Warehouse-native CDP
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
