@@ -1,7 +1,7 @@
 aid: onesignal
 url: https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml
 name: OneSignal
-x-type: company
+kind: company
 description: OneSignal is a customer engagement platform with push notifications, in-app messaging, email, SMS, and live activities.
   Free tier serves billions of messages monthly.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
