@@ -77,6 +77,8 @@ apis:
   - type: OpenAPI
     url: openapi/onesignal-openapi.yml
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/onesignal
 - type: Website
   url: https://onesignal.com/
 - type: Plans
