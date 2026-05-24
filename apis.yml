@@ -91,6 +91,8 @@ common:
     url: finops/onesignal-finops.yml
   - type: Integrations
     url: https://onesignal.com/integrations
+  - type: LLMsTxt
+    url: https://onesignal.com/llms.txt
 integrations:
   - name: Adapty In-app subscriptions made profitable
   - name: Brew Lovable for email marketing
