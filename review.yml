@@ -1,0 +1,42 @@
+aid: onesignal
+name: OneSignal
+reviewed: '2026-05-29'
+reviewer: API Evangelist
+scope: WebSocket / AsyncAPI surface review
+verdict: no-asyncapi-spec
+summary: |
+  OneSignal does not publish a documented public WebSocket, SSE, gRPC, or other
+  streaming API. Their developer surface is REST + outbound HTTP webhooks +
+  language SDKs. Real-time delivery to end users is handled by the platform
+  itself (FCM, APNs, web push, in-app messages) via the official SDKs; any
+  underlying socket transport used by the SDKs is an internal implementation
+  detail, not a documented public API surface, so no AsyncAPI specification was
+  produced.
+sources_checked:
+  - url: https://documentation.onesignal.com/reference/rest-api-overview
+    note: REST architecture only; HTTPS to api.onesignal.com on 443.
+  - url: https://documentation.onesignal.com/reference
+    note: API reference index; lists REST endpoints, no WS/SSE/gRPC.
+  - url: https://documentation.onesignal.com/docs/webhooks
+    note: Outbound HTTP POST webhook events (notification.willDisplay, notification.clicked, notification.dismissed).
+protocols_found:
+  rest: true
+  webhooks_outbound_http: true
+  websocket: false
+  server_sent_events: false
+  grpc: false
+  asyncapi_published: false
+  mqtt: false
+notes:
+  - OneSignal's documentation describes "webhooks or event streams" as outbound
+    HTTP requests originating from OneSignal infrastructure, not a persistent
+    streaming endpoint customers connect to.
+  - SDKs (iOS, Android, Web, React Native, Flutter, Unity, etc.) may maintain
+    push channel connections (e.g. FCM/APNs/Web Push), but these are not
+    OneSignal-hosted WebSocket endpoints exposed to API consumers.
+  - Live Activities and in-app messages are delivered through platform push
+    channels and SDK polling/sync rather than a documented WebSocket.
+recommendation: |
+  Keep OneSignal cataloged as REST + webhooks. Do not author an AsyncAPI
+  specification at this time. Re-evaluate if OneSignal publishes a documented
+  realtime/streaming endpoint in the future.
