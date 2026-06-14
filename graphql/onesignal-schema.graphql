@@ -1,0 +1,1336 @@
+"""
+OneSignal GraphQL Schema
+Derived from OneSignal REST API v1 (https://documentation.onesignal.com/reference)
+Covers multi-channel push notifications, in-app messaging, email, SMS, users, segments, apps, and analytics.
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar DateTime
+scalar JSON
+scalar Upload
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum NotificationType {
+  PUSH
+  IN_APP
+  EMAIL
+  SMS
+  LIVE_ACTIVITY
+}
+
+enum DeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+  ERRORED
+  CANCELED
+  QUEUED
+  COMPLETED
+}
+
+enum PlayerType {
+  CHROME_APP
+  CHROME_WEB
+  FIREFOX
+  SAFARI
+  IOS
+  ANDROID
+  AMAZON_FIRE
+  WINDOWS_PHONE
+  HUAWEI
+  EMAIL
+  SMS
+}
+
+enum FilterOperator {
+  EQUALS
+  NOT_EQUALS
+  LESS_THAN
+  GREATER_THAN
+  EXISTS
+  NOT_EXISTS
+  CONTAINS
+  NOT_CONTAINS
+  TIME_ELAPSED_GT
+  TIME_ELAPSED_LT
+}
+
+enum SegmentFilterField {
+  AMOUNT_SPENT
+  APP_VERSION
+  BOUGHT_SKU
+  COUNTRY
+  EMAIL
+  FIRST_SESSION
+  LANGUAGE
+  LAST_SESSION
+  LOCATION
+  SESSION_COUNT
+  SESSION_TIME
+  TAG
+}
+
+enum SubscriptionType {
+  PUSH
+  EMAIL
+  SMS
+}
+
+enum InfluenceType {
+  DIRECT
+  INDIRECT
+  UNATTRIBUTED
+}
+
+enum OutcomeSessionType {
+  DIRECT
+  INDIRECT
+  UNATTRIBUTED
+}
+
+enum AppPlatformType {
+  IOS
+  ANDROID
+  CHROME_WEB
+  FIREFOX
+  SAFARI
+  EMAIL
+  SMS
+  HUAWEI
+}
+
+enum WebhookEventType {
+  NOTIFICATION_CLICKED
+  NOTIFICATION_DISMISSED
+  NOTIFICATION_WILL_DISPLAY
+  NOTIFICATION_PERMISSION_CHANGED
+  SUBSCRIPTION_CHANGED
+  IN_APP_MESSAGE_CLICKED
+}
+
+enum JourneyStatus {
+  DRAFT
+  RUNNING
+  PAUSED
+  STOPPED
+  COMPLETED
+}
+
+enum TemplateType {
+  PUSH
+  EMAIL
+  SMS
+  IN_APP
+}
+
+# ---------------------------------------------------------------------------
+# Notification types
+# ---------------------------------------------------------------------------
+
+"""
+A multi-channel notification created via OneSignal.
+"""
+type Notification {
+  id: ID!
+  appId: String!
+  type: NotificationType!
+  contents: NotificationContents
+  headings: NotificationHeadings
+  subtitle: NotificationContents
+  data: NotificationData
+  url: NotificationURL
+  deliveryStatus: DeliveryStatus!
+  errors: [NotificationError!]
+  outcomes: [NotificationOutcome!]
+  successfulDeliveries: Int
+  failedDeliveries: Int
+  convertedDeliveries: Int
+  remainingDeliveries: Int
+  throttleRatePerMinute: Int
+  sendAfter: DateTime
+  delayedOption: String
+  deliveryTimeOfDay: String
+  ttl: Int
+  priority: Int
+  createdAt: DateTime!
+  queuedAt: DateTime
+  sendAt: DateTime
+  completedAt: DateTime
+  platformDeliveryStats: PlatformDeliveryStats
+  receivedCount: Int
+  clickedCount: Int
+}
+
+"""
+Full details returned when fetching a single notification.
+"""
+type NotificationDetails {
+  id: ID!
+  appId: String!
+  type: NotificationType!
+  contents: NotificationContents
+  headings: NotificationHeadings
+  subtitle: NotificationContents
+  data: NotificationData
+  url: NotificationURL
+  deliveryStatus: DeliveryStatus!
+  errors: [NotificationError!]
+  targeting: NotificationTargeting
+  outcomes: [NotificationOutcome!]
+  successfulDeliveries: Int
+  failedDeliveries: Int
+  convertedDeliveries: Int
+  remainingDeliveries: Int
+  throttleRatePerMinute: Int
+  sendAfter: DateTime
+  delayedOption: String
+  deliveryTimeOfDay: String
+  ttl: Int
+  priority: Int
+  createdAt: DateTime!
+  queuedAt: DateTime
+  sendAt: DateTime
+  completedAt: DateTime
+  platformDeliveryStats: PlatformDeliveryStats
+  receivedCount: Int
+  clickedCount: Int
+  template: Template
+  externalId: String
+}
+
+"""
+Localized body copy keyed by BCP-47 language tag, e.g. {"en": "Hello", "es": "Hola"}.
+"""
+type NotificationContents {
+  en: String
+  ar: String
+  de: String
+  es: String
+  fr: String
+  it: String
+  ja: String
+  ko: String
+  nl: String
+  pt: String
+  ru: String
+  zh: String
+  additionalLanguages: JSON
+}
+
+"""
+Localized title / heading keyed by BCP-47 language tag.
+"""
+type NotificationHeadings {
+  en: String
+  ar: String
+  de: String
+  es: String
+  fr: String
+  it: String
+  ja: String
+  ko: String
+  nl: String
+  pt: String
+  ru: String
+  zh: String
+  additionalLanguages: JSON
+}
+
+"""
+Arbitrary key-value payload attached to a notification.
+"""
+type NotificationData {
+  raw: JSON
+}
+
+"""
+Launch URL or web URL for the notification.
+"""
+type NotificationURL {
+  url: String
+  webUrl: String
+  appUrl: String
+}
+
+"""
+Notification targeting criteria (segments, filters, external IDs, player IDs).
+"""
+type NotificationTargeting {
+  includedSegments: [String!]
+  excludedSegments: [String!]
+  includePlayerIds: [String!]
+  includeExternalUserIds: [String!]
+  includeAliases: JSON
+  filters: [SegmentFilter!]
+  includeSubscriptionIds: [String!]
+}
+
+"""
+Platform-level delivery statistics breakdown.
+"""
+type PlatformDeliveryStats {
+  androidDelivered: Int
+  iosDelivered: Int
+  chromeWebDelivered: Int
+  firefoxDelivered: Int
+  safariDelivered: Int
+  emailDelivered: Int
+  smsDelivered: Int
+  androidErrors: Int
+  iosErrors: Int
+}
+
+# ---------------------------------------------------------------------------
+# Error / validation types
+# ---------------------------------------------------------------------------
+
+"""
+API-level validation or delivery error.
+"""
+type NotificationError {
+  code: String
+  message: String
+}
+
+"""
+Aggregated errors object returned by the REST layer.
+"""
+type Errors {
+  errors: [String!]
+  invalidIdentifierError: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Player / Device types
+# ---------------------------------------------------------------------------
+
+"""
+A registered device / subscriber (legacy Player API).
+"""
+type Player {
+  id: ID!
+  appId: String!
+  type: PlayerType!
+  device: PlayerDevice
+  tags: PlayerTags
+  language: PlayerLanguage
+  latLong: PlayerLatLong
+  country: String
+  ipAddress: PlayerIpAddress
+  deviceModel: PlayerDeviceModel
+  deviceOS: PlayerDeviceOS
+  location: PlayerLocation
+  activeSince: PlayerActiveSince
+  sessionCount: Int
+  playtime: Int
+  amountSpent: Float
+  createdAt: DateTime
+  lastActive: DateTime
+  testType: Int
+  badgeCount: Int
+  sdk: String
+  invalid: Boolean
+  externalUserId: String
+  notificationTypes: Int
+  timezone: Int
+}
+
+"""
+Full player details including purchase history.
+"""
+type PlayerDetails {
+  id: ID!
+  appId: String!
+  type: PlayerType!
+  device: PlayerDevice
+  tags: PlayerTags
+  language: PlayerLanguage
+  latLong: PlayerLatLong
+  country: String
+  ipAddress: PlayerIpAddress
+  deviceModel: PlayerDeviceModel
+  deviceOS: PlayerDeviceOS
+  location: PlayerLocation
+  activeSince: PlayerActiveSince
+  sessionCount: Int
+  playtime: Int
+  amountSpent: Float
+  createdAt: DateTime
+  lastActive: DateTime
+  purchases: [Purchase!]
+  testType: Int
+  badgeCount: Int
+  sdk: String
+  invalid: Boolean
+  externalUserId: String
+}
+
+"""
+Device platform / push token information.
+"""
+type PlayerDevice {
+  pushToken: String
+  appVersion: String
+  deviceVendorId: String
+  adId: String
+  rooted: Boolean
+}
+
+"""
+Key-value tag map for a player.
+"""
+type PlayerTags {
+  data: JSON
+}
+
+"""
+BCP-47 language code for the player's device locale.
+"""
+type PlayerLanguage {
+  code: String
+}
+
+"""
+GPS latitude / longitude for location-based targeting.
+"""
+type PlayerLatLong {
+  lat: Float
+  long: Float
+}
+
+"""
+IPv4 / IPv6 address captured at registration.
+"""
+type PlayerIpAddress {
+  address: String
+}
+
+"""
+Device hardware model string (e.g. "iPhone14,3").
+"""
+type PlayerDeviceModel {
+  model: String
+}
+
+"""
+Device OS version string.
+"""
+type PlayerDeviceOS {
+  version: String
+}
+
+"""
+Location details associated with a player.
+"""
+type PlayerLocation {
+  lat: Float
+  long: Float
+  accuracy: Float
+  background: Boolean
+}
+
+"""
+Timestamp of first session (active since date).
+"""
+type PlayerActiveSince {
+  date: DateTime
+}
+
+"""
+A single product purchase event associated with a player.
+"""
+type Purchase {
+  sku: String!
+  iso: String!
+  amount: Float!
+}
+
+# ---------------------------------------------------------------------------
+# Segment types
+# ---------------------------------------------------------------------------
+
+"""
+A OneSignal segment used for notification targeting.
+"""
+type Segment {
+  id: ID!
+  appId: String!
+  name: String!
+  filters: [SegmentFilter!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  readOnly: Boolean
+  isActive: Boolean
+  playerCount: Int
+}
+
+"""
+Detailed segment including filter tree.
+"""
+type SegmentDetails {
+  id: ID!
+  appId: String!
+  name: String!
+  filters: [SegmentFilter!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  readOnly: Boolean
+  isActive: Boolean
+  playerCount: Int
+}
+
+"""
+A single filter clause within a segment definition.
+"""
+type SegmentFilter {
+  field: FilterField!
+  key: String
+  relation: FilterOperator!
+  value: FilterValue
+  hours: Int
+  operator: String
+}
+
+"""
+The field being evaluated in a segment filter.
+"""
+type FilterField {
+  name: SegmentFilterField!
+}
+
+"""
+The comparison value for a segment filter.
+"""
+type FilterValue {
+  stringValue: String
+  numberValue: Float
+  booleanValue: Boolean
+}
+
+# ---------------------------------------------------------------------------
+# Subscription types
+# ---------------------------------------------------------------------------
+
+"""
+A user subscription (push token, email address, or phone number).
+"""
+type Subscription {
+  id: ID!
+  type: SubscriptionType!
+  token: SubscriptionToken
+  enabled: Boolean!
+  notificationTypes: Int
+  sessionCount: Int
+  createdAt: DateTime
+  lastActive: DateTime
+  netType: Int
+  carrier: String
+  webAuth: String
+  webP256: String
+}
+
+"""
+Full subscription details.
+"""
+type SubscriptionDetails {
+  id: ID!
+  type: SubscriptionType!
+  token: SubscriptionToken
+  enabled: Boolean!
+  notificationTypes: Int
+  sessionCount: Int
+  createdAt: DateTime
+  lastActive: DateTime
+  netType: Int
+  carrier: String
+  webAuth: String
+  webP256: String
+  deviceModel: String
+  deviceOS: String
+  rooted: Boolean
+  testType: Int
+  sdkVersion: String
+  appVersion: String
+}
+
+"""
+Push token, email address, or phone number value.
+"""
+type SubscriptionToken {
+  value: String!
+}
+
+# ---------------------------------------------------------------------------
+# App / Configuration types
+# ---------------------------------------------------------------------------
+
+"""
+A OneSignal app / project.
+"""
+type App {
+  id: ID!
+  name: String!
+  players: Int
+  messageablePlayers: Int
+  updatedAt: DateTime
+  createdAt: DateTime
+  gcmKey: String
+  chromeKey: String
+  chromeWebOrigin: String
+  chromeWebGcmSenderId: String
+  chromeWebDefaultNotificationIcon: String
+  chromeWebSubDomain: String
+  apnsEnv: String
+  apnsCertificates: String
+  safariApnsConfig: APNsConfig
+  appleWwdrCertificate: String
+  safariSiteOrigin: String
+  safariPushId: String
+  safariIcon16x16: String
+  safariIcon32x32: String
+  safariIcon64x64: String
+  safariIcon128x128: String
+  safariIcon256x256: String
+  siteName: String
+  basicAuthKey: String
+  platforms: AppPlatforms
+  emailConfig: EmailConfig
+  smsConfig: SMSConfig
+}
+
+"""
+Full app details returned from GET /apps/{id}.
+"""
+type AppDetails {
+  id: ID!
+  name: String!
+  players: Int
+  messageablePlayers: Int
+  updatedAt: DateTime
+  createdAt: DateTime
+  gcmKey: String
+  chromeKey: String
+  chromeWebOrigin: String
+  chromeWebGcmSenderId: String
+  chromeWebDefaultNotificationIcon: String
+  chromeWebSubDomain: String
+  apnsEnv: String
+  safariApnsConfig: APNsConfig
+  safariSiteOrigin: String
+  safariPushId: String
+  siteName: String
+  basicAuthKey: String
+  platforms: AppPlatforms
+  emailConfig: EmailConfig
+  smsConfig: SMSConfig
+  fcmConfig: FCMConfig
+  webPushConfig: WebPushConfig
+  safariConfig: SafariConfig
+  chromeConfig: ChromeConfig
+}
+
+"""
+Which push platforms are enabled for an app.
+"""
+type AppPlatforms {
+  ios: Boolean
+  android: Boolean
+  chromeWeb: Boolean
+  firefox: Boolean
+  safari: Boolean
+  email: Boolean
+  sms: Boolean
+  huawei: Boolean
+}
+
+"""
+Apple Push Notification service (APNs) configuration.
+"""
+type APNsConfig {
+  env: String
+  p12Certificate: String
+  p8AuthKey: String
+  keyId: String
+  teamId: String
+  bundleId: String
+}
+
+"""
+Firebase Cloud Messaging (FCM) / GCM configuration.
+"""
+type FCMConfig {
+  senderId: String
+  serverKey: String
+  projectId: String
+  appId: String
+}
+
+"""
+Web Push (VAPID) configuration.
+"""
+type WebPushConfig {
+  vapidPublicKey: String
+  vapidPrivateKey: String
+  origin: String
+  gcmSenderId: String
+  subDomain: String
+}
+
+"""
+Email channel configuration for an app.
+"""
+type EmailConfig {
+  senderId: String
+  senderEmail: String
+  senderName: String
+  replyToEmail: String
+}
+
+"""
+SMS / MMS channel configuration for an app (Twilio, Vonage, etc.).
+"""
+type SMSConfig {
+  fromNumber: String
+  accountSid: String
+  authToken: String
+  provider: String
+}
+
+"""
+Chrome App push configuration.
+"""
+type ChromeConfig {
+  key: String
+}
+
+"""
+Safari / macOS push configuration.
+"""
+type SafariConfig {
+  p12Certificate: String
+  apnsEnv: String
+  websitePushId: String
+  siteOrigin: String
+}
+
+# ---------------------------------------------------------------------------
+# Outcome / Analytics types
+# ---------------------------------------------------------------------------
+
+"""
+An outcome event result aggregated across a notification.
+"""
+type OutcomeResult {
+  id: ID!
+  value: Float!
+  aggregation: String
+}
+
+"""
+Outcome metrics attached to a specific notification send.
+"""
+type NotificationOutcome {
+  notificationId: ID!
+  outcomes: [Outcome!]!
+}
+
+"""
+A single named outcome (e.g. "Purchase", "Add to Cart").
+"""
+type Outcome {
+  id: ID!
+  value: Float!
+  sessionType: OutcomeSessionType
+  timestamp: DateTime
+}
+
+"""
+Attribution influence record linking a session to a notification.
+"""
+type Influence {
+  notificationId: ID!
+  type: InfluenceType!
+  count: Int
+}
+
+# ---------------------------------------------------------------------------
+# Session types
+# ---------------------------------------------------------------------------
+
+"""
+A user session event.
+"""
+type Session {
+  id: ID!
+  appId: String!
+  subscriptionId: String!
+  sessionCount: Int
+  playtime: Int
+  firstSession: Boolean
+  createdAt: DateTime
+  influences: [Influence!]
+}
+
+"""
+Full session details including referrer and location.
+"""
+type SessionDetails {
+  id: ID!
+  appId: String!
+  subscriptionId: String!
+  sessionCount: Int
+  playtime: Int
+  firstSession: Boolean
+  createdAt: DateTime
+  influences: [Influence!]
+  ipAddress: String
+  country: String
+  deviceOS: String
+  sdkVersion: String
+}
+
+# ---------------------------------------------------------------------------
+# Email message types
+# ---------------------------------------------------------------------------
+
+"""
+An email notification message.
+"""
+type Email {
+  id: ID!
+  appId: String!
+  subject: String!
+  body: String
+  fromEmail: String
+  fromName: String
+  replyToEmail: String
+  preheader: String
+  templateId: String
+  deliveryStatus: DeliveryStatus!
+  createdAt: DateTime!
+  sendAt: DateTime
+  completedAt: DateTime
+}
+
+"""
+Full email message details.
+"""
+type EmailDetails {
+  id: ID!
+  appId: String!
+  subject: String!
+  body: String
+  fromEmail: String
+  fromName: String
+  replyToEmail: String
+  preheader: String
+  templateId: String
+  deliveryStatus: DeliveryStatus!
+  createdAt: DateTime!
+  sendAt: DateTime
+  completedAt: DateTime
+  successfulDeliveries: Int
+  failedDeliveries: Int
+  openedCount: Int
+  clickedCount: Int
+  unsubscribedCount: Int
+  bounceCount: Int
+}
+
+# ---------------------------------------------------------------------------
+# SMS types
+# ---------------------------------------------------------------------------
+
+"""
+An SMS notification message.
+"""
+type SMSNotification {
+  id: ID!
+  appId: String!
+  name: String
+  contents: NotificationContents!
+  deliveryStatus: DeliveryStatus!
+  createdAt: DateTime!
+  sendAt: DateTime
+  completedAt: DateTime
+  fromNumber: String
+}
+
+"""
+Full SMS notification details including delivery breakdown.
+"""
+type SMSDetails {
+  id: ID!
+  appId: String!
+  name: String
+  contents: NotificationContents!
+  deliveryStatus: DeliveryStatus!
+  createdAt: DateTime!
+  sendAt: DateTime
+  completedAt: DateTime
+  fromNumber: String
+  successfulDeliveries: Int
+  failedDeliveries: Int
+  remainingDeliveries: Int
+}
+
+# ---------------------------------------------------------------------------
+# Template types
+# ---------------------------------------------------------------------------
+
+"""
+A reusable notification template.
+"""
+type Template {
+  id: ID!
+  appId: String!
+  name: String!
+  type: TemplateType!
+  contents: NotificationContents
+  headings: NotificationContents
+  url: String
+  data: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+Full template details including revision history.
+"""
+type TemplateDetails {
+  id: ID!
+  appId: String!
+  name: String!
+  type: TemplateType!
+  contents: NotificationContents
+  headings: NotificationContents
+  url: String
+  data: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+  version: Int
+}
+
+# ---------------------------------------------------------------------------
+# External user / alias types
+# ---------------------------------------------------------------------------
+
+"""
+An external user identifier mapped to OneSignal subscriptions.
+"""
+type ExternalId {
+  externalId: String!
+  subscriptionIds: [String!]
+  playerIds: [String!]
+}
+
+"""
+A OneSignal user (User API) with aliases and subscriptions.
+"""
+type ExternalUser {
+  onesignalId: ID!
+  externalId: String
+  aliases: JSON
+  subscriptions: [Subscription!]
+  properties: UserProperties
+}
+
+"""
+Dynamic user properties stored in OneSignal's User API.
+"""
+type UserProperties {
+  tags: JSON
+  language: String
+  timezone: String
+  country: String
+  lat: Float
+  long: Float
+  firstActive: DateTime
+  lastActive: DateTime
+  amountSpent: Float
+  purchases: [Purchase!]
+  sessionCount: Int
+}
+
+# ---------------------------------------------------------------------------
+# Journey types
+# ---------------------------------------------------------------------------
+
+"""
+A multi-step automated messaging journey.
+"""
+type Journey {
+  id: ID!
+  appId: String!
+  name: String!
+  status: JourneyStatus!
+  createdAt: DateTime
+  updatedAt: DateTime
+  startedAt: DateTime
+  stoppedAt: DateTime
+}
+
+"""
+Full journey details including step configuration.
+"""
+type JourneyDetails {
+  id: ID!
+  appId: String!
+  name: String!
+  status: JourneyStatus!
+  createdAt: DateTime
+  updatedAt: DateTime
+  startedAt: DateTime
+  stoppedAt: DateTime
+  steps: JSON
+  entryFilters: [SegmentFilter!]
+  exitFilters: [SegmentFilter!]
+  conversionEvent: String
+}
+
+# ---------------------------------------------------------------------------
+# API Key / Token types
+# ---------------------------------------------------------------------------
+
+"""
+An API key associated with an app or organization.
+"""
+type APIKey {
+  key: String!
+  label: String
+  createdAt: DateTime
+  expiresAt: DateTime
+  readOnly: Boolean
+  allowedApps: [String!]
+}
+
+"""
+An authentication token (e.g. REST API key, user-level key).
+"""
+type Token {
+  value: String!
+  type: String
+  expiresAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Webhook types
+# ---------------------------------------------------------------------------
+
+"""
+A registered webhook endpoint for OneSignal events.
+"""
+type Webhook {
+  id: ID!
+  appId: String!
+  url: String!
+  events: [WebhookEventType!]!
+  createdAt: DateTime
+  updatedAt: DateTime
+  enabled: Boolean!
+}
+
+"""
+A webhook event payload received from OneSignal.
+"""
+type WebhookEvent {
+  id: ID!
+  type: WebhookEventType!
+  appId: String!
+  notificationId: String
+  subscriptionId: String
+  timestamp: DateTime!
+  data: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Pagination wrapper
+# ---------------------------------------------------------------------------
+
+"""
+Paginated list of notifications.
+"""
+type NotificationList {
+  total: Int!
+  offset: Int!
+  limit: Int!
+  notifications: [Notification!]!
+}
+
+"""
+Paginated list of players.
+"""
+type PlayerList {
+  total: Int!
+  offset: Int!
+  limit: Int!
+  players: [Player!]!
+}
+
+"""
+Paginated list of segments.
+"""
+type SegmentList {
+  total: Int!
+  segments: [Segment!]!
+}
+
+"""
+Paginated list of subscriptions.
+"""
+type SubscriptionList {
+  total: Int!
+  offset: Int!
+  subscriptions: [Subscription!]!
+}
+
+# ---------------------------------------------------------------------------
+# Input types
+# ---------------------------------------------------------------------------
+
+input NotificationContentsInput {
+  en: String
+  ar: String
+  de: String
+  es: String
+  fr: String
+  it: String
+  ja: String
+  ko: String
+  nl: String
+  pt: String
+  ru: String
+  zh: String
+  additionalLanguages: JSON
+}
+
+input SendNotificationInput {
+  appId: String!
+  type: NotificationType!
+  contents: NotificationContentsInput
+  headings: NotificationContentsInput
+  url: String
+  data: JSON
+  includedSegments: [String!]
+  excludedSegments: [String!]
+  includePlayerIds: [String!]
+  includeExternalUserIds: [String!]
+  filters: [SegmentFilterInput!]
+  sendAfter: DateTime
+  ttl: Int
+  priority: Int
+  throttleRatePerMinute: Int
+  templateId: String
+  externalId: String
+}
+
+input SegmentFilterInput {
+  field: SegmentFilterField!
+  key: String
+  relation: FilterOperator!
+  value: String
+  hours: Int
+  operator: String
+}
+
+input CreateSegmentInput {
+  name: String!
+  filters: [SegmentFilterInput!]!
+}
+
+input UpdatePlayerInput {
+  deviceType: PlayerType
+  language: String
+  tags: JSON
+  lat: Float
+  long: Float
+  country: String
+  testType: Int
+  notificationTypes: Int
+  appVersion: String
+  timezone: Int
+  sdkVersion: String
+}
+
+input CreatePlayerInput {
+  appId: String!
+  deviceType: PlayerType!
+  identifier: String
+  language: String
+  timezone: Int
+  appVersion: String
+  deviceModel: String
+  deviceOS: String
+  adId: String
+  testType: Int
+  notificationTypes: Int
+  tags: JSON
+  lat: Float
+  long: Float
+}
+
+input CreateWebhookInput {
+  appId: String!
+  url: String!
+  events: [WebhookEventType!]!
+}
+
+input UpdateWebhookInput {
+  url: String
+  events: [WebhookEventType!]
+  enabled: Boolean
+}
+
+input CreateTemplateInput {
+  appId: String!
+  name: String!
+  type: TemplateType!
+  contents: NotificationContentsInput
+  headings: NotificationContentsInput
+  url: String
+  data: JSON
+}
+
+input UpdateAppInput {
+  name: String
+  gcmKey: String
+  apnsEnv: String
+  senderEmail: String
+  senderName: String
+}
+
+# ---------------------------------------------------------------------------
+# Root types
+# ---------------------------------------------------------------------------
+
+type Query {
+  """Retrieve a single notification by ID."""
+  notification(appId: String!, id: ID!): NotificationDetails
+
+  """List notifications for an app with optional pagination."""
+  notifications(appId: String!, limit: Int, offset: Int, kind: Int): NotificationList
+
+  """Get a single registered player / device."""
+  player(appId: String!, id: ID!): PlayerDetails
+
+  """List all players for an app."""
+  players(appId: String!, limit: Int, offset: Int): PlayerList
+
+  """Get a single segment."""
+  segment(appId: String!, id: ID!): SegmentDetails
+
+  """List all segments for an app."""
+  segments(appId: String!): SegmentList
+
+  """Get a subscription by ID."""
+  subscription(appId: String!, subscriptionId: ID!): SubscriptionDetails
+
+  """List subscriptions for an external user."""
+  subscriptionsByUser(appId: String!, externalId: String!): SubscriptionList
+
+  """Get an app by ID."""
+  app(id: ID!): AppDetails
+
+  """List all apps in the organisation."""
+  apps: [App!]!
+
+  """Get a specific email message."""
+  email(appId: String!, id: ID!): EmailDetails
+
+  """Get an SMS notification."""
+  smsNotification(appId: String!, id: ID!): SMSDetails
+
+  """Get a template."""
+  template(appId: String!, id: ID!): TemplateDetails
+
+  """List templates for an app."""
+  templates(appId: String!): [Template!]!
+
+  """Get an external user and their subscriptions."""
+  user(appId: String!, externalId: String!): ExternalUser
+
+  """Get outcome results for an app."""
+  outcomeResults(appId: String!, outcomeNames: [String!]!, outcomeTimeRange: String, platformChannelTypes: String, attributionType: OutcomeSessionType): [OutcomeResult!]!
+
+  """List webhooks for an app."""
+  webhooks(appId: String!): [Webhook!]!
+
+  """Get a webhook by ID."""
+  webhook(appId: String!, id: ID!): Webhook
+
+  """Get a journey."""
+  journey(appId: String!, id: ID!): JourneyDetails
+
+  """List journeys for an app."""
+  journeys(appId: String!): [Journey!]!
+}
+
+type Mutation {
+  """Send a notification to one or more channels."""
+  sendNotification(input: SendNotificationInput!): Notification!
+
+  """Cancel a pending or queued notification."""
+  cancelNotification(appId: String!, id: ID!): Boolean!
+
+  """Create a new player / device registration."""
+  createPlayer(input: CreatePlayerInput!): Player!
+
+  """Update an existing player."""
+  updatePlayer(appId: String!, id: ID!, input: UpdatePlayerInput!): Player!
+
+  """Delete a player."""
+  deletePlayer(appId: String!, id: ID!): Boolean!
+
+  """Create a segment."""
+  createSegment(appId: String!, input: CreateSegmentInput!): Segment!
+
+  """Delete a segment."""
+  deleteSegment(appId: String!, id: ID!): Boolean!
+
+  """Create or update an external user alias."""
+  upsertUser(appId: String!, externalId: String!, properties: JSON, subscriptions: JSON): ExternalUser!
+
+  """Delete an external user."""
+  deleteUser(appId: String!, externalId: String!): Boolean!
+
+  """Create an app."""
+  createApp(name: String!, platforms: [AppPlatformType!]): App!
+
+  """Update an app's configuration."""
+  updateApp(id: ID!, input: UpdateAppInput!): App!
+
+  """Register a webhook."""
+  createWebhook(input: CreateWebhookInput!): Webhook!
+
+  """Update a webhook."""
+  updateWebhook(appId: String!, id: ID!, input: UpdateWebhookInput!): Webhook!
+
+  """Delete a webhook."""
+  deleteWebhook(appId: String!, id: ID!): Boolean!
+
+  """Create a template."""
+  createTemplate(input: CreateTemplateInput!): Template!
+
+  """Update a template."""
+  updateTemplate(appId: String!, id: ID!, input: CreateTemplateInput!): Template!
+
+  """Delete a template."""
+  deleteTemplate(appId: String!, id: ID!): Boolean!
+
+  """Export player CSV (returns job ID)."""
+  exportPlayers(appId: String!, extraFields: [String!], segmentName: String): String!
+}
+
+type Subscription {
+  """Stream delivery status updates for a notification."""
+  notificationStatus(appId: String!, notificationId: ID!): Notification!
+
+  """Stream incoming webhook events for an app."""
+  webhookEvents(appId: String!, events: [WebhookEventType!]): WebhookEvent!
+}
