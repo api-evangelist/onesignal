@@ -94,7 +94,7 @@ common:
   url: finops/onesignal-finops.yml
 - type: Integrations
   url: https://onesignal.com/integrations
-- type: LLMsTxt
+- type: LlmsText
   url: https://onesignal.com/llms.txt
 integrations:
 - name: Adapty In-app subscriptions made profitable
