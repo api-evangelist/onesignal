@@ -80,6 +80,10 @@ apis:
   - type: OpenAPI
     url: openapi/onesignal-openapi.yml
 common:
+- type: VulnerabilityDisclosure
+  url: security/onesignal-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/onesignal-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/OneSignal
 - type: LinkedIn
@@ -96,6 +100,8 @@ common:
   url: https://onesignal.com/integrations
 - type: LlmsText
   url: https://onesignal.com/llms.txt
+- type: Blog
+  url: https://onesignal.com/blog/feed
 integrations:
 - name: Adapty In-app subscriptions made profitable
 - name: Brew Lovable for email marketing
