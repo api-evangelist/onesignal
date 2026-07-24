@@ -1,0 +1,930 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: devrel@onesignal.com
+    name: OneSignal DevRel
+    url: https://onesignal.com
+  description: A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com
+  termsOfService: https://onesignal.com/tos
+  title: OneSignal Templates API
+  version: 5.5.0
+servers:
+- url: https://api.onesignal.com
+tags:
+- name: Templates
+paths:
+  /templates:
+    get:
+      description: List templates for an app.
+      operationId: view_templates
+      parameters:
+      - description: Your OneSignal App ID in UUID v4 format.
+        explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Maximum number of templates. Default and max is 50.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          type: integer
+        style: form
+      - description: Pagination offset.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: Filter by delivery channel.
+        explode: true
+        in: query
+        name: channel
+        required: false
+        schema:
+          enum:
+          - push
+          - email
+          - sms
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplatesListResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: View templates
+      tags:
+      - Templates
+    post:
+      description: Create reusable message templates for push, email, and SMS channels.
+      operationId: create_template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Unprocessable Entity
+      security:
+      - rest_api_key: []
+      summary: Create template
+      tags:
+      - Templates
+  /templates/{template_id}:
+    delete:
+      description: Delete a template by id.
+      operationId: delete_template
+      parameters:
+      - explode: false
+        in: path
+        name: template_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessBoolResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+      security:
+      - rest_api_key: []
+      summary: Delete template
+      tags:
+      - Templates
+    get:
+      description: Fetch a single template by id.
+      operationId: view_template
+      parameters:
+      - explode: false
+        in: path
+        name: template_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+      security:
+      - rest_api_key: []
+      summary: View template
+      tags:
+      - Templates
+    patch:
+      description: Update an existing template.
+      operationId: update_template
+      parameters:
+      - explode: false
+        in: path
+        name: template_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+      security:
+      - rest_api_key: []
+      summary: Update template
+      tags:
+      - Templates
+  /templates/{template_id}/copy_to_app:
+    post:
+      description: Copy a template to a destination app.
+      operationId: copy_template_to_app
+      parameters:
+      - explode: false
+        in: path
+        name: template_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyTemplateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+      security:
+      - organization_api_key: []
+      summary: Copy template to another app
+      tags:
+      - Templates
+components:
+  schemas:
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    UpdateTemplateRequest:
+      example:
+        isSMS: true
+        email_body: email_body
+        contents:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        subtitle:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        name: name
+        isEmail: true
+        email_bcc:
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        headings:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        dynamic_content: dynamic_content
+        email_subject: email_subject
+      properties:
+        name:
+          description: Updated name of the template.
+          type: string
+        contents:
+          $ref: '#/components/schemas/LanguageStringMap'
+        headings:
+          $ref: '#/components/schemas/LanguageStringMap'
+        subtitle:
+          $ref: '#/components/schemas/LanguageStringMap'
+        isEmail:
+          description: Set true for an Email template.
+          type: boolean
+        email_subject:
+          description: Subject of the email.
+          nullable: true
+          type: string
+        email_body:
+          description: Body of the email (HTML supported).
+          nullable: true
+          type: string
+        email_bcc:
+          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+          items:
+            type: string
+          maxItems: 5
+          nullable: true
+          type: array
+        isSMS:
+          description: Set true for an SMS template.
+          type: boolean
+        dynamic_content:
+          description: JSON string for dynamic content personalization.
+          nullable: true
+          type: string
+      type: object
+    TemplateResource:
+      example:
+        updated_at: 2000-01-23 04:56:07+00:00
+        name: name
+        channel: push
+        created_at: 2000-01-23 04:56:07+00:00
+        id: id
+        content:
+          key: ''
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        channel:
+          enum:
+          - push
+          - email
+          - sms
+          nullable: true
+          type: string
+        content:
+          additionalProperties: true
+          description: Rendered content and channel/platform flags for the template.
+          type: object
+      type: object
+    CopyTemplateRequest:
+      example:
+        target_app_id: target_app_id
+      properties:
+        target_app_id:
+          description: Destination OneSignal App ID in UUID v4 format.
+          type: string
+      required:
+      - target_app_id
+      type: object
+    TemplatesListResponse:
+      example:
+        templates:
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateResource'
+          type: array
+      type: object
+    CreateTemplateRequest:
+      example:
+        isSMS: true
+        email_body: email_body
+        contents:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        subtitle:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        name: name
+        isEmail: true
+        email_bcc:
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        headings:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        dynamic_content: dynamic_content
+        app_id: app_id
+        email_subject: email_subject
+      properties:
+        app_id:
+          description: Your OneSignal App ID in UUID v4 format.
+          type: string
+        name:
+          description: Name of the template.
+          type: string
+        contents:
+          $ref: '#/components/schemas/LanguageStringMap'
+        headings:
+          $ref: '#/components/schemas/LanguageStringMap'
+        subtitle:
+          $ref: '#/components/schemas/LanguageStringMap'
+        isEmail:
+          description: Set true for an Email template.
+          type: boolean
+        email_subject:
+          description: Subject of the email.
+          nullable: true
+          type: string
+        email_body:
+          description: Body of the email (HTML supported).
+          nullable: true
+          type: string
+        email_bcc:
+          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+          items:
+            type: string
+          maxItems: 5
+          nullable: true
+          type: array
+        isSMS:
+          description: Set true for an SMS template.
+          type: boolean
+        dynamic_content:
+          description: JSON string for dynamic content personalization.
+          nullable: true
+          type: string
+      required:
+      - app_id
+      - contents
+      - name
+      type: object
+    GenericSuccessBoolResponse:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+      type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
+    LanguageStringMap:
+      example:
+        de: de
+        hi: hi
+        fi: fi
+        ru: ru
+        pt: pt
+        bg: bg
+        lt: lt
+        hr: hr
+        lv: lv
+        fr: fr
+        hu: hu
+        bs: bs
+        zh-Hans: zh-Hans
+        zh-Hant: zh-Hant
+        ka: ka
+        uk: uk
+        sk: sk
+        id: id
+        ca: ca
+        sr: sr
+        sv: sv
+        ko: ko
+        ms: ms
+        el: el
+        en: en
+        it: it
+        zh: zh
+        es: es
+        et: et
+        cs: cs
+        ar: ar
+        pa: pa
+        vi: vi
+        nb: nb
+        th: th
+        ja: ja
+        fa: fa
+        pl: pl
+        da: da
+        he: he
+        ro: ro
+        nl: nl
+        tr: tr
+      properties:
+        en:
+          description: Text in English.  Will be used as a fallback
+          type: string
+        ar:
+          description: Text in Arabic.
+          type: string
+        bs:
+          description: Text in Bosnian.
+          type: string
+        bg:
+          description: Text in Bulgarian.
+          type: string
+        ca:
+          description: Text in Catalan.
+          type: string
+        zh-Hans:
+          description: Text in Chinese (Simplified).
+          type: string
+        zh-Hant:
+          description: Text in Chinese (Traditional).
+          type: string
+        zh:
+          description: Alias for zh-Hans.
+          type: string
+        hr:
+          description: Text in Croatian.
+          type: string
+        cs:
+          description: Text in Czech.
+          type: string
+        da:
+          description: Text in Danish.
+          type: string
+        nl:
+          description: Text in Dutch.
+          type: string
+        et:
+          description: Text in Estonian.
+          type: string
+        fi:
+          description: Text in Finnish.
+          type: string
+        fr:
+          description: Text in French.
+          type: string
+        ka:
+          description: Text in Georgian.
+          type: string
+        de:
+          description: Text in German.
+          type: string
+        el:
+          description: Text in Greek.
+          type: string
+        hi:
+          description: Text in Hindi.
+          type: string
+        he:
+          description: Text in Hebrew.
+          type: string
+        hu:
+          description: Text in Hungarian.
+          type: string
+        id:
+          description: Text in Indonesian.
+          type: string
+        it:
+          description: Text in Italian.
+          type: string
+        ja:
+          description: Text in Japanese.
+          type: string
+        ko:
+          description: Text in Korean.
+          type: string
+        lv:
+          description: Text in Latvian.
+          type: string
+        lt:
+          description: Text in Lithuanian.
+          type: string
+        ms:
+          description: Text in Malay.
+          type: string
+        nb:
+          description: Text in Norwegian.
+          type: string
+        pl:
+          description: Text in Polish.
+          type: string
+        fa:
+          description: Text in Persian.
+          type: string
+        pt:
+          description: Text in Portugese.
+          type: string
+        pa:
+          description: Text in Punjabi.
+          type: string
+        ro:
+          description: Text in Romanian.
+          type: string
+        ru:
+          description: Text in Russian.
+          type: string
+        sr:
+          description: Text in Serbian.
+          type: string
+        sk:
+          description: Text in Slovak.
+          type: string
+        es:
+          description: Text in Spanish.
+          type: string
+        sv:
+          description: Text in Swedish.
+          type: string
+        th:
+          description: Text in Thai.
+          type: string
+        tr:
+          description: Text in Turkish.
+          type: string
+        uk:
+          description: Text in Ukrainian.
+          type: string
+        vi:
+          description: Text in Vietnamese.
+          type: string
+      type: object
+  securitySchemes:
+    rest_api_key:
+      scheme: bearer
+      type: http
+    organization_api_key:
+      scheme: bearer
+      type: http

@@ -1,0 +1,2290 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: devrel@onesignal.com
+    name: OneSignal DevRel
+    url: https://onesignal.com
+  description: A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com
+  termsOfService: https://onesignal.com/tos
+  title: OneSignal Notifications API
+  version: 5.5.0
+servers:
+- url: https://api.onesignal.com
+tags:
+- name: Notifications
+paths:
+  /notifications:
+    get:
+      description: View the details of multiple notifications
+      operationId: get_notifications
+      parameters:
+      - description: The app ID that you want to view notifications from
+        explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: How many notifications to return.  Max is 50.  Default is 50.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Kind of notifications returned:\n  * unset - All notification types (default)\n  * `0` - Dashboard only\n  * `1` - API only\n  * `3` - Automated only\n"
+        explode: true
+        in: query
+        name: kind
+        required: false
+        schema:
+          enum:
+          - 0
+          - 1
+          - 3
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSlice'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: View notifications
+      tags:
+      - Notifications
+    post:
+      description: 'Sends notifications to your users.
+
+
+        **Target by External ID (push example):** set `include_aliases` to `{ "external_id": ["your-user-id"] }` and set `target_channel` to `push` (or `email` / `sms` for those channels). Alias object keys must match API labels exactly (for example `external_id`, not camelCase).
+
+
+        **Do not confuse** the notification-level `external_id` field with External ID targeting: top-level `external_id` / `idempotency_key` are for idempotent notification requests only, not for selecting recipients.
+
+
+        **Targeting compatibility:** `include_aliases` must not be combined with other targeting modes (segments, filters, subscription IDs, legacy player IDs, etc.). Clients should send only one targeting strategy per request.
+
+        '
+      operationId: create_notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNotificationSuccessResponse'
+          description: 'OK, invalid_aliases, or No Subscribed Players
+
+            If a message was successfully created, you will get a 200 response with a non-empty `id` for the notification.
+
+            If the 200 response contains `invalid_aliases`, that marks devices that exist in the provided app_id but are no longer subscribed.
+
+            If `id` is an empty string, no notification was created: check the `errors` array (for example messages such as "All included players are not subscribed") even though HTTP status is still 200. This can happen when alias keys are wrong, External IDs do not resolve to subscribed users, or other validation issues.
+
+            If no id is returned, then a message was not created and the targeted User IDs do not exist under the provided app_id.
+
+            Any User IDs sent in the request that do not exist under the specified app_id will be ignored.
+
+            '
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: Create notification
+      x-onesignal-flat-notification-example: true
+      tags:
+      - Notifications
+  /notifications/{notification_id}:
+    delete:
+      description: Used to stop a scheduled or currently outgoing notification
+      operationId: cancel_notification
+      parameters:
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessBoolResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: Stop a scheduled or currently outgoing notification
+      tags:
+      - Notifications
+    get:
+      description: View the details of a single notification and outcomes associated with it
+      operationId: get_notification
+      parameters:
+      - explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationWithMeta'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: View notification
+      tags:
+      - Notifications
+  /notifications/{notification_id}/history:
+    post:
+      description: -> View the devices sent a message - OneSignal Paid Plan Required This method will return all devices that were sent the given notification_id of an Email or Push Notification if used within 7 days of the date sent. After 7 days of the sending date, the message history data will be unavailable. After a successful response is received, the destination url may be polled until the file becomes available. Most exports are done in ~1-3 minutes, so setting a poll interval of 10 seconds should be adequate. For use cases that are not meant to be consumed by a script, an email will be sent to the supplied email address. &#x1F6A7; Requirements A OneSignal Paid Plan. Turn on Send History via OneSignal API in Settings -> Analytics. Cannot get data before this was turned on. Must be called within 7 days after sending the message. Messages targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. Requires your OneSignal App's REST API Key, available in Keys & IDs.
+      operationId: get_notification_history
+      parameters:
+      - description: The "id" of the message found in the Notification object
+        explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/get_notification_history_request_body'
+        content:
+          application/json:
+            schema:
+              properties:
+                events:
+                  description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
+                  enum:
+                  - sent
+                  - clicked
+                  type: string
+                email:
+                  description: The email address you would like the report sent.
+                  type: string
+                app_id:
+                  type: string
+              required:
+              - id
+              title: get_notification_history_request_body
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationHistorySuccessResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: Notification History
+      tags:
+      - Notifications
+  /notifications/{notification_id}/export_events?app_id={app_id}:
+    post:
+      description: 'Generate a compressed CSV report of all of the events data for a notification.
+
+        This will return a URL immediately upon success but it may take several minutes for the CSV to become available at that URL depending on the volume of data. Only one export can be in-progress per OneSignal account at any given time.'
+      operationId: export_events
+      parameters:
+      - description: The ID of the notification to export events from.
+        explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the app that the notification belongs to.
+        explode: true
+        in: query
+        name: app_id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportEventsSuccessResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+          description: Rate Limit Exceeded
+      security:
+      - rest_api_key: []
+      summary: Export CSV of Events
+      tags:
+      - Notifications
+components:
+  schemas:
+    PlatformDeliveryData_sms_allOf:
+      properties:
+        provider_successful:
+          description: Number of messages reported as delivered successfully by the SMS service provider.
+          nullable: true
+          type: integer
+        provider_failed:
+          description: Number of recipients who didn't receive your message as reported by the SMS service provider.
+          nullable: true
+          type: integer
+        provider_errored:
+          description: Number of errors reported by the SMS service provider.
+          nullable: true
+          type: integer
+    NotificationSlice:
+      example:
+        offset: 6
+        total_count: 0
+        limit: 1
+        notifications:
+        - null
+        - null
+      properties:
+        total_count:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        notifications:
+          items:
+            $ref: '#/components/schemas/NotificationWithMeta'
+          type: array
+      type: object
+    NotificationTarget:
+      anyOf:
+      - $ref: '#/components/schemas/SegmentNotificationTarget'
+      - $ref: '#/components/schemas/SubscriptionNotificationTarget'
+    ExportEventsSuccessResponse:
+      example:
+        csv_file_url: csv_file_url
+      properties:
+        csv_file_url:
+          type: string
+      type: object
+    Button:
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        icon:
+          type: string
+      required:
+      - id
+      type: object
+    CreateNotificationSuccessResponse:
+      example:
+        external_id: external_id
+        id: id
+        errors: ''
+      properties:
+        id:
+          description: Notification identifier when the request created a notification. An empty string means no notification was created; read `errors` for details (HTTP may still be 200).
+          type: string
+        external_id:
+          description: Optional correlation / idempotency-related value from the API response. This is not the end-user External ID used for targeting recipients (that lives under `include_aliases.external_id`).
+          nullable: true
+          type: string
+        errors:
+          description: 'Polymorphic field: may be an array of human-readable strings and/or an object (for example with `invalid_aliases`, `invalid_external_user_ids`, or `invalid_player_ids`) depending on the API response; HTTP may still be 200 with partial success. Typed SDKs model this loosely so both shapes deserialize.'
+      type: object
+    SubscriptionNotificationTarget:
+      properties:
+        include_subscription_ids:
+          description: 'Specific subscription ids to send your notification to. _Does not require API Auth Key._
+
+            Not compatible with any other targeting parameters.
+
+            Example: ["1dd608f2-c6a1-11e3-851d-000c2940e62c"]
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          nullable: true
+          type: array
+        include_email_tokens:
+          description: 'Recommended for Sending Emails - Target specific email addresses.
+
+            If an email does not correspond to an existing user, a new user will be created.
+
+            Example: nick@catfac.ts
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_phone_numbers:
+          description: 'Recommended for Sending SMS - Target specific phone numbers. The phone number should be in the E.164 format. Phone number should be an existing subscriber on OneSignal. Refer our docs to learn how to add phone numbers to OneSignal.
+
+            Example phone number: +1999999999
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_ios_tokens:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using iOS device tokens.
+
+            Warning: Only works with Production tokens.
+
+            All non-alphanumeric characters must be removed from each token. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: ce777617da7f548fe7a9ab6febb56cf39fba6d38203...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_wp_wns_uris:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Windows URIs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: http://s.notify.live.net/u/1/bn1/HmQAAACPaLDr-...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_amazon_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Amazon ADM registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: amzn1.adm-registration.v1.XpvSSUk0Rc3hTVVV...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_chrome_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Chrome App registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_chrome_web_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Chrome Web Push registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_android_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Android device registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_aliases:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: 'Target specific users by aliases assigned via API. An alias can be an external_id, onesignal_id, or a custom alias.
+
+            Accepts an object where keys are alias labels and values are arrays of alias IDs to include
+
+            Example usage: { "external_id": ["exId1", "extId2"], "internal_label": ["id1", "id2"] }
+
+            Keys must match API spellings exactly (for example the label for External ID is the string `external_id`; arbitrary keys such as camelCase variants are not aliases and may yield no recipients).
+
+            Not compatible with any other targeting parameters.
+
+            REQUIRED: REST API Key Authentication
+
+            Limit of 2,000 entries per REST API call
+
+            Note: If targeting push, email, or sms subscribers with same ids, use with target_channel to indicate you are sending a push or email or sms.'
+          nullable: true
+          type: object
+        target_channel:
+          enum:
+          - push
+          - email
+          - sms
+          type: string
+      type: object
+    PlatformDeliveryData:
+      description: Hash of delivery statistics broken out by target device platform.
+      properties:
+        edge_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        chrome_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        firefox_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        safari_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        android:
+          $ref: '#/components/schemas/DeliveryData'
+        ios:
+          $ref: '#/components/schemas/DeliveryData'
+        sms:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryData'
+          - $ref: '#/components/schemas/PlatformDeliveryData_sms_allOf'
+        email:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryData'
+          - $ref: '#/components/schemas/PlatformDeliveryData_email_allOf'
+      type: object
+    Notification:
+      allOf:
+      - $ref: '#/components/schemas/BasicNotification'
+      - $ref: '#/components/schemas/Notification_allOf'
+    LanguageStringMap:
+      example:
+        de: de
+        hi: hi
+        fi: fi
+        ru: ru
+        pt: pt
+        bg: bg
+        lt: lt
+        hr: hr
+        lv: lv
+        fr: fr
+        hu: hu
+        bs: bs
+        zh-Hans: zh-Hans
+        zh-Hant: zh-Hant
+        ka: ka
+        uk: uk
+        sk: sk
+        id: id
+        ca: ca
+        sr: sr
+        sv: sv
+        ko: ko
+        ms: ms
+        el: el
+        en: en
+        it: it
+        zh: zh
+        es: es
+        et: et
+        cs: cs
+        ar: ar
+        pa: pa
+        vi: vi
+        nb: nb
+        th: th
+        ja: ja
+        fa: fa
+        pl: pl
+        da: da
+        he: he
+        ro: ro
+        nl: nl
+        tr: tr
+      properties:
+        en:
+          description: Text in English.  Will be used as a fallback
+          type: string
+        ar:
+          description: Text in Arabic.
+          type: string
+        bs:
+          description: Text in Bosnian.
+          type: string
+        bg:
+          description: Text in Bulgarian.
+          type: string
+        ca:
+          description: Text in Catalan.
+          type: string
+        zh-Hans:
+          description: Text in Chinese (Simplified).
+          type: string
+        zh-Hant:
+          description: Text in Chinese (Traditional).
+          type: string
+        zh:
+          description: Alias for zh-Hans.
+          type: string
+        hr:
+          description: Text in Croatian.
+          type: string
+        cs:
+          description: Text in Czech.
+          type: string
+        da:
+          description: Text in Danish.
+          type: string
+        nl:
+          description: Text in Dutch.
+          type: string
+        et:
+          description: Text in Estonian.
+          type: string
+        fi:
+          description: Text in Finnish.
+          type: string
+        fr:
+          description: Text in French.
+          type: string
+        ka:
+          description: Text in Georgian.
+          type: string
+        de:
+          description: Text in German.
+          type: string
+        el:
+          description: Text in Greek.
+          type: string
+        hi:
+          description: Text in Hindi.
+          type: string
+        he:
+          description: Text in Hebrew.
+          type: string
+        hu:
+          description: Text in Hungarian.
+          type: string
+        id:
+          description: Text in Indonesian.
+          type: string
+        it:
+          description: Text in Italian.
+          type: string
+        ja:
+          description: Text in Japanese.
+          type: string
+        ko:
+          description: Text in Korean.
+          type: string
+        lv:
+          description: Text in Latvian.
+          type: string
+        lt:
+          description: Text in Lithuanian.
+          type: string
+        ms:
+          description: Text in Malay.
+          type: string
+        nb:
+          description: Text in Norwegian.
+          type: string
+        pl:
+          description: Text in Polish.
+          type: string
+        fa:
+          description: Text in Persian.
+          type: string
+        pt:
+          description: Text in Portugese.
+          type: string
+        pa:
+          description: Text in Punjabi.
+          type: string
+        ro:
+          description: Text in Romanian.
+          type: string
+        ru:
+          description: Text in Russian.
+          type: string
+        sr:
+          description: Text in Serbian.
+          type: string
+        sk:
+          description: Text in Slovak.
+          type: string
+        es:
+          description: Text in Spanish.
+          type: string
+        sv:
+          description: Text in Swedish.
+          type: string
+        th:
+          description: Text in Thai.
+          type: string
+        tr:
+          description: Text in Turkish.
+          type: string
+        uk:
+          description: Text in Ukrainian.
+          type: string
+        vi:
+          description: Text in Vietnamese.
+          type: string
+      type: object
+    SegmentNotificationTarget:
+      properties:
+        included_segments:
+          description: 'The segment names you want to target. Users in these segments will receive a notification. This targeting parameter is only compatible with excluded_segments.
+
+            Example: ["Active Users", "Inactive Users"]
+
+            '
+          items:
+            type: string
+          type: array
+        excluded_segments:
+          description: 'Segment that will be excluded when sending. Users in these segments will not receive a notification, even if they were included in included_segments. This targeting parameter is only compatible with included_segments.
+
+            Example: ["Active Users", "Inactive Users"]
+
+            '
+          items:
+            type: string
+          type: array
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    NotificationWithMeta:
+      allOf:
+      - $ref: '#/components/schemas/BasicNotification'
+      - $ref: '#/components/schemas/DeliveryData'
+      - $ref: '#/components/schemas/OutcomesData'
+      - $ref: '#/components/schemas/NotificationWithMeta_allOf'
+    BasicNotification:
+      allOf:
+      - $ref: '#/components/schemas/NotificationTarget'
+      - $ref: '#/components/schemas/BasicNotification_allOf'
+      - required:
+        - app_id
+    NotificationWithMeta_allOf:
+      properties:
+        remaining:
+          description: Number of notifications that have not been sent out yet. This can mean either our system is still processing the notification or you have delayed options set.
+          type: integer
+        successful:
+          description: Number of notifications that were successfully delivered.
+          type: integer
+        failed:
+          description: Number of notifications that could not be delivered due to those devices being unsubscribed.
+          type: integer
+        errored:
+          description: Number of notifications that could not be delivered due to an error. You can find more information by viewing the notification in the dashboard.
+          type: integer
+        converted:
+          description: Number of users who have clicked / tapped on your notification.
+          type: integer
+        queued_at:
+          description: Unix timestamp indicating when the notification was created.
+          format: int64
+          type: integer
+        send_after:
+          description: Unix timestamp indicating when notification delivery should begin.
+          format: int64
+          nullable: true
+          type: integer
+        completed_at:
+          description: Unix timestamp indicating when notification delivery completed. The delivery duration from start to finish can be calculated with completed_at - send_after.
+          format: int64
+          nullable: true
+          type: integer
+        platform_delivery_stats:
+          $ref: '#/components/schemas/PlatformDeliveryData'
+        received:
+          description: Confirmed Deliveries number of devices that received the push notification. Paid Feature Only. Free accounts will see 0.
+          nullable: true
+          type: integer
+        throttle_rate_per_minute:
+          description: number of push notifications sent per minute. Paid Feature Only. If throttling is not enabled for the app or the notification, and for free accounts, null is returned. Refer to Throttling for more details.
+          nullable: true
+          type: integer
+        canceled:
+          description: Indicates whether the notification was canceled before it could be sent.
+          type: boolean
+        email_bcc:
+          description: BCC recipients that were set on this email notification.
+          items:
+            type: string
+          nullable: true
+          type: array
+        bcc_sent:
+          description: Number of BCC copies successfully sent for this notification.
+          nullable: true
+          type: integer
+      type: object
+    FilterExpression:
+      oneOf:
+      - $ref: '#/components/schemas/Filter'
+      - $ref: '#/components/schemas/Operator'
+    GenericSuccessBoolResponse:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+      type: object
+    Operator:
+      properties:
+        operator:
+          description: Strictly, this must be either `"OR"`, or `"AND"`.  It can be used to compose Filters as part of a Filters object.
+          enum:
+          - OR
+          - AND
+          type: string
+      type: object
+    WebButton:
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        icon:
+          type: string
+        url:
+          type: string
+      required:
+      - id
+      type: object
+    Notification_allOf:
+      properties:
+        send_after:
+          description: 'Channel: All
+
+            Schedule notification for future delivery. API defaults to UTC -1100
+
+            Examples: All examples are the exact same date & time.
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
+
+            "September 24th 2015, 2:00:00 pm UTC-07:00"
+
+            "2015-09-24 14:00:00 GMT-0700"
+
+            "Sept 24 2015 14:00:00 GMT-0700"
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (Pacific Daylight Time)"
+
+            Note: SMS currently only supports send_after parameter.
+
+            '
+          format: date-time
+          nullable: true
+          type: string
+          writeOnly: true
+      type: object
+    NotificationHistorySuccessResponse:
+      example:
+        success: true
+        destination_url: destination_url
+      properties:
+        success:
+          type: boolean
+        destination_url:
+          type: string
+      type: object
+    OutcomeData:
+      example:
+        aggregation: sum
+        id: id
+        value: 0
+      properties:
+        id:
+          type: string
+        value:
+          type: integer
+        aggregation:
+          enum:
+          - sum
+          - count
+          type: string
+      required:
+      - aggregation
+      - id
+      - value
+      type: object
+    get_notification_history_request_body:
+      properties:
+        events:
+          description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
+          enum:
+          - sent
+          - clicked
+          type: string
+        email:
+          description: The email address you would like the report sent.
+          type: string
+        app_id:
+          type: string
+      required:
+      - id
+      title: get_notification_history_request_body
+      type: object
+    Filter:
+      properties:
+        field:
+          description: Required. Name of the field to use as the first operand in the filter expression.
+          type: string
+        key:
+          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
+          type: string
+        value:
+          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
+          type: string
+        hours_ago:
+          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
+          type: string
+        radius:
+          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
+          type: number
+        lat:
+          description: If `field` is `location`, this is *required* to specify the user's latitude.
+          type: number
+        long:
+          description: If `field` is `location`, this is *required* to specify the user's longitude.
+          type: number
+        relation:
+          description: Required. Operator of a filter expression.
+          enum:
+          - '>'
+          - <
+          - '='
+          - '!='
+          - exists
+          - not_exists
+          - time_elapsed_gt
+          - time_elapsed_lt
+          type: string
+      type: object
+    BasicNotification_allOf_android_background_layout:
+      description: 'Channel: Push Notifications
+
+        Platform: Android
+
+        Allowing setting a background image for the notification. This is a JSON object containing the following keys. See our Background Image documentation for image sizes.
+
+        '
+      properties:
+        image:
+          description: Asset file, android resource name, or URL to remote image.
+          type: string
+        headings_color:
+          description: Title text color ARGB Hex format. Example(Blue) "FF0000FF".
+          type: string
+        contents_color:
+          description: Body text color ARGB Hex format. Example(Red) "FFFF0000".
+          type: string
+      type: object
+      writeOnly: true
+    OutcomesData:
+      example:
+        outcomes:
+        - aggregation: sum
+          id: id
+          value: 0
+        - aggregation: sum
+          id: id
+          value: 0
+      properties:
+        outcomes:
+          items:
+            $ref: '#/components/schemas/OutcomeData'
+          type: array
+      type: object
+    BasicNotification_allOf:
+      properties:
+        id:
+          type: string
+        value:
+          readOnly: true
+          type: integer
+        name:
+          description: 'Required for SMS Messages.
+
+            An identifier for tracking message within the OneSignal dashboard or export analytics.
+
+            Not shown to end user.'
+          nullable: true
+          type: string
+          writeOnly: true
+        aggregation:
+          enum:
+          - sum
+          - count
+          readOnly: true
+          type: string
+        isIos:
+          description: Indicates whether to send to all devices registered under your app's Apple iOS platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isAndroid:
+          description: Indicates whether to send to all devices registered under your app's Google Android platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isHuawei:
+          description: Indicates whether to send to all devices registered under your app's Huawei Android platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isAnyWeb:
+          description: 'Indicates whether to send to all subscribed web browser users, including Chrome, Firefox, and Safari.
+
+            You may use this instead as a combined flag instead of separately enabling isChromeWeb, isFirefox, and isSafari, though the three options are equivalent to this one.
+
+            '
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isChromeWeb:
+          description: Indicates whether to send to all Google Chrome, Chrome on Android, and Mozilla Firefox users registered under your Chrome & Firefox web push platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isFirefox:
+          description: Indicates whether to send to all Mozilla Firefox desktop users registered under your Firefox web push platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isSafari:
+          description: Does not support iOS Safari. Indicates whether to send to all Apple's Safari desktop users registered under your Safari web push platform. Read more iOS Safari
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isWP_WNS:
+          description: Indicates whether to send to all devices registered under your app's Windows platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isAdm:
+          description: Indicates whether to send to all devices registered under your app's Amazon Fire platform.
+          nullable: true
+          type: boolean
+          writeOnly: true
+        isChrome:
+          description: 'This flag is not used for web push Please see isChromeWeb for sending to web push users. This flag only applies to Google Chrome Apps & Extensions.
+
+            Indicates whether to send to all devices registered under your app''s Google Chrome Apps & Extension platform.
+
+            '
+          nullable: true
+          type: boolean
+          writeOnly: true
+        app_id:
+          description: 'Required: Your OneSignal Application ID, which can be found in Keys & IDs.
+
+            It is a UUID and looks similar to 8250eaf6-1a58-489e-b136-7c74a864b434.
+
+            '
+          type: string
+          writeOnly: true
+        external_id:
+          deprecated: true
+          description: "This field does **not** target users by their External ID. To send to External IDs, use `include_aliases` with the label `external_id` plus `target_channel` as documented for alias-based targeting.\n\n[DEPRECATED] Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same external_id. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same external_id will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
+          nullable: true
+          type: string
+        idempotency_key:
+          description: "Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same idempotency key. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same idempotency key will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
+          nullable: true
+          type: string
+        contents:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'Required unless content_available=true or template_id is set.
+
+              The message''s content (excluding the title), a map of language codes to text for each language.
+
+              Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              English must be included in the hash.
+
+              Example: {"en": "English Message", "es": "Spanish Message"}
+
+              '
+            writeOnly: true
+        headings:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'The message''s title, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              Example: {"en": "English Title", "es": "Spanish Title"}
+
+              '
+            writeOnly: true
+        subtitle:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'The message''s subtitle, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              Example: {"en": "English Subtitle", "es": "Spanish Subtitle"}
+
+              '
+            writeOnly: true
+        data:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            A custom map of data that is passed back to your app. Same as using Additional Data within the dashboard. Can use up to 2048 bytes of data.
+
+            Example: {"abc": 123, "foo": "bar", "event_performed": true, "amount": 12.1}
+
+            '
+          nullable: true
+          type: object
+          writeOnly: true
+        huawei_msg_type:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Use "data" or "message" depending on the type of notification you are sending. More details in Data & Background Notifications.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        url:
+          description: 'Channel: Push Notifications
+
+            Platform: All
+
+            The URL to open in the browser when a user clicks on the notification.
+
+            Note: iOS needs https or updated NSAppTransportSecurity in plist
+
+            This field supports inline substitutions.
+
+            Omit if including web_url or app_url
+
+            Example: https://onesignal.com
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        web_url:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Same as url but only sent to web push platforms.
+
+            Including Chrome, Firefox, Safari, Opera, etc.
+
+            Example: https://onesignal.com
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        app_url:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Same as url but only sent to web push platforms.
+
+            Including iOS, Android, macOS, Windows, ChromeApps, etc.
+
+            Example: https://onesignal.com
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        ios_attachments:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            Adds media attachments to notifications. Set as JSON object, key as a media id of your choice and the value as a valid local filename or URL. User must press and hold on the notification to view.
+
+            Do not set mutable_content to download attachments. The OneSignal SDK does this automatically
+
+            Example: {"id1": "https://domain.com/image.jpg"}
+
+            '
+          nullable: true
+          type: object
+          writeOnly: true
+        template_id:
+          description: 'Channel: Push Notifications
+
+            Platform: All
+
+            Use a template you setup on our dashboard. The template_id is the UUID found in the URL when viewing a template on our dashboard.
+
+            Example: be4a8044-bbd6-11e4-a581-000c2940e62c
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        content_available:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Sending true wakes your app from background to run custom native code (Apple interprets this as content-available=1). Note: Not applicable if the app is in the "force-quit" state (i.e app was swiped away). Omit the contents field to prevent displaying a visible notification.
+
+            '
+          nullable: true
+          type: boolean
+          writeOnly: true
+        mutable_content:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            Always defaults to true and cannot be turned off. Allows tracking of notification receives and changing of the notification content in your app before it is displayed. Triggers didReceive(_:withContentHandler:) on your UNNotificationServiceExtension.
+
+            '
+          type: boolean
+          writeOnly: true
+        target_content_identifier:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 13+
+
+            Use to target a specific experience in your App Clip, or to target your notification to a specific window in a multi-scene App.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        chrome_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: ChromeApp
+
+            Large picture to display below the notification text. Must be a local URL.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        chrome_web_image:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome 56+
+
+            Sets the web push notification''s large image to be shown below the notification''s title and text. Please see Web Push Notification Icons.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        buttons:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 8.0+, Android 4.1+, and derivatives like Amazon Buttons to add to the notification. Icon only works for Android.
+
+            Buttons show in reverse order of array position i.e. Last item in array shows as first button on device.
+
+            Example: [{"id": "id2", "text": "second button", "icon": "ic_menu_share"}, {"id": "id1", "text": "first button", "icon": "ic_menu_send"}]
+
+            '
+          items:
+            $ref: '#/components/schemas/Button'
+          nullable: true
+          type: array
+          writeOnly: true
+        web_buttons:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome 48+
+
+            Add action buttons to the notification. The id field is required.
+
+            Example: [{"id": "like-button", "text": "Like", "icon": "http://i.imgur.com/N8SN8ZS.png", "url": "https://yoursite.com"}, {"id": "read-more-button", "text": "Read more", "icon": "http://i.imgur.com/MIxJp1L.png", "url": "https://yoursite.com"}]
+
+            '
+          items:
+            $ref: '#/components/schemas/WebButton'
+          nullable: true
+          type: array
+          writeOnly: true
+        ios_category:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Category APS payload, use with registerUserNotificationSettings:categories in your Objective-C / Swift code.
+
+            Example: calendar category which contains actions like accept and decline
+
+            iOS 10+ This will trigger your UNNotificationContentExtension whose ID matches this category.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        existing_android_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_existing_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_background_layout:
+          $ref: '#/components/schemas/BasicNotification_allOf_android_background_layout'
+        small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Icon shown in the status bar and on the top left of the notification.
+
+            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
+
+            See: How to create small icons
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Icon shown in the status bar and on the top left of the notification.
+
+            Use an Android resource path (E.g. /drawable/small_icon).
+
+            Defaults to your app icon if not set.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
+
+            See: How to create small icons
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            If blank the small_icon is used. Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        chrome_web_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome
+
+            Sets the web push notification''s icon. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices. Firefox will also use this icon, unless you specify firefox_icon.
+
+            '
+          nullable: true
+          type: string
+        chrome_web_badge:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome
+
+            Sets the web push notification icon for Android devices in the notification shade. Please see Web Push Notification Badge.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        firefox_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Firefox
+
+            Not recommended Few people need to set Firefox-specific icons. We recommend setting chrome_web_icon instead, which Firefox will also use.
+
+            Sets the web push notification''s icon for Firefox. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        chrome_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: ChromeApp
+
+            This flag is not used for web push For web push, please see chrome_web_icon instead.
+
+            The local URL to an icon to use. If blank, the app icon will be used.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        ios_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable vibration and sound for the notification.
+
+            Example: "notification.wav"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
+
+            NOTE: Leave off file extension for Android.
+
+            Example: "notification"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            Sound file that is included in your app to play instead of the default device notification sound. NOTE: Leave off file extension for and include the full path.
+
+
+            Example: "/res/raw/notification"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
+
+            NOTE: Leave off file extension for Android.
+
+            Example: "notification"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        wp_wns_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Windows
+
+            Sound file that is included in your app to play instead of the default device notification sound.
+
+            Example: "notification.wav"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_led_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sets the devices LED notification light if the device has one. ARGB Hex format.
+
+            Example(Blue): "FF0000FF"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_led_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            Sets the devices LED notification light if the device has one. RGB Hex format.
+
+            Example(Blue): "0000FF"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_accent_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Sets the background color of the notification circle to the left of the notification text. Only applies to apps targeting Android API level 21+ on Android 5.0+ devices.
+
+            Example(Red): "FFFF0000"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_accent_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Accent Color used on Action Buttons and Group overflow count.
+
+            Uses RGB Hex value (E.g. #9900FF).
+
+            Defaults to device''s theme color if not set.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_visibility:
+          description: 'Channel: Push Notifications
+
+            Platform: Android 5.0_
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
+
+            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
+
+            -1 = Secret (Notification does not show on the lock screen at all)
+
+            '
+          nullable: true
+          type: integer
+          writeOnly: true
+        huawei_visibility:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
+
+            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
+
+            -1 = Secret (Notification does not show on the lock screen at all)
+
+            '
+          nullable: true
+          type: integer
+          writeOnly: true
+        ios_badgeType:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Describes whether to set or increase/decrease your app''s iOS badge count by the ios_badgeCount specified count. Can specify None, SetTo, or Increase.
+
+            `None` leaves the count unaffected.
+
+            `SetTo` directly sets the badge count to the number specified in ios_badgeCount.
+
+            `Increase` adds the number specified in ios_badgeCount to the total. Use a negative number to decrease the badge count.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        ios_badgeCount:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Used with ios_badgeType, describes the value to set or amount to increase/decrease your app''s iOS badge count by.
+
+            You can use a negative number to decrease the badge count when used with an ios_badgeType of Increase.
+
+            '
+          nullable: true
+          type: integer
+          writeOnly: true
+        collapse_id:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+, Android
+
+            Only one notification with the same id will be shown on the device. Use the same id to update an existing notification instead of showing a new one. Limit of 64 characters.
+
+            '
+          type: string
+          writeOnly: true
+        web_push_topic:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Display multiple notifications at once with different topics.
+
+            '
+          nullable: true
+          type: string
+        apns_alert:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            iOS can localize push notification messages on the client using special parameters such as loc-key. When using the Create Notification endpoint, you must include these parameters inside of a field called apns_alert. Please see Apple''s guide on localizing push notifications to learn more.
+
+            '
+          nullable: true
+          type: object
+          writeOnly: true
+        delayed_option:
+          description: 'Channel: All
+
+            Possible values are:
+
+            timezone (Deliver at a specific time-of-day in each users own timezone)
+
+            last-active Same as Intelligent Delivery . (Deliver at the same time of day as each user last used your app).
+
+            If send_after is used, this takes effect after the send_after time has elapsed.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        delivery_time_of_day:
+          description: 'Channel: All
+
+            Use with delayed_option=timezone.
+
+            Examples: "9:00AM"
+
+            "21:45"
+
+            "9:45:30"
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        ttl:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS, Android, Chrome, Firefox, Safari, ChromeWeb
+
+            Time To Live - In seconds. The notification will be expired if the device does not come back online within this time. The default is 259,200 seconds (3 days).
+
+            Max value to set is 2419200 seconds (28 days).
+
+            '
+          nullable: true
+          type: integer
+          writeOnly: true
+        priority:
+          description: 'Channel: Push Notifications
+
+            Platform: Android, Chrome, ChromeWeb
+
+            Delivery priority through the push server (example GCM/FCM). Pass 10 for high priority or any other integer for normal priority. Defaults to normal priority for Android and high for iOS. For Android 6.0+ devices setting priority to high will wake the device out of doze mode.
+
+            '
+          nullable: true
+          type: integer
+          writeOnly: true
+        apns_push_type_override:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            valid values: voip
+
+            Set the value to voip for sending VoIP Notifications
+
+            This field maps to the APNS header apns-push-type.
+
+            Note: alert and background are automatically set by OneSignal
+
+            '
+          type: string
+          writeOnly: true
+        throttle_rate_per_minute:
+          description: "Channel: All\nApps with throttling enabled:\n  - the parameter value will be used to override the default application throttling value set from the dashboard settings.\n  - parameter value 0 indicates not to apply throttling to the notification.\n  - if the parameter is not passed then the default app throttling value will be applied to the notification.\nApps with throttling disabled:\n  - this parameter can be used to throttle delivery for the notification even though throttling is not enabled at the application level.\nRefer to throttling for more details.\n"
+          nullable: true
+          type: string
+          writeOnly: true
+        android_group:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        android_group_message:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Note: This only works for Android 6 and older. Android 7+ allows full expansion of all message.
+
+            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number.
+
+            Languages - The value of each key is the message that will be sent to users for that language. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. Read more: supported languages.
+
+            Example: {"en": "You have $[notif_count] new messages"}
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_group:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        adm_group_message:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. The value of each key is the message that will be sent to users for that language.
+
+            Example: {"en": "You have $[notif_count] new messages"}
+
+            '
+          nullable: true
+          type: object
+          writeOnly: true
+        thread_id:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            This parameter is supported in iOS 12 and above. It allows you to group related notifications together.
+
+            If two notifications have the same thread-id, they will both be added to the same group.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        summary_arg:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            When using thread_id to create grouped notifications in iOS 12+, you can also control the summary. For example, a grouped notification can say "12 more notifications from John Doe".
+
+            The summary_arg lets you set the name of the person/thing the notifications are coming from, and will show up as "X more notifications from summary_arg"
+
+            '
+          type: string
+          writeOnly: true
+        summary_arg_count:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            When using thread_id, you can also control the count of the number of notifications in the group. For example, if the group already has 12 notifications, and you send a new notification with summary_arg_count = 2, the new total will be 14 and the summary will be "14 more notifications from summary_arg"
+
+            '
+          type: integer
+          writeOnly: true
+        ios_relevance_score:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 15+
+
+            A score to be set per notification to indicate how it should be displayed when grouped. Use a float between 0-1.
+
+            '
+          nullable: true
+          type: number
+          writeOnly: true
+        ios_interruption_level:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 15+
+
+            Focus Modes and Interruption Levels indicate the priority and delivery timing of a notification, to "interrupt" the user.
+
+            Can choose from options: [''active'', ''passive'', ''time_sensitive'', ''critical'']. Default is active.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        email_subject:
+          description: 'Channel: Email
+
+            Required.  The subject of the email.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        email_body:
+          description: 'Channel: Email
+
+            Required unless template_id is set.
+
+            HTML suported
+
+            The body of the email you wish to send. Typically, customers include their own HTML templates here. Must include [unsubscribe_url] in an <a> tag somewhere in the email.
+
+            Note: any malformed HTML content will be sent to users. Please double-check your HTML is valid.
+
+            '
+          type: string
+          writeOnly: true
+        email_from_name:
+          description: 'Channel: Email
+
+            The name the email is from. If not specified, will default to "from name" set in the OneSignal Dashboard Email Settings.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        email_from_address:
+          description: 'Channel: Email
+
+            The email address the email is from. If not specified, will default to "from email" set in the OneSignal Dashboard Email Settings.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        email_reply_to_address:
+          description: 'Channel: Email
+
+            The email address where replies should be sent. If not specified, replies will go to the from address.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        email_preheader:
+          description: 'Channel: Email
+
+            The preheader text of the email.
+
+            Preheader is the preview text displayed immediately after an email subject that provides additional context about the email content.
+
+            If not specified, will default to null.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        disable_email_click_tracking:
+          description: 'Channel: Email
+
+            Default is `false`. If set to `true`, the URLs sent within the email will not include link tracking and will be the same as originally set; otherwise, all the URLs in the email will be tracked.'
+          nullable: true
+          type: boolean
+          writeOnly: true
+        include_unsubscribed:
+          description: 'Channel: Email
+
+            Default is `false`. This field is used to send transactional notifications. If set to `true`, this notification will also be sent to unsubscribed emails. If a `template_id` is provided, the `include_unsubscribed` value from the template will be inherited. If you are using a third-party ESP, this field requires the ESP''s list of unsubscribed emails to be cleared.'
+          type: boolean
+          writeOnly: true
+        email_bcc:
+          description: 'Channel: Email
+
+            BCC recipients for the email. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+
+            '
+          items:
+            type: string
+          maxItems: 5
+          nullable: true
+          type: array
+          writeOnly: true
+        sms_from:
+          description: 'Channel: SMS
+
+            Phone Number used to send SMS. Should be a registered Twilio phone number in E.164 format.
+
+            '
+          nullable: true
+          type: string
+          writeOnly: true
+        sms_media_urls:
+          description: 'Channel: SMS
+
+            URLs for the media files to be attached to the SMS content.
+
+            Limit: 10 media urls with a total max. size of 5MBs.
+
+            '
+          items:
+            type: string
+          nullable: true
+          type: array
+          writeOnly: true
+        filters:
+          items:
+            $ref: '#/components/schemas/FilterExpression'
+          nullable: true
+          type: array
+        custom_data:
+          description: 'Channel: All
+
+            JSON object that can be used as a source of message personalization data for fields that support tag variable substitution.
+
+            Push, SMS: Can accept up to 2048 bytes of valid JSON. Email: Can accept up to 10000 bytes of valid JSON.
+
+            Example: {"order_id": 123, "currency": "USD", "amount": 25}
+
+            '
+          nullable: true
+          type: object
+          writeOnly: true
+        huawei_badge_class:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Full path of the app entry activity class'
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_badge_add_num:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Accumulative badge number, which is an integer ranging from 1 to 99'
+          nullable: true
+          type: integer
+          writeOnly: true
+        huawei_badge_set_num:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Badge number, which is an integer ranging from 0 to 99'
+          nullable: true
+          type: integer
+          writeOnly: true
+        huawei_category:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Category of the push notification for HMS classification.'
+          enum:
+          - IM
+          - VOIP
+          - SUBSCRIPTION
+          - TRAVEL
+          - HEALTH
+          - WORK
+          - ACCOUNT
+          - EXPRESS
+          - FINANCE
+          - DEVICE_REMINDER
+          - MAIL
+          - MARKETING
+          nullable: true
+          type: string
+          writeOnly: true
+        huawei_bi_tag:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            A tag used for Huawei business intelligence and analytics.'
+          nullable: true
+          type: string
+          writeOnly: true
+      type: object
+    PlatformDeliveryData_email_allOf:
+      properties:
+        opened:
+          description: Number of times an email has been opened.
+          nullable: true
+          type: integer
+        unique_opens:
+          description: Number of unique recipients who have opened your email.
+          nullable: true
+          type: integer
+        clicks:
+          description: Number of clicked links from your email. This can include the recipient clicking email links multiple times.
+          nullable: true
+          type: integer
+        unique_clicks:
+          description: Number of unique clicks that your recipients have made on links from your email.
+          nullable: true
+          type: integer
+        bounced:
+          description: Number of recipients who registered as a hard or soft bounce and didn't receive your email.
+          nullable: true
+          type: integer
+        reported_spam:
+          description: Number of recipients who reported this email as spam.
+          nullable: true
+          type: integer
+        unsubscribed:
+          description: Number of recipients who opted out of your emails using the unsubscribe link in this email.
+          nullable: true
+          type: integer
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
+    DeliveryData:
+      properties:
+        successful:
+          description: Number of messages delivered to push servers, mobile carriers, or email service providers.
+          nullable: true
+          type: integer
+        failed:
+          description: Number of messages sent to unsubscribed devices.
+          nullable: true
+          type: integer
+        errored:
+          description: Number of errors reported.
+          nullable: true
+          type: integer
+        converted:
+          description: Number of messages that were clicked.
+          nullable: true
+          type: integer
+        received:
+          description: Number of devices that received the message.
+          nullable: true
+          type: integer
+      type: object
+  requestBodies:
+    get_notification_history_request_body:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get_notification_history_request_body'
+      required: true
+  securitySchemes:
+    rest_api_key:
+      scheme: bearer
+      type: http
+    organization_api_key:
+      scheme: bearer
+      type: http
