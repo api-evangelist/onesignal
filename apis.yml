@@ -2,20 +2,23 @@ aid: onesignal
 url: https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml
 name: OneSignal
 kind: company
-description: OneSignal is a customer engagement platform with push notifications,
-  in-app messaging, email, SMS, and live activities. Free tier serves billions of
-  messages monthly.
+description: OneSignal is a lifecycle customer engagement platform for mobile push, web push, email, SMS/RCS, in-app
+  messaging and iOS Live Activities, orchestrated through Journeys, segments and a single REST API at
+  api.onesignal.com. It reports 1.3 trillion messages a year across 200k apps and 1.5 billion monthly active
+  users. The developer surface is a published OpenAPI 3.1 contract, a full set of first-party server and client
+  SDKs, a hosted OAuth-authenticated MCP server, an A2A agent card and six provider-published Agent Skills.
 accessModel:
-  pricing: unknown
-  onboarding: unknown
+  pricing: freemium
+  onboarding: self-serve
   trial: false
-  try_now: false
+  try_now: true
   public: false
-  label: Unknown
-  confidence: low
+  label: Freemium · Self-serve signup
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
+  - authentication
+  generated: '2026-08-13'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/onesignal.png
 tags:
@@ -28,10 +31,47 @@ tags:
 - Web Push
 - Customer Engagement
 - Marketing Automation
+- Live Activities
+- RCS
+- In-App Messaging
+- Journeys
+- Lifecycle Marketing
+- MCP
+- Agent Ready
 created: '2026-05-08'
-modified: '2026-05-08'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
+- aid: onesignal:onesignal-rest-api
+  name: OneSignal REST API
+  description: The complete OneSignal REST API as OneSignal publishes it — OpenAPI 3.1.0, info.version 11.6, 39
+    paths and 59 operations covering messaging, users, subscriptions, segments, templates, custom events, inbox,
+    exports, apps, API keys and audit logs. Harvested verbatim from https://documentation.onesignal.com/openapi.json
+    on 2026-08-13; servers[] names https://api.onesignal.com.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Notifications
+  - Users
+  - Subscriptions
+  - Segments
+  - Templates
+  - Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/onesignal-api-openapi.json
+  - type: Documentation
+    url: https://documentation.onesignal.com/reference
+  - type: APIReference
+    url: https://documentation.onesignal.com/reference/rest-api-overview
+  - type: DataModel
+    url: data-model/onesignal-data-model.yml
+  - type: ErrorCatalog
+    url: errors/onesignal-problem-types.yml
+  - type: Conventions
+    url: conventions/onesignal-conventions.yml
+  - type: Authentication
+    url: authentication/onesignal-authentication.yml
 - aid: onesignal:onesignal-apps-api
   name: OneSignal Apps API
   description: The Apps API from OneSignal — 21 operation(s) for apps.
@@ -46,6 +86,8 @@ apis:
     url: https://documentation.onesignal.com/reference
   - type: GraphQL
     url: graphql/onesignal-graphql.md
+  - type: Overlay
+    url: overlays/onesignal-apps-overlay.yaml
 - aid: onesignal:onesignal-notifications-api
   name: OneSignal Notifications API
   description: The Notifications API from OneSignal — 4 operation(s) for notifications.
@@ -60,6 +102,8 @@ apis:
     url: https://documentation.onesignal.com/reference
   - type: GraphQL
     url: graphql/onesignal-graphql.md
+  - type: Overlay
+    url: overlays/onesignal-notifications-overlay.yaml
 - aid: onesignal:onesignal-players-api
   name: OneSignal Players API
   description: The Players API from OneSignal — 1 operation(s) for players.
@@ -74,6 +118,8 @@ apis:
     url: https://documentation.onesignal.com/reference
   - type: GraphQL
     url: graphql/onesignal-graphql.md
+  - type: Overlay
+    url: overlays/onesignal-players-overlay.yaml
 - aid: onesignal:onesignal-templates-api
   name: OneSignal Templates API
   description: The Templates API from OneSignal — 3 operation(s) for templates.
@@ -88,7 +134,30 @@ apis:
     url: https://documentation.onesignal.com/reference
   - type: GraphQL
     url: graphql/onesignal-graphql.md
+  - type: Overlay
+    url: overlays/onesignal-templates-overlay.yaml
+- aid: onesignal:onesignal-mcp
+  name: OneSignal MCP Server
+  description: OneSignal's hosted Model Context Protocol server at https://api.onesignal.com/mcp/oauth, connected
+    over browser-based OAuth 2.1 with PKCE. Listed in the Cursor marketplace and Claude's connector directory. A
+    second, anonymous documentation MCP server runs at https://documentation.onesignal.com/mcp and answered tools/list
+    on probe.
+  humanURL: https://documentation.onesignal.com/docs/en/onesignal-ai
+  baseURL: https://api.onesignal.com/mcp/oauth
+  tags:
+  - MCP
+  - AI
+  - Agents
+  properties:
+  - type: MCPServer
+    url: mcp/onesignal-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/onesignal-tool-crosswalk.yml
+  - type: Authentication
+    url: authentication/onesignal-authentication.yml
 common:
+- type: Authentication
+  url: authentication/onesignal-authentication.yml
 - type: VulnerabilityDisclosure
   url: security/onesignal-vulnerability-disclosure.yml
 - type: DomainSecurity
@@ -111,6 +180,76 @@ common:
   url: https://onesignal.com/llms.txt
 - type: Blog
   url: https://onesignal.com/blog/feed
+- type: Packages
+  url: packages/onesignal-packages.yml
+- type: SDKs
+  url: packages/onesignal-packages.yml
+- type: WellKnown
+  url: well-known/onesignal-well-known.yml
+- type: SecurityTxt
+  url: well-known/onesignal-security.txt
+- type: MCPServer
+  url: mcp/onesignal-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/onesignal-tool-crosswalk.yml
+- type: AgentCard
+  url: a2a/onesignal-a2a.yml
+- type: LLMsTxt
+  url: llms/onesignal-llms.txt
+- type: Conformance
+  url: conformance/onesignal-conformance.yml
+- type: Compliance
+  url: security/onesignal-trust-center.yml
+- type: TrustCenter
+  url: security/onesignal-trust-center.yml
+- type: Security
+  url: security/onesignal-vulnerability-disclosure.yml
+- type: ErrorCatalog
+  url: errors/onesignal-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/onesignal-lifecycle.yml
+- type: StatusPage
+  url: https://status.onesignal.com
+- type: Conventions
+  url: conventions/onesignal-conventions.yml
+- type: Idempotency
+  url: conventions/onesignal-conventions.yml
+- type: ChangeLog
+  url: changelog/onesignal-changelog.yml
+- type: CLI
+  url: cli/onesignal-cli.yml
+- type: Components
+  url: components/onesignal-components.yml
+- type: DataModel
+  url: data-model/onesignal-data-model.yml
+- type: Webhooks
+  url: asyncapi/onesignal-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DeveloperPortal
+  url: https://documentation.onesignal.com/
+- type: Documentation
+  url: https://documentation.onesignal.com/
+- type: APIReference
+  url: https://documentation.onesignal.com/reference
+- type: GettingStarted
+  url: https://documentation.onesignal.com/docs/en/quickstart-guide
+- type: Support
+  url: https://onesignal.com/contact
+- type: Pricing
+  url: https://onesignal.com/pricing
+- type: SignUp
+  url: https://dashboard.onesignal.com/signup
+- type: Login
+  url: https://dashboard.onesignal.com/login
+- type: TermsOfService
+  url: https://onesignal.com/tos
+- type: PrivacyPolicy
+  url: https://onesignal.com/privacy
+- type: Postman
+  url: https://www.postman.com/onesignaldevs
+- type: PostmanCollection
+  url: collections/onesignal.postman_collection.json
 integrations:
 - name: Adapty In-app subscriptions made profitable
 - name: Brew Lovable for email marketing
@@ -120,3 +259,8 @@ integrations:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 34
+  pass: local-v1
