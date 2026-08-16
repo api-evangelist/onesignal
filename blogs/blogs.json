@@ -5,7 +5,7 @@
       "source": "https://onesignal.com/blog/feed",
       "feed_url": "https://onesignal.com/blog/feed",
       "title": "",
-      "saved": 0,
+      "saved": 9,
       "method": "feed"
     },
     {
@@ -13,9 +13,10 @@
       "feed_url": "https://onesignal.com/llms.txt",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "none",
+      "error": "parse_failed"
     }
   ],
-  "fetched": "2026-08-06T14:08:46Z",
-  "post_count": 40
+  "fetched": "2026-08-15T12:11:08Z",
+  "post_count": 49
 }
