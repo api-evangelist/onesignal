@@ -1,0 +1,116 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/docs/en/permission-requests, https://documentation.onesignal.com/docs/en/in-app-messages-setup,
+  https://documentation.onesignal.com/docs/en/web-sdk-reference
+provider: OneSignal
+providerId: onesignal
+description: >-
+  OneSignal ships prebuilt, dashboard-configurable client-side UI surfaces that
+  render inside the customer's own page or app. These are distinct from the SDKs
+  in packages/ — the SDK is the loader, these are the rendered surfaces it
+  injects. All of them are configured in the OneSignal dashboard or through the
+  promptOptions object in the SDK init, not authored as markup by the customer.
+loaders:
+- name: OneSignal Web SDK
+  script: https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js
+  probed: '2026-08-13'
+  http_status: 200
+  pinning: major version only (v16); floats to latest build
+  package: packages/onesignal-packages.yml
+  reference: https://documentation.onesignal.com/docs/en/web-sdk-reference
+  note: Framework wrappers (react-onesignal, onesignal-vue, @onesignal/onesignal-vue3,
+    onesignal-ngx) all load this same SDK.
+- name: OneSignal mobile SDKs
+  note: Render in-app messages natively inside iOS, Android, React Native, Flutter,
+    Unity, Cordova and .NET applications.
+families:
+- name: Web push permission prompts
+  configured_in: Dashboard > Settings > Push & In-App > Web Settings > Permission Prompt
+    Setup, or the promptOptions object in the SDK init
+  reference: https://documentation.onesignal.com/docs/en/permission-requests
+  components:
+  - id: slidedown
+    name: Slidedown prompt
+    description: High-visibility soft prompt shown before the browser's native permission
+      prompt. Top-center on desktop, bottom-center on mobile.
+    init_property: promptOptions.slidedown
+    subscribes_directly: false
+  - id: category-slidedown
+    name: Category prompt
+    description: Slidedown variant with topic checkboxes. Each category is stored as
+      a Data Tag with value 1 or 0, using the cat_<category> naming convention. Can
+      be reshown so users update preferences.
+    subscribes_directly: false
+  - id: email-phone-prompt
+    name: Email & phone number prompt
+    description: Collects optional email address and phone number inside a Slidedown,
+      with built-in field validation.
+  - id: subscription-bell
+    name: Subscription bell prompt
+    description: Small persistent floating widget in a bottom corner of the site. Clicking
+      it as an unsubscribed user triggers the native browser prompt. Color, size, bottom
+      position and text are customizable; the icon image and top-corner placement are
+      not.
+    persistent: true
+  - id: custom-link
+    name: Custom link prompt
+    description: A customizable button or link embedded in the customer's own markup
+      that triggers the native browser prompt.
+  - id: native-prompt
+    name: Native permission prompt
+    description: The browser-level prompt. Required — a user must see it and click Allow
+      to subscribe. Not styleable; OneSignal's soft prompts exist to gate when it fires.
+    first_party: false
+    note: Rendered by the browser, not by OneSignal. Listed for completeness because
+      the other prompts exist only to sequence it.
+- name: In-app messages
+  reference: https://documentation.onesignal.com/docs/en/in-app-messages-setup
+  description: Targeted messages rendered inside a mobile app by the OneSignal SDK,
+    composed either in a no-code block editor or as HTML.
+  components:
+  - id: iam-block-editor
+    name: Block editor in-app message
+    description: No-code composed in-app message. Default designs refreshed 2026-07-15.
+  - id: iam-html
+    name: HTML in-app message
+    description: Fully custom HTML in-app message. OneSignal publishes an Agent Skill
+      (skills/onesignal-iam-html-composer.md) specifically for generating production-ready
+      IAM HTML.
+  - id: iam-carousel
+    name: In-app carousel message
+    description: Multi-panel in-app message.
+    plan_gate: not available on Free
+- name: Notification center
+  components:
+  - id: inbox
+    name: Message inbox
+    description: Persistent per-user message centre backed by the /apps/{app_id}/inbox
+      and /apps/{app_id}/users/.../inbox operations, including an unread-count endpoint.
+      OneSignal exposes the data surface; the rendering is the customer's.
+    api_backed: true
+    operations:
+    - create-inbox-broadcast-message
+    - view-broadcasts
+    - view-user-inbox-messages
+    - view-user-unread-message-count
+    - update-message-state
+    - bulk-update-or-delete-message-state
+- name: Platform plugins
+  description: Prebuilt drop-in integrations that install the prompts above without
+    code.
+  components:
+  - id: wordpress-plugin
+    name: OneSignal WordPress plugin
+    repository: https://github.com/OneSignal/OneSignal-WordPress-Plugin
+    version_line: v3+
+    note: Configuration moved into the OneSignal dashboard in v3.
+  - id: shopify
+    name: Shopify integration
+    note: Connected through the Vendo integration for web push, customer tags and commerce
+      events.
+web_components: false
+web_components_note: None of these are custom elements or a web-component library; they
+  are SDK-injected DOM surfaces configured from the dashboard.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,170 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/onesignal-api-openapi.json (4xx/5xx responses), enriched
+  from https://documentation.onesignal.com/reference/rate-limits and https://documentation.onesignal.com/reference/rest-api-overview
+provider: OneSignal
+providerId: onesignal
+format: proprietary
+rfc9457: false
+description: >-
+  OneSignal does not use RFC 9457 problem+json. It ships TWO different error
+  envelopes on the same API, and which one you get depends on the endpoint, not
+  the status code. BasicErrorResponse is an array of human-readable strings with
+  no machine-readable code; StructuredErrorResponse is an array of objects with
+  a code and title. A client cannot tell which it will receive without reading
+  the spec per operation, so robust handling has to accept both.
+content_type: application/json
+envelopes:
+- id: BasicErrorResponse
+  shape: '{"errors": ["<message>", ...], "success": false?, "reference": ["<doc-url-fragment>"]?}'
+  machine_readable_code: false
+  used_by: the majority of operations (apps, segments, templates, notifications, exports,
+    API keys)
+  fields:
+  - name: errors
+    type: array of string
+    description: One or more human-readable error messages.
+  - name: success
+    type: boolean
+    description: Present and false on some endpoints (notifications, templates, segments).
+      Not emitted by every endpoint.
+  - name: reference
+    type: array of string
+    description: Documentation URL fragments related to the error. Only emitted by
+      the API-key auth error helpers.
+- id: StructuredErrorResponse
+  shape: '{"errors": [{"code": "<code>", "title": "<title>"}, ...]}'
+  machine_readable_code: true
+  used_by: the newer Users and Subscriptions operations (401 and 409 responses)
+  fields:
+  - name: errors[].code
+    type: string
+    example: Subscription Limit Exceeded
+  - name: errors[].title
+    type: string
+status_summary:
+  '400': 49
+  '401': 6
+  '403': 23
+  '404': 30
+  '409': 5
+  '422': 2
+  '429': 55
+  '503': 55
+problem_types:
+- status: 400
+  id: bad-request
+  title: Bad request
+  envelope: BasicErrorResponse
+  occurrences: 49
+  retriable: false
+  description: Malformed request, missing or invalid app_id, or a missing/invalid Authorization
+    key. Also returned when an organization has more than 1000 apps and the endpoint
+    is disabled above that limit.
+  example: '{"errors": ["Request is malformed: Failed to parse app_id from request"]}'
+  remediation: Fix the request. Do not retry unchanged — this is not a transient failure.
+- status: 401
+  id: unauthorized
+  title: Unauthorized
+  envelope: StructuredErrorResponse
+  occurrences: 6
+  retriable: false
+  description: Missing or invalid API key.
+  example: '{"errors": ["Access denied.  Please include an ''Authorization: ...'' header
+    with a valid API key."]}'
+  example_note: Observed live on an anonymous request to api.onesignal.com/mcp on 2026-08-13;
+    the live body used the basic string form even though the spec declares StructuredErrorResponse
+    here.
+  remediation: Supply a valid App or Organization API key. See authentication/onesignal-authentication.yml.
+- status: 403
+  id: forbidden
+  title: Forbidden
+  envelope: BasicErrorResponse
+  occurrences: 23
+  retriable: false
+  description: >-
+    The API key is valid but lacks permission for the operation. Three documented
+    causes — wrong key tier (an App key on an organization-level endpoint), an IP
+    allowlist on the key that excludes the calling server, or a key that has been
+    rotated or revoked.
+  example: '{"errors": ["You do not have permission to list apps."]}'
+  remediation: Check key tier, IP allowlist and rotation state. Never retry.
+- status: 404
+  id: not-found
+  title: Not found
+  envelope: BasicErrorResponse
+  occurrences: 30
+  retriable: false
+  description: The referenced app, organization, user, subscription, template, segment
+    or message was not found, or the API key cannot reach it.
+  example: '{"errors": ["Organization not found"]}'
+  remediation: Verify the identifier and that the key's scope covers the resource.
+- status: 409
+  id: conflict
+  title: Conflict
+  envelope: StructuredErrorResponse
+  occurrences: 5
+  retriable: false
+  description: State conflict on user, alias or subscription creation — for example
+    an alias that already resolves to a different user, or a subscription-count entitlement
+    that is already met.
+  example: '{"errors": [{"code": "Subscription Limit Exceeded", "title": "Example error
+    title"}]}'
+  remediation: Resolve the conflicting state; on alias conflicts, fetch the existing
+    user first.
+- status: 422
+  id: entitlement-limit
+  title: Unprocessable entity — plan limit reached
+  envelope: BasicErrorResponse
+  occurrences: 2
+  retriable: false
+  description: >-
+    A plan entitlement limit was hit, not a permission denial. OneSignal
+    deliberately separates this from 403: 422 means the request is valid but the
+    plan does not allow it.
+  example: '{"errors": ["You have reached the maximum number of segments allowed for
+    your plan."]}'
+  remediation: Delete unused resources or upgrade the plan. See plans/onesignal-plans-pricing.yml.
+- status: 429
+  id: rate-limit-exceeded
+  title: Rate limit exceeded
+  envelope: BasicErrorResponse
+  occurrences: 55
+  retriable: true
+  headers:
+  - Retry-After
+  description: An API rate limit was exceeded. Throttling only — a 429 never disables
+    an app.
+  example: '{"errors": ["API rate limit exceeded"]}'
+  remediation: Stop sending, wait the full Retry-After duration, then retry with exponential
+    backoff reusing the same idempotency_key.
+  detail: rate-limits/onesignal-rate-limits.yml
+- status: 503
+  id: service-unavailable
+  title: Service temporarily unavailable
+  envelope: BasicErrorResponse
+  occurrences: 55
+  retriable: true
+  description: Transient server-side failure. The spec warns the body may be empty
+    or non-JSON in some failure modes, so a client must not assume a parseable envelope.
+  example: '{"errors": ["Service temporarily unavailable"]}'
+  remediation: Retry after a short backoff (or 100 seconds on the simple strategy),
+    reusing the same idempotency_key. Cap total attempts.
+gotchas:
+- id: errors-on-200
+  description: >-
+    Some 2xx responses also carry a non-empty `errors` array for partial
+    failures — for example a message accepted for delivery where some targeted
+    identifiers were invalid. Checking only the HTTP status will miss these.
+- id: two-envelopes
+  description: Handle both the string array and the {code,title} object array under
+    `errors`; the shape varies by endpoint, not by status.
+- id: no-error-codes-on-most-errors
+  description: BasicErrorResponse carries no stable machine-readable code, so branching
+    logic has to key off the HTTP status or match message strings, which are not a
+    contract.
+- id: non-json-503
+  description: A 503 may return an empty or non-JSON body. Parse defensively.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

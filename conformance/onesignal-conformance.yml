@@ -1,0 +1,184 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/onesignal-api-openapi.json, https://api.onesignal.com/.well-known/oauth-authorization-server,
+  https://documentation.onesignal.com/reference/rate-limits, https://documentation.onesignal.com/reference/idempotent-notification-requests,
+  https://documentation.onesignal.com/docs/en/data-questions
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Which cross-cutting standards the OneSignal surface actually conforms to,
+  asserted only where there is evidence. The pattern is a strong agent/auth
+  standards posture (OAuth 2.1, PKCE, RFC 8414, RFC 9728, MCP, A2A) sitting on
+  top of a REST API with proprietary error and pagination conventions.
+standards:
+- id: openapi
+  name: OpenAPI Specification
+  conforms: true
+  version: 3.1.0
+  evidence: https://documentation.onesignal.com/openapi.json — openapi 3.1.0, info.version
+    11.6, servers[] https://api.onesignal.com, 39 paths / 59 operations.
+- id: oauth2
+  name: OAuth 2.0 / 2.1 authorization code
+  conforms: true
+  evidence: https://api.onesignal.com/.well-known/oauth-authorization-server declares
+    grant_types_supported [authorization_code, refresh_token], response_types_supported
+    [code].
+- id: rfc8414
+  name: RFC 8414 OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: https://api.onesignal.com/.well-known/oauth-authorization-server returns
+    HTTP 200 application/json with issuer, authorization_endpoint, token_endpoint,
+    revocation_endpoint and registration_endpoint.
+- id: rfc9728
+  name: RFC 9728 OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence: https://api.onesignal.com/.well-known/oauth-protected-resource returns HTTP
+    200 with resource, authorization_servers and bearer_methods_supported; per-resource
+    variants resolve for /mcp and /mcp/oauth.
+- id: rfc7636
+  name: RFC 7636 PKCE
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"] in the authorization-server metadata.
+- id: rfc7591
+  name: RFC 7591 OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence: registration_endpoint https://api.onesignal.com/oauth/register is published
+    in the authorization-server metadata.
+- id: rfc6750
+  name: RFC 6750 Bearer Token Usage
+  conforms: partial
+  evidence: >-
+    bearer_methods_supported ["header"], and the OpenAPI declares http/bearer
+    security schemes. But the documented REST header form is
+    "Authorization: Key <APP_API_KEY>", which uses a "Key" auth-scheme rather
+    than RFC 6750's "Bearer".
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    https://documentation.onesignal.com/mcp answered POST tools/list with HTTP
+    200 text/event-stream and a valid JSON-RPC result on 2026-08-13;
+    https://api.onesignal.com/mcp/oauth is the OAuth-gated product server
+    listed in Cursor's marketplace and Claude's connector directory.
+  detail: mcp/onesignal-mcp.yml
+- id: a2a
+  name: A2A Agent Card
+  conforms: true
+  version_declared: '0.3'
+  grade: conformant
+  evidence: https://documentation.onesignal.com/.well-known/agent-card.json — HTTP 200,
+    capabilities is an object, protocolVersion present, skills is an array, preferredTransport
+    and default input/output modes present.
+  detail: a2a/onesignal-a2a.yml
+- id: agent-skills
+  name: Agent Skills (SKILL.md)
+  conforms: true
+  evidence: >-
+    Provider-published skills at
+    https://documentation.onesignal.com/.well-known/agent-skills/onesignal/skill.md
+    and five domain skills in https://github.com/OneSignal/onesignal-ai-skills,
+    each with name/description frontmatter.
+  detail: skills/_index.yml
+- id: llmstxt
+  name: llms.txt
+  conforms: true
+  evidence: https://documentation.onesignal.com/llms.txt (HTTP 200, 81 KB documentation
+    index) and https://onesignal.com/llms.txt (HTTP 200, product index). Both also point
+    at llms-full.txt.
+- id: securitytxt
+  name: RFC 9116 security.txt
+  conforms: true
+  evidence: https://onesignal.com/.well-known/security.txt (HTTP 200) with Contact,
+    Expires, Acknowledgments, Hiring and Preferred-Languages fields. Served identically
+    from api.onesignal.com.
+- id: idempotency
+  name: Idempotent request handling
+  conforms: partial
+  evidence: >-
+    Real at-most-once semantics with a 30-day RFC 9562 UUID key on
+    notifications#create and custom_events#create — but carried as an
+    idempotency_key BODY field, not the conventional Idempotency-Key HTTP
+    header, and scoped to only two operations.
+  detail: conventions/onesignal-conventions.yml
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Zero application/problem+json responses across all 223 error content entries
+    in the published spec. Errors use two proprietary envelopes, one of which
+    carries no machine-readable code.
+  detail: errors/onesignal-problem-types.yml
+- id: rfc9331
+  name: RFC 9331 RateLimit header fields
+  conforms: false
+  evidence: Only Retry-After is documented on 429. No RateLimit-Limit / -Remaining /
+    -Reset and no X-RateLimit-* headers are published.
+- id: rfc8594
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation headers documented; no operation in the published
+    spec carries "deprecated: true".
+- id: pagination
+  name: Consistent pagination
+  conforms: partial
+  evidence: Two coexisting styles — limit/offset with total_count on the older collection
+    endpoints, opaque last-seen-id cursors (last_broadcast_id, last_message_id) on the
+    newer inbox endpoints.
+- id: jsonapi
+  name: 'JSON:API'
+  conforms: false
+  evidence: Plain application/json resource bodies; no JSON:API media type, document
+    structure or relationship envelope.
+- id: odata
+  name: OData
+  conforms: false
+  evidence: No OData metadata document, $filter/$select query options, or OData media
+    types.
+- id: openidconnect
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on onesignal.com and documentation.onesignal.com,
+    and 400 on api.onesignal.com. The OAuth server publishes no OIDC discovery document.
+  note: OneSignal supports SSO for dashboard logins through WorkOS, but does not act
+    as an OIDC provider for API consumers.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: No AsyncAPI document published. The event surface is outbound HTTP (Event
+    Streams and web push webhooks), catalogued in asyncapi/onesignal-webhooks.yml.
+- id: soc2
+  name: SOC 2 Type II
+  conforms: true
+  evidence: https://documentation.onesignal.com/docs/en/soc-2-type-ii
+  detail: security/onesignal-trust-center.yml
+- id: iso27001
+  name: ISO/IEC 27001 and 27701
+  conforms: true
+  evidence: https://documentation.onesignal.com/docs/en/iso27001
+- id: hipaa
+  name: HIPAA
+  conforms: true
+  evidence: https://documentation.onesignal.com/docs/en/hipaa — risk assessment completed;
+    BAA offered to Enterprise customers.
+- id: gdpr
+  name: GDPR
+  conforms: true
+  evidence: https://documentation.onesignal.com/docs/en/gdpr-compliance — OneSignal
+    acts as data processor; primary data centers in the EU.
+- id: eu-us-dpf
+  name: EU-U.S. Data Privacy Framework
+  conforms: true
+  evidence: https://documentation.onesignal.com/docs/en/data-questions
+- id: fhir
+  name: FHIR
+  conforms: false
+  evidence: Not a healthcare data API. HIPAA compliance covers PHI handling as a business
+    associate, not FHIR resource exchange.
+- id: pci-dss
+  name: PCI DSS
+  conforms: false
+  evidence: Not published; OneSignal does not process cardholder data on behalf of customers.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,133 @@
+generated: '2026-08-13'
+method: probed
+source: live HTTP probes of onesignal.com, api.onesignal.com and documentation.onesignal.com
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Well-known probe across every host in apis.yml plus the docs host. OneSignal
+  serves four real documents: a security.txt (from both the marketing host and
+  the API host), RFC 8414 OAuth authorization-server metadata, RFC 9728
+  OAuth protected-resource metadata, and an A2A agent card on the docs host.
+  The marketing host answers 404 with an HTML shell for everything else.
+probes:
+- host: onesignal.com
+  path: /.well-known/security.txt
+  status: 200
+  content_type: text/plain; charset=utf-8
+  file: onesignal-security.txt
+  hit: true
+- host: onesignal.com
+  path: /.well-known/openid-configuration
+  status: 404
+  hit: false
+- host: onesignal.com
+  path: /.well-known/oauth-authorization-server
+  status: 404
+  hit: false
+- host: onesignal.com
+  path: /.well-known/api-catalog
+  status: 404
+  hit: false
+- host: onesignal.com
+  path: /.well-known/ai-plugin.json
+  status: 404
+  hit: false
+- host: onesignal.com
+  path: /.well-known/agent-card.json
+  status: 404
+  hit: false
+- host: onesignal.com
+  path: /.well-known/agent.json
+  status: 404
+  hit: false
+- host: api.onesignal.com
+  path: /.well-known/security.txt
+  status: 200
+  content_type: text/plain; charset=utf-8
+  file: onesignal-security.txt
+  hit: true
+  note: Byte-identical to the copy served from onesignal.com.
+- host: api.onesignal.com
+  path: /.well-known/oauth-authorization-server
+  status: 200
+  content_type: application/json
+  file: onesignal-oauth-authorization-server.json
+  hit: true
+- host: api.onesignal.com
+  path: /.well-known/oauth-protected-resource
+  status: 200
+  content_type: application/json
+  file: onesignal-oauth-protected-resource.json
+  hit: true
+- host: api.onesignal.com
+  path: /.well-known/oauth-protected-resource/mcp/oauth
+  status: 200
+  content_type: application/json
+  hit: true
+  note: Per-resource RFC 9728 metadata for the hosted MCP endpoint; same body as
+    the root protected-resource document.
+- host: api.onesignal.com
+  path: /.well-known/openid-configuration
+  status: 400
+  hit: false
+  note: The API host answers every unrouted /.well-known/* path with its generic
+    400 "Failed to parse app_id" error envelope, not a 404.
+- host: api.onesignal.com
+  path: /.well-known/api-catalog
+  status: 400
+  hit: false
+- host: api.onesignal.com
+  path: /.well-known/ai-plugin.json
+  status: 400
+  hit: false
+- host: api.onesignal.com
+  path: /.well-known/agent-card.json
+  status: 400
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/agent-card.json
+  status: 200
+  content_type: application/json
+  file: onesignal-agent-card.json
+  hit: true
+- host: documentation.onesignal.com
+  path: /.well-known/agent-skills/onesignal/skill.md
+  status: 200
+  content_type: text/markdown
+  file: ../skills/onesignal-platform.md
+  hit: true
+  note: Agent Skill referenced by the agent card's skills[0].url.
+- host: documentation.onesignal.com
+  path: /.well-known/security.txt
+  status: 404
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/openid-configuration
+  status: 404
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/oauth-authorization-server
+  status: 404
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/oauth-protected-resource
+  status: 404
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/api-catalog
+  status: 404
+  hit: false
+- host: documentation.onesignal.com
+  path: /.well-known/ai-plugin.json
+  status: 404
+  hit: false
+summary:
+  paths_probed: 24
+  hits: 6
+  hosts_serving_documents:
+  - onesignal.com
+  - api.onesignal.com
+  - documentation.onesignal.com
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

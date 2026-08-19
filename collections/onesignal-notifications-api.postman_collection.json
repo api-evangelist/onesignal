@@ -1,0 +1,1669 @@
+{
+  "item": [
+    {
+      "id": "11a4ed26-6975-4a5d-a37b-4903f92cb30e",
+      "name": "Notifications",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0a404ae3-c2b3-4b34-964d-0b3314c53085",
+          "name": "View notifications",
+          "request": {
+            "name": "View notifications",
+            "description": {
+              "content": "View the details of multiple notifications",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) The app ID that you want to view notifications from"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "How many notifications to return.  Max is 50.  Default is 50."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at."
+                },
+                {
+                  "disabled": false,
+                  "key": "kind",
+                  "value": "<integer>",
+                  "description": "Kind of notifications returned:\n  * unset - All notification types (default)\n  * `0` - Dashboard only\n  * `1` - API only\n  * `3` - Automated only\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "966ded95-ead2-4a43-88f1-d1261635e5d9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "kind",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 1929,\n  \"offset\": 5759,\n  \"limit\": 9969,\n  \"notifications\": [\n    {\n      \"included_segments\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"excluded_segments\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"id\": \"string\",\n      \"value\": 8219,\n      \"aggregation\": \"sum\",\n      \"external_id\": \"string\",\n      \"idempotency_key\": \"string\",\n      \"contents\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"Required unless content_available=true or template_id is set.\\nThe message's content (excluding the title), a map of language codes to text for each language.\\nEach hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nEnglish must be included in the hash.\\nExample: {\\\"en\\\": \\\"English Message\\\", \\\"es\\\": \\\"Spanish Message\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"headings\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The message's title, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nExample: {\\\"en\\\": \\\"English Title\\\", \\\"es\\\": \\\"Spanish Title\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"subtitle\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The message's subtitle, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nExample: {\\\"en\\\": \\\"English Subtitle\\\", \\\"es\\\": \\\"Spanish Subtitle\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"android_background_layout\": {\n        \"image\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"headings_color\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"contents_color\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"chrome_web_icon\": \"string\",\n      \"web_push_topic\": \"string\",\n      \"filters\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"successful\": 3851,\n      \"failed\": 7769,\n      \"errored\": 3740,\n      \"converted\": 7629,\n      \"received\": 4175,\n      \"outcomes\": [\n        {\n          \"aggregation\": \"sum\",\n          \"id\": \"string\",\n          \"value\": 4640\n        },\n        {\n          \"aggregation\": \"count\",\n          \"id\": \"string\",\n          \"value\": 5586\n        }\n      ],\n      \"remaining\": 1995,\n      \"queued_at\": 8739,\n      \"send_after\": 7784,\n      \"completed_at\": 5009,\n      \"platform_delivery_stats\": {\n        \"edge_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"chrome_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"firefox_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"safari_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"android\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"ios\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"sms\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"throttle_rate_per_minute\": 2642,\n      \"canceled\": true,\n      \"email_bcc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"bcc_sent\": 3132\n    },\n    {\n      \"included_segments\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"excluded_segments\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"id\": \"string\",\n      \"value\": 4087,\n      \"aggregation\": \"sum\",\n      \"external_id\": \"string\",\n      \"idempotency_key\": \"string\",\n      \"contents\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"Required unless content_available=true or template_id is set.\\nThe message's content (excluding the title), a map of language codes to text for each language.\\nEach hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nEnglish must be included in the hash.\\nExample: {\\\"en\\\": \\\"English Message\\\", \\\"es\\\": \\\"Spanish Message\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"headings\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The message's title, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nExample: {\\\"en\\\": \\\"English Title\\\", \\\"es\\\": \\\"Spanish Title\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"subtitle\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The message's subtitle, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.\\nThis field supports inline substitutions.\\nExample: {\\\"en\\\": \\\"English Subtitle\\\", \\\"es\\\": \\\"Spanish Subtitle\\\"}\\n\",\n        \"writeOnly\": true\n      },\n      \"android_background_layout\": {\n        \"image\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"headings_color\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"contents_color\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"chrome_web_icon\": \"string\",\n      \"web_push_topic\": \"string\",\n      \"filters\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"successful\": 7944,\n      \"failed\": 4353,\n      \"errored\": 3134,\n      \"converted\": 4157,\n      \"received\": 4193,\n      \"outcomes\": [\n        {\n          \"aggregation\": \"sum\",\n          \"id\": \"string\",\n          \"value\": 8384\n        },\n        {\n          \"aggregation\": \"sum\",\n          \"id\": \"string\",\n          \"value\": 5491\n        }\n      ],\n      \"remaining\": 4186,\n      \"queued_at\": 2515,\n      \"send_after\": 7756,\n      \"completed_at\": 8938,\n      \"platform_delivery_stats\": {\n        \"edge_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"chrome_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"firefox_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"safari_web_push\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"android\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"ios\": {\n          \"successful\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"failed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"errored\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"converted\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"received\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"sms\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"throttle_rate_per_minute\": 1486,\n      \"canceled\": false,\n      \"email_bcc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"bcc_sent\": 2162\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "641880a1-1447-42c8-bd40-73b308bc6ee8",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "kind",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e2228f0-1a7a-4ed5-b894-080b2c94b610",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "kind",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05b82e59-46a5-48f5-aa12-8f06aa69a309",
+          "name": "Create notification",
+          "request": {
+            "name": "Create notification",
+            "description": {
+              "content": "Sends notifications to your users.\n\n**Target by External ID (push example):** set `include_aliases` to `{ \"external_id\": [\"your-user-id\"] }` and set `target_channel` to `push` (or `email` / `sms` for those channels). Alias object keys must match API labels exactly (for example `external_id`, not camelCase).\n\n**Do not confuse** the notification-level `external_id` field with External ID targeting: top-level `external_id` / `idempotency_key` are for idempotent notification requests only, not for selecting recipients.\n\n**Targeting compatibility:** `include_aliases` must not be combined with other targeting modes (segments, filters, subscription IDs, legacy player IDs, etc.). Clients should send only one targeting strategy per request.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app_id\": \"<string>\",\n  \"included_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"excluded_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isIos\": \"<boolean>\",\n  \"isAndroid\": \"<boolean>\",\n  \"isHuawei\": \"<boolean>\",\n  \"isAnyWeb\": \"<boolean>\",\n  \"isChromeWeb\": \"<boolean>\",\n  \"isFirefox\": \"<boolean>\",\n  \"isSafari\": \"<boolean>\",\n  \"isWP_WNS\": \"<boolean>\",\n  \"isAdm\": \"<boolean>\",\n  \"isChrome\": \"<boolean>\",\n  \"external_id\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"contents\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"headings\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"subtitle\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"data\": \"<object>\",\n  \"huawei_msg_type\": \"<string>\",\n  \"url\": \"<string>\",\n  \"web_url\": \"<string>\",\n  \"app_url\": \"<string>\",\n  \"ios_attachments\": \"<object>\",\n  \"template_id\": \"<string>\",\n  \"content_available\": \"<boolean>\",\n  \"mutable_content\": \"<boolean>\",\n  \"target_content_identifier\": \"<string>\",\n  \"big_picture\": \"<string>\",\n  \"huawei_big_picture\": \"<string>\",\n  \"adm_big_picture\": \"<string>\",\n  \"chrome_big_picture\": \"<string>\",\n  \"chrome_web_image\": \"<string>\",\n  \"buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    }\n  ],\n  \"web_buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"ios_category\": \"<string>\",\n  \"android_channel_id\": \"<string>\",\n  \"huawei_channel_id\": \"<string>\",\n  \"existing_android_channel_id\": \"<string>\",\n  \"huawei_existing_channel_id\": \"<string>\",\n  \"android_background_layout\": {\n    \"image\": \"<string>\",\n    \"headings_color\": \"<string>\",\n    \"contents_color\": \"<string>\"\n  },\n  \"small_icon\": \"<string>\",\n  \"huawei_small_icon\": \"<string>\",\n  \"large_icon\": \"<string>\",\n  \"huawei_large_icon\": \"<string>\",\n  \"adm_small_icon\": \"<string>\",\n  \"adm_large_icon\": \"<string>\",\n  \"chrome_web_icon\": \"<string>\",\n  \"chrome_web_badge\": \"<string>\",\n  \"firefox_icon\": \"<string>\",\n  \"chrome_icon\": \"<string>\",\n  \"ios_sound\": \"<string>\",\n  \"android_sound\": \"<string>\",\n  \"huawei_sound\": \"<string>\",\n  \"adm_sound\": \"<string>\",\n  \"wp_wns_sound\": \"<string>\",\n  \"android_led_color\": \"<string>\",\n  \"huawei_led_color\": \"<string>\",\n  \"android_accent_color\": \"<string>\",\n  \"huawei_accent_color\": \"<string>\",\n  \"android_visibility\": \"<integer>\",\n  \"huawei_visibility\": \"<integer>\",\n  \"ios_badgeType\": \"<string>\",\n  \"ios_badgeCount\": \"<integer>\",\n  \"collapse_id\": \"<string>\",\n  \"web_push_topic\": \"<string>\",\n  \"apns_alert\": \"<object>\",\n  \"delayed_option\": \"<string>\",\n  \"delivery_time_of_day\": \"<string>\",\n  \"ttl\": \"<integer>\",\n  \"priority\": \"<integer>\",\n  \"apns_push_type_override\": \"<string>\",\n  \"throttle_rate_per_minute\": \"<string>\",\n  \"android_group\": \"<string>\",\n  \"android_group_message\": \"<string>\",\n  \"adm_group\": \"<string>\",\n  \"adm_group_message\": \"<object>\",\n  \"thread_id\": \"<string>\",\n  \"summary_arg\": \"<string>\",\n  \"summary_arg_count\": \"<integer>\",\n  \"ios_relevance_score\": \"<number>\",\n  \"ios_interruption_level\": \"<string>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_from_name\": \"<string>\",\n  \"email_from_address\": \"<string>\",\n  \"email_reply_to_address\": \"<string>\",\n  \"email_preheader\": \"<string>\",\n  \"disable_email_click_tracking\": \"<boolean>\",\n  \"include_unsubscribed\": \"<boolean>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sms_from\": \"<string>\",\n  \"sms_media_urls\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ],\n  \"custom_data\": \"<object>\",\n  \"huawei_badge_class\": \"<string>\",\n  \"huawei_badge_add_num\": \"<integer>\",\n  \"huawei_badge_set_num\": \"<integer>\",\n  \"huawei_category\": \"<string>\",\n  \"huawei_bi_tag\": \"<string>\",\n  \"send_after\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d7282d36-19fe-416d-97f6-14b734da9f59",
+              "name": "OK, invalid_aliases, or No Subscribed Players\nIf a message was successfully created, you will get a 200 response with a non-empty `id` for the notification.\nIf the 200 response contains `invalid_aliases`, that marks devices that exist in the provided app_id but are no longer subscribed.\nIf `id` is an empty string, no notification was created: check the `errors` array (for example messages such as \"All included players are not subscribed\") even though HTTP status is still 200. This can happen when alias keys are wrong, External IDs do not resolve to subscribed users, or other validation issues.\nIf no id is returned, then a message was not created and the targeted User IDs do not exist under the provided app_id.\nAny User IDs sent in the request that do not exist under the specified app_id will be ignored.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"included_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"excluded_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isIos\": \"<boolean>\",\n  \"isAndroid\": \"<boolean>\",\n  \"isHuawei\": \"<boolean>\",\n  \"isAnyWeb\": \"<boolean>\",\n  \"isChromeWeb\": \"<boolean>\",\n  \"isFirefox\": \"<boolean>\",\n  \"isSafari\": \"<boolean>\",\n  \"isWP_WNS\": \"<boolean>\",\n  \"isAdm\": \"<boolean>\",\n  \"isChrome\": \"<boolean>\",\n  \"external_id\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"data\": \"<object>\",\n  \"huawei_msg_type\": \"<string>\",\n  \"url\": \"<string>\",\n  \"web_url\": \"<string>\",\n  \"app_url\": \"<string>\",\n  \"ios_attachments\": \"<object>\",\n  \"template_id\": \"<string>\",\n  \"content_available\": \"<boolean>\",\n  \"mutable_content\": \"<boolean>\",\n  \"target_content_identifier\": \"<string>\",\n  \"big_picture\": \"<string>\",\n  \"huawei_big_picture\": \"<string>\",\n  \"adm_big_picture\": \"<string>\",\n  \"chrome_big_picture\": \"<string>\",\n  \"chrome_web_image\": \"<string>\",\n  \"buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    }\n  ],\n  \"web_buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"ios_category\": \"<string>\",\n  \"android_channel_id\": \"<string>\",\n  \"huawei_channel_id\": \"<string>\",\n  \"existing_android_channel_id\": \"<string>\",\n  \"huawei_existing_channel_id\": \"<string>\",\n  \"android_background_layout\": {\n    \"image\": \"<string>\",\n    \"headings_color\": \"<string>\",\n    \"contents_color\": \"<string>\"\n  },\n  \"small_icon\": \"<string>\",\n  \"huawei_small_icon\": \"<string>\",\n  \"large_icon\": \"<string>\",\n  \"huawei_large_icon\": \"<string>\",\n  \"adm_small_icon\": \"<string>\",\n  \"adm_large_icon\": \"<string>\",\n  \"chrome_web_icon\": \"<string>\",\n  \"chrome_web_badge\": \"<string>\",\n  \"firefox_icon\": \"<string>\",\n  \"chrome_icon\": \"<string>\",\n  \"ios_sound\": \"<string>\",\n  \"android_sound\": \"<string>\",\n  \"huawei_sound\": \"<string>\",\n  \"adm_sound\": \"<string>\",\n  \"wp_wns_sound\": \"<string>\",\n  \"android_led_color\": \"<string>\",\n  \"huawei_led_color\": \"<string>\",\n  \"android_accent_color\": \"<string>\",\n  \"huawei_accent_color\": \"<string>\",\n  \"android_visibility\": \"<integer>\",\n  \"huawei_visibility\": \"<integer>\",\n  \"ios_badgeType\": \"<string>\",\n  \"ios_badgeCount\": \"<integer>\",\n  \"collapse_id\": \"<string>\",\n  \"web_push_topic\": \"<string>\",\n  \"apns_alert\": \"<object>\",\n  \"delayed_option\": \"<string>\",\n  \"delivery_time_of_day\": \"<string>\",\n  \"ttl\": \"<integer>\",\n  \"priority\": \"<integer>\",\n  \"apns_push_type_override\": \"<string>\",\n  \"throttle_rate_per_minute\": \"<string>\",\n  \"android_group\": \"<string>\",\n  \"android_group_message\": \"<string>\",\n  \"adm_group\": \"<string>\",\n  \"adm_group_message\": \"<object>\",\n  \"thread_id\": \"<string>\",\n  \"summary_arg\": \"<string>\",\n  \"summary_arg_count\": \"<integer>\",\n  \"ios_relevance_score\": \"<number>\",\n  \"ios_interruption_level\": \"<string>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_from_name\": \"<string>\",\n  \"email_from_address\": \"<string>\",\n  \"email_reply_to_address\": \"<string>\",\n  \"email_preheader\": \"<string>\",\n  \"disable_email_click_tracking\": \"<boolean>\",\n  \"include_unsubscribed\": \"<boolean>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sms_from\": \"<string>\",\n  \"sms_media_urls\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ],\n  \"custom_data\": \"<object>\",\n  \"huawei_badge_class\": \"<string>\",\n  \"huawei_badge_add_num\": \"<integer>\",\n  \"huawei_badge_set_num\": \"<integer>\",\n  \"huawei_category\": \"<string>\",\n  \"huawei_bi_tag\": \"<string>\",\n  \"send_after\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"external_id\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13ac68bb-5e73-4989-83c5-51389958cd86",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"included_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"excluded_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isIos\": \"<boolean>\",\n  \"isAndroid\": \"<boolean>\",\n  \"isHuawei\": \"<boolean>\",\n  \"isAnyWeb\": \"<boolean>\",\n  \"isChromeWeb\": \"<boolean>\",\n  \"isFirefox\": \"<boolean>\",\n  \"isSafari\": \"<boolean>\",\n  \"isWP_WNS\": \"<boolean>\",\n  \"isAdm\": \"<boolean>\",\n  \"isChrome\": \"<boolean>\",\n  \"external_id\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"data\": \"<object>\",\n  \"huawei_msg_type\": \"<string>\",\n  \"url\": \"<string>\",\n  \"web_url\": \"<string>\",\n  \"app_url\": \"<string>\",\n  \"ios_attachments\": \"<object>\",\n  \"template_id\": \"<string>\",\n  \"content_available\": \"<boolean>\",\n  \"mutable_content\": \"<boolean>\",\n  \"target_content_identifier\": \"<string>\",\n  \"big_picture\": \"<string>\",\n  \"huawei_big_picture\": \"<string>\",\n  \"adm_big_picture\": \"<string>\",\n  \"chrome_big_picture\": \"<string>\",\n  \"chrome_web_image\": \"<string>\",\n  \"buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    }\n  ],\n  \"web_buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"ios_category\": \"<string>\",\n  \"android_channel_id\": \"<string>\",\n  \"huawei_channel_id\": \"<string>\",\n  \"existing_android_channel_id\": \"<string>\",\n  \"huawei_existing_channel_id\": \"<string>\",\n  \"android_background_layout\": {\n    \"image\": \"<string>\",\n    \"headings_color\": \"<string>\",\n    \"contents_color\": \"<string>\"\n  },\n  \"small_icon\": \"<string>\",\n  \"huawei_small_icon\": \"<string>\",\n  \"large_icon\": \"<string>\",\n  \"huawei_large_icon\": \"<string>\",\n  \"adm_small_icon\": \"<string>\",\n  \"adm_large_icon\": \"<string>\",\n  \"chrome_web_icon\": \"<string>\",\n  \"chrome_web_badge\": \"<string>\",\n  \"firefox_icon\": \"<string>\",\n  \"chrome_icon\": \"<string>\",\n  \"ios_sound\": \"<string>\",\n  \"android_sound\": \"<string>\",\n  \"huawei_sound\": \"<string>\",\n  \"adm_sound\": \"<string>\",\n  \"wp_wns_sound\": \"<string>\",\n  \"android_led_color\": \"<string>\",\n  \"huawei_led_color\": \"<string>\",\n  \"android_accent_color\": \"<string>\",\n  \"huawei_accent_color\": \"<string>\",\n  \"android_visibility\": \"<integer>\",\n  \"huawei_visibility\": \"<integer>\",\n  \"ios_badgeType\": \"<string>\",\n  \"ios_badgeCount\": \"<integer>\",\n  \"collapse_id\": \"<string>\",\n  \"web_push_topic\": \"<string>\",\n  \"apns_alert\": \"<object>\",\n  \"delayed_option\": \"<string>\",\n  \"delivery_time_of_day\": \"<string>\",\n  \"ttl\": \"<integer>\",\n  \"priority\": \"<integer>\",\n  \"apns_push_type_override\": \"<string>\",\n  \"throttle_rate_per_minute\": \"<string>\",\n  \"android_group\": \"<string>\",\n  \"android_group_message\": \"<string>\",\n  \"adm_group\": \"<string>\",\n  \"adm_group_message\": \"<object>\",\n  \"thread_id\": \"<string>\",\n  \"summary_arg\": \"<string>\",\n  \"summary_arg_count\": \"<integer>\",\n  \"ios_relevance_score\": \"<number>\",\n  \"ios_interruption_level\": \"<string>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_from_name\": \"<string>\",\n  \"email_from_address\": \"<string>\",\n  \"email_reply_to_address\": \"<string>\",\n  \"email_preheader\": \"<string>\",\n  \"disable_email_click_tracking\": \"<boolean>\",\n  \"include_unsubscribed\": \"<boolean>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sms_from\": \"<string>\",\n  \"sms_media_urls\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ],\n  \"custom_data\": \"<object>\",\n  \"huawei_badge_class\": \"<string>\",\n  \"huawei_badge_add_num\": \"<integer>\",\n  \"huawei_badge_set_num\": \"<integer>\",\n  \"huawei_category\": \"<string>\",\n  \"huawei_bi_tag\": \"<string>\",\n  \"send_after\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebb9cbfe-9a7a-4a79-8f07-586576e55647",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"included_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"excluded_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isIos\": \"<boolean>\",\n  \"isAndroid\": \"<boolean>\",\n  \"isHuawei\": \"<boolean>\",\n  \"isAnyWeb\": \"<boolean>\",\n  \"isChromeWeb\": \"<boolean>\",\n  \"isFirefox\": \"<boolean>\",\n  \"isSafari\": \"<boolean>\",\n  \"isWP_WNS\": \"<boolean>\",\n  \"isAdm\": \"<boolean>\",\n  \"isChrome\": \"<boolean>\",\n  \"external_id\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"data\": \"<object>\",\n  \"huawei_msg_type\": \"<string>\",\n  \"url\": \"<string>\",\n  \"web_url\": \"<string>\",\n  \"app_url\": \"<string>\",\n  \"ios_attachments\": \"<object>\",\n  \"template_id\": \"<string>\",\n  \"content_available\": \"<boolean>\",\n  \"mutable_content\": \"<boolean>\",\n  \"target_content_identifier\": \"<string>\",\n  \"big_picture\": \"<string>\",\n  \"huawei_big_picture\": \"<string>\",\n  \"adm_big_picture\": \"<string>\",\n  \"chrome_big_picture\": \"<string>\",\n  \"chrome_web_image\": \"<string>\",\n  \"buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\"\n    }\n  ],\n  \"web_buttons\": [\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"text\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"ios_category\": \"<string>\",\n  \"android_channel_id\": \"<string>\",\n  \"huawei_channel_id\": \"<string>\",\n  \"existing_android_channel_id\": \"<string>\",\n  \"huawei_existing_channel_id\": \"<string>\",\n  \"android_background_layout\": {\n    \"image\": \"<string>\",\n    \"headings_color\": \"<string>\",\n    \"contents_color\": \"<string>\"\n  },\n  \"small_icon\": \"<string>\",\n  \"huawei_small_icon\": \"<string>\",\n  \"large_icon\": \"<string>\",\n  \"huawei_large_icon\": \"<string>\",\n  \"adm_small_icon\": \"<string>\",\n  \"adm_large_icon\": \"<string>\",\n  \"chrome_web_icon\": \"<string>\",\n  \"chrome_web_badge\": \"<string>\",\n  \"firefox_icon\": \"<string>\",\n  \"chrome_icon\": \"<string>\",\n  \"ios_sound\": \"<string>\",\n  \"android_sound\": \"<string>\",\n  \"huawei_sound\": \"<string>\",\n  \"adm_sound\": \"<string>\",\n  \"wp_wns_sound\": \"<string>\",\n  \"android_led_color\": \"<string>\",\n  \"huawei_led_color\": \"<string>\",\n  \"android_accent_color\": \"<string>\",\n  \"huawei_accent_color\": \"<string>\",\n  \"android_visibility\": \"<integer>\",\n  \"huawei_visibility\": \"<integer>\",\n  \"ios_badgeType\": \"<string>\",\n  \"ios_badgeCount\": \"<integer>\",\n  \"collapse_id\": \"<string>\",\n  \"web_push_topic\": \"<string>\",\n  \"apns_alert\": \"<object>\",\n  \"delayed_option\": \"<string>\",\n  \"delivery_time_of_day\": \"<string>\",\n  \"ttl\": \"<integer>\",\n  \"priority\": \"<integer>\",\n  \"apns_push_type_override\": \"<string>\",\n  \"throttle_rate_per_minute\": \"<string>\",\n  \"android_group\": \"<string>\",\n  \"android_group_message\": \"<string>\",\n  \"adm_group\": \"<string>\",\n  \"adm_group_message\": \"<object>\",\n  \"thread_id\": \"<string>\",\n  \"summary_arg\": \"<string>\",\n  \"summary_arg_count\": \"<integer>\",\n  \"ios_relevance_score\": \"<number>\",\n  \"ios_interruption_level\": \"<string>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_from_name\": \"<string>\",\n  \"email_from_address\": \"<string>\",\n  \"email_reply_to_address\": \"<string>\",\n  \"email_preheader\": \"<string>\",\n  \"disable_email_click_tracking\": \"<boolean>\",\n  \"include_unsubscribed\": \"<boolean>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sms_from\": \"<string>\",\n  \"sms_media_urls\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ],\n  \"custom_data\": \"<object>\",\n  \"huawei_badge_class\": \"<string>\",\n  \"huawei_badge_add_num\": \"<integer>\",\n  \"huawei_badge_set_num\": \"<integer>\",\n  \"huawei_category\": \"<string>\",\n  \"huawei_bi_tag\": \"<string>\",\n  \"send_after\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2f7866d-1520-43b8-a5b1-9aef8c0b525a",
+          "name": "Stop a scheduled or currently outgoing notification",
+          "request": {
+            "name": "Stop a scheduled or currently outgoing notification",
+            "description": {
+              "content": "Used to stop a scheduled or currently outgoing notification",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notification_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notification_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "aeb17874-a7b7-4820-9ba2-60f35870fd87",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f4627b5-aaf5-4b50-b3cc-7c265fa72ae9",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01c52cf7-230e-4be6-92af-0531309262b1",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfaba87a-51eb-40ea-967b-5f4e598b1ab0",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "44051908-c47b-44b2-b0b0-60cf8a790758",
+          "name": "View notification",
+          "request": {
+            "name": "View notification",
+            "description": {
+              "content": "View the details of a single notification and outcomes associated with it",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notification_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notification_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "71fdab27-1fb8-42c5-af1c-0d18a8ee7792",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"included_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"excluded_segments\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"id\": \"<string>\",\n  \"value\": 5055,\n  \"aggregation\": \"count\",\n  \"external_id\": \"<string>\",\n  \"idempotency_key\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"android_background_layout\": {\n    \"image\": \"<string>\",\n    \"headings_color\": \"<string>\",\n    \"contents_color\": \"<string>\"\n  },\n  \"chrome_web_icon\": \"<string>\",\n  \"web_push_topic\": \"<string>\",\n  \"filters\": [\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"field\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"key\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"hours_ago\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"radius\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"lat\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"long\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relation\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ],\n  \"successful\": 4101,\n  \"failed\": 9505,\n  \"errored\": 1105,\n  \"converted\": 7145,\n  \"received\": 136,\n  \"outcomes\": [\n    {\n      \"aggregation\": \"sum\",\n      \"id\": \"string\",\n      \"value\": 843\n    },\n    {\n      \"aggregation\": \"sum\",\n      \"id\": \"string\",\n      \"value\": 5197\n    }\n  ],\n  \"remaining\": 6573,\n  \"queued_at\": 7396,\n  \"send_after\": 9772,\n  \"completed_at\": 4028,\n  \"platform_delivery_stats\": {\n    \"edge_web_push\": {\n      \"successful\": 7894,\n      \"failed\": 4733,\n      \"errored\": 9632,\n      \"converted\": 2225,\n      \"received\": 1525\n    },\n    \"chrome_web_push\": {\n      \"successful\": 9038,\n      \"failed\": 8216,\n      \"errored\": 1521,\n      \"converted\": 6400,\n      \"received\": 3273\n    },\n    \"firefox_web_push\": {\n      \"successful\": 7237,\n      \"failed\": 431,\n      \"errored\": 9070,\n      \"converted\": 6484,\n      \"received\": 5276\n    },\n    \"safari_web_push\": {\n      \"successful\": 2530,\n      \"failed\": 1495,\n      \"errored\": 9106,\n      \"converted\": 6032,\n      \"received\": 5002\n    },\n    \"android\": {\n      \"successful\": 2598,\n      \"failed\": 8444,\n      \"errored\": 4887,\n      \"converted\": 5140,\n      \"received\": 7951\n    },\n    \"ios\": {\n      \"successful\": 2848,\n      \"failed\": 1433,\n      \"errored\": 8413,\n      \"converted\": 1384,\n      \"received\": 2293\n    },\n    \"sms\": {\n      \"successful\": 1671,\n      \"failed\": 5327,\n      \"errored\": 7527,\n      \"converted\": 5752,\n      \"received\": 4268,\n      \"provider_successful\": 5740,\n      \"provider_failed\": 1706,\n      \"provider_errored\": 2405\n    },\n    \"email\": {\n      \"successful\": 4319,\n      \"failed\": 3725,\n      \"errored\": 6977,\n      \"converted\": 7022,\n      \"received\": 2641,\n      \"opened\": 4969,\n      \"unique_opens\": 4823,\n      \"clicks\": 786,\n      \"unique_clicks\": 5357,\n      \"bounced\": 2994,\n      \"reported_spam\": 6923,\n      \"unsubscribed\": 6647\n    }\n  },\n  \"throttle_rate_per_minute\": 6871,\n  \"canceled\": true,\n  \"email_bcc\": [\n    \"string\",\n    \"string\"\n  ],\n  \"bcc_sent\": 2465\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66aa84da-4cb4-4bbf-b333-974b1d88938f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e41de441-e8e4-4395-b472-28679e9be16a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a31fb6b-1392-4a94-82b0-620961f91f42",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "12af7b9f-3300-4386-bab4-bcdc5f01df04",
+          "name": "Notification History",
+          "request": {
+            "name": "Notification History",
+            "description": {
+              "content": "-> View the devices sent a message - OneSignal Paid Plan Required This method will return all devices that were sent the given notification_id of an Email or Push Notification if used within 7 days of the date sent. After 7 days of the sending date, the message history data will be unavailable. After a successful response is received, the destination url may be polled until the file becomes available. Most exports are done in ~1-3 minutes, so setting a poll interval of 10 seconds should be adequate. For use cases that are not meant to be consumed by a script, an email will be sent to the supplied email address. &#x1F6A7; Requirements A OneSignal Paid Plan. Turn on Send History via OneSignal API in Settings -> Analytics. Cannot get data before this was turned on. Must be called within 7 days after sending the message. Messages targeting under 1000 recipients will not have \"sent\" events recorded, but will show \"clicked\" events. Requires your OneSignal App's REST API Key, available in Keys & IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notification_id",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notification_id",
+                  "description": "(Required) The \"id\" of the message found in the Notification object"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"events\": \"<string>\",\n  \"email\": \"<string>\",\n  \"app_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eb5a8592-305e-41c5-8264-5b933d9b5e42",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The \"id\" of the message found in the Notification object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"events\": \"clicked\",\n  \"email\": \"string\",\n  \"app_id\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"destination_url\": \"destination_url\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ccfb4e5-009f-4ef4-9c55-cdc6b8b6fd8d",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The \"id\" of the message found in the Notification object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"events\": \"clicked\",\n  \"email\": \"string\",\n  \"app_id\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acdbdbe6-b7ab-46fc-902a-b366083d9d52",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The \"id\" of the message found in the Notification object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"events\": \"clicked\",\n  \"email\": \"string\",\n  \"app_id\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bea06266-c2b4-419a-bafb-afa103464e60",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The \"id\" of the message found in the Notification object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"events\": \"clicked\",\n  \"email\": \"string\",\n  \"app_id\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8608a0f4-7a08-43ca-84d1-f1dff6863301",
+          "name": "Export CSV of Events",
+          "request": {
+            "name": "Export CSV of Events",
+            "description": {
+              "content": "Generate a compressed CSV report of all of the events data for a notification.\nThis will return a URL immediately upon success but it may take several minutes for the CSV to become available at that URL depending on the volume of data. Only one export can be in-progress per OneSignal account at any given time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notification_id",
+                "export_events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "app_id",
+                  "value": "{{app_id}}"
+                },
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) The ID of the app that the notification belongs to."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notification_id",
+                  "description": "(Required) The ID of the notification to export events from."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a5abd8e1-59d7-4239-b1be-f33ecfb311a2",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "export_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The ID of the notification to export events from."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"csv_file_url\": \"csv_file_url\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99bb4283-6482-45e2-9545-7c63c2408d62",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "export_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The ID of the notification to export events from."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77a92104-a786-4620-8120-2aef9ad9e377",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "export_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The ID of the notification to export events from."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ac0da7e-dcfe-414a-af3c-3c898515f7b5",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notification_id",
+                    "export_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notification_id",
+                      "description": "(Required) The ID of the notification to export events from."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.onesignal.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c4c8afda-dcc4-4831-a646-8a8b09610898",
+    "name": "OneSignal Notifications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com\n\nContact Support:\n Name: OneSignal DevRel\n Email: devrel@onesignal.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "item": [
+    {
+      "id": "d75ba145-eb2c-4349-9dc9-087637572a77",
+      "name": "Players",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "99fb0fd0-9cd3-42f0-adbf-2a721c4212e3",
+          "name": "Export CSV of Subscriptions",
+          "request": {
+            "name": "Export CSV of Subscriptions",
+            "description": {
+              "content": "Generate a compressed CSV export of all of your current user data\nThis method can be used to generate a compressed CSV export of all of your current user data. It is a much faster alternative than retrieving this data using the /players API endpoint.\nThe file will be compressed using GZip.\nThe file may take several minutes to generate depending on the number of users in your app.\nThe URL generated will be available for 3 days and includes random v4 uuid as part of the resource name to be unguessable.\n&#x1F6A7;\n403 Error Responses          You can test if it is complete by making a GET request to the csv_file_url value. This file may take time to generate depending on how many device records are being pulled. If the file is not ready, a 403 error will be returned. Otherwise the file itself will be returned.\n&#x1F6A7;\nRequires Authentication Key\nRequires your OneSignal App's REST API Key, available in Keys & IDs.\n&#x1F6A7;\nConcurrent Exports\nOnly one concurrent export is allowed per OneSignal account. Please ensure you have successfully downloaded the .csv.gz file before exporting another app.\nCSV File Format:\n- Default Columns:\n  | Field | Details |\n  | --- | --- |\n  | id | OneSignal Player Id |\n  | identifier | Push Token |\n  | session_count | Number of times they visited the app or site\n  | language | Device language code |\n  | timezone | Number of seconds away from UTC. Example: -28800 |\n  | game_version | Version of your mobile app gathered from Android Studio versionCode in your App/build.gradle and iOS uses kCFBundleVersionKey in Xcode. |\n  | device_os | Device Operating System Version. Example: 80 = Chrome 80, 9 = Android 9 |\n  | device_type | Device Operating System Type |\n  | device_model | Device Hardware String Code. Example: Mobile Web Subscribers will have `Linux armv` |\n  | ad_id | Based on the Google Advertising Id for Android, identifierForVendor for iOS. OptedOut means user turned off Advertising tracking on the device. |\n  | tags | Current OneSignal Data Tags on the device. |\n  | last_active | Date and time the user last opened the mobile app or visited the site. |\n  | playtime | Total amount of time in seconds the user had the mobile app open. |\n  | amount_spent | \tMobile only - amount spent in USD on In-App Purchases. | \n  | created_at | Date and time the device record was created in OneSignal. Mobile - first time they opened the app with OneSignal SDK. Web - first time the user subscribed to the site. |\n  | invalid_identifier | t = unsubscribed, f = subscibed |\n  | badge_count | Current number of badges on the device |\n- Extra Columns:\n  | Field | Details |\n  | --- | --- |\n  | external_user_id | Your User Id set on the device |\n  | notification_types | Notification types |\n  | location | Location points (Latitude and Longitude) set on the device. |\n  | country | Country code |\n  | rooted | Android device rooted or not |\n  | ip | IP Address of the device if being tracked. See Handling Personal Data. |\n  | web_auth | Web Only authorization key. |\n  | web_p256 | Web Only p256 key. |\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "players",
+                "csv_export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "app_id",
+                  "value": "{{app_id}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"extra_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"last_active_since\": \"<string>\",\n  \"segment_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d2c9094c-17c9-40ac-9e51-64e677998d78",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "players",
+                    "csv_export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"extra_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"last_active_since\": \"string\",\n  \"segment_name\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"csv_file_url\": \"csv_file_url\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2aa6f0b-1679-4c58-b81e-c965afb3a43c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "players",
+                    "csv_export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"extra_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"last_active_since\": \"string\",\n  \"segment_name\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": true,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f479e3f5-d1d6-4411-850d-b51e4d0e2d0f",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "players",
+                    "csv_export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"extra_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"last_active_since\": \"string\",\n  \"segment_name\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.onesignal.com",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The app ID that you want to export devices from",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "app_id"
+    }
+  ],
+  "info": {
+    "_postman_id": "a2da2f35-6f09-44a6-a941-31f4fa4b7da1",
+    "name": "OneSignal Players API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com\n\nContact Support:\n Name: OneSignal DevRel\n Email: devrel@onesignal.com",
+      "type": "text/plain"
+    }
+  }
+}

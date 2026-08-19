@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OneSignal Players API",
+    "version": "5.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Players",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export CSV of Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.onesignal.com/players/csv_export?app_id=:app_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path",
+                "description": "The app ID that you want to export devices from"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a compressed CSV export of all of your current user data\nThis method can be used to generate a compressed CSV export of all of your current user data. It is a much faster alternative than retrieving this data using the /players API endpoint.\nThe file will be compressed using GZip.\nThe file may take several minutes to generate depending on the number of users in your app.\nThe URL generated will be available for 3 days and includes random v4 uuid as part of the resource name to be unguess"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

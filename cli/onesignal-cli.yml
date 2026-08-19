@@ -1,0 +1,78 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/OneSignal/cli
+provider: OneSignal
+providerId: onesignal
+name: OneSignal CLI
+description: >-
+  A first-party CLI exists but it is not an API client. It does exactly one
+  thing — wire the OneSignal mobile SDK into an existing iOS or Android project
+  — and it has been labelled Beta since it shipped. There is no CLI surface for
+  sending messages, managing users, segments or templates; that work is done
+  through the REST API, the dashboard, or the MCP server.
+official: true
+repository: https://github.com/OneSignal/cli
+language: Ruby
+status: beta
+status_note: The README carries a standing Beta warning (github.com/OneSignal/cli/issues/5).
+scope: SDK installation only
+last_repo_push: '2025-05-13'
+decay_note: >-
+  The repo has not been pushed since 2025-05-13, while every OneSignal SDK it
+  installs has shipped releases through July and August 2026. It is not
+  published to RubyGems — rubygems.org/api/v1/gems/onesignal-cli returns "This
+  rubygem could not be found."
+install:
+- method: homebrew
+  os: macOS
+  steps:
+  - brew tap OneSignal/cli https://github.com/OneSignal/cli
+  - brew install onesignal-cli
+  note: macOS is the only officially supported operating system.
+commands:
+- name: onesignal help
+  description: Lists the available commands in the OneSignal CLI.
+- name: onesignal install-sdk
+  description: Adds the OneSignal SDK to an existing mobile application project.
+  options:
+  - name: --type
+    required: true
+    values:
+    - iOS
+    - android
+  - name: --entrypoint
+    required: true
+    description: Name of the target XCProject (iOS) or path to the Application class
+      file (Android).
+  - name: --lang
+    values:
+    - objc
+    - swift
+    - java
+    - kotlin
+  - name: --appid
+    required: false
+    description: OneSignal App ID. Not yet used for iOS installs.
+  - name: --target
+    required: false
+    description: iOS only; used when the App target name differs from the entrypoint.
+  ios_actions:
+  - Adds push notification capabilities and background modes
+  - Adds the OneSignal CocoaPod or Swift Package
+  - Creates and configures a Notification Service Extension
+  - Sets up an App Group for communication with the NSE
+  android_actions:
+  - Adds the OneSignal gradle dependencies to the project and app build.gradle
+  - Adds OneSignal initialization code to the Application class, creating one if absent
+  examples:
+  - onesignal install-sdk --type iOS --entrypoint MyApp --lang objc --appid <APPID>
+  - onesignal install-sdk --type android --entrypoint app/src/main/java/com/onesignal/testapplication/BaseApp.kt
+    --appid <APPID>
+limitations:
+- React Native, Flutter, Unity, Xamarin and Cordova are not supported.
+- macOS is the only officially supported operating system.
+- iOS installs do not yet add initialization code; step 5 of the setup guide must be
+  followed manually.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

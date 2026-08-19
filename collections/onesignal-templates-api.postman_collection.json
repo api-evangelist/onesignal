@@ -1,0 +1,1356 @@
+{
+  "item": [
+    {
+      "id": "e438b041-95cc-4713-a1d4-02ffcafa0fc7",
+      "name": "Templates",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f90fcde3-66a7-4f84-875b-67bf60346b6e",
+          "name": "View templates",
+          "request": {
+            "name": "View templates",
+            "description": {
+              "content": "List templates for an app.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) Your OneSignal App ID in UUID v4 format."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Maximum number of templates. Default and max is 50."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "channel",
+                  "value": "<string>",
+                  "description": "Filter by delivery channel."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "503e9e70-6e2d-42e2-a8cb-22d5b9dbc424",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "channel",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"templates\": [\n    {\n      \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n      \"name\": \"name\",\n      \"channel\": \"push\",\n      \"created_at\": \"2000-01-23 04:56:07+00:00\",\n      \"content\": {\n        \"key\": \"\"\n      }\n    },\n    {\n      \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n      \"name\": \"name\",\n      \"channel\": \"push\",\n      \"created_at\": \"2000-01-23 04:56:07+00:00\",\n      \"content\": {\n        \"key\": \"\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5124de50-620a-4082-bd27-1adb1906e3d5",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "channel",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc469354-4f34-47d7-8cb6-e236009d5d74",
+              "name": "Rate Limit Exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "channel",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ],\n  \"limit\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48086bcb-b9d8-4925-8b6d-18be69c920b7",
+          "name": "Create template",
+          "request": {
+            "name": "Create template",
+            "description": {
+              "content": "Create reusable message templates for push, email, and SMS channels.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app_id\": \"<string>\",\n  \"contents\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"headings\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"subtitle\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e832ccb0-8b40-46fd-8ad8-0e5fa16f951f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"name\": \"<string>\",\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n  \"name\": \"name\",\n  \"channel\": \"push\",\n  \"created_at\": \"2000-01-23 04:56:07+00:00\",\n  \"content\": {\n    \"key\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a86de73-ee5a-4a3c-910b-33e187773389",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"name\": \"<string>\",\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c38f43b6-d0fd-45c3-9be0-864cc59714c8",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_id\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"name\": \"<string>\",\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "38eef6d5-619c-4dcd-9055-2e1e920f22d7",
+          "name": "Delete template",
+          "request": {
+            "name": "Delete template",
+            "description": {
+              "content": "Delete a template by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates",
+                ":template_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "template_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "47d6e7aa-a4b7-44f4-8cbc-a6641857ef75",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d155a045-bf9c-4751-afb3-5e7f605f002c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "012bf461-e098-41e1-a52c-314d5fbbe6bb",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b887d665-d98d-498c-ad6d-da66010320ec",
+          "name": "View template",
+          "request": {
+            "name": "View template",
+            "description": {
+              "content": "Fetch a single template by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates",
+                ":template_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "template_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d42d1a0c-ec01-461b-b99a-fca600e38a94",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n  \"name\": \"name\",\n  \"channel\": \"push\",\n  \"created_at\": \"2000-01-23 04:56:07+00:00\",\n  \"content\": {\n    \"key\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae2392fa-7297-4b6b-a98e-7349ee47bd79",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fdaeb14-5a13-442f-9460-5d31b899083a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93d426de-b166-480c-b2fb-b96cd8c55166",
+          "name": "Update template",
+          "request": {
+            "name": "Update template",
+            "description": {
+              "content": "Update an existing template.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates",
+                ":template_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "template_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"contents\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"headings\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"subtitle\": {\n    \"en\": \"<string>\",\n    \"ar\": \"<string>\",\n    \"bs\": \"<string>\",\n    \"bg\": \"<string>\",\n    \"ca\": \"<string>\",\n    \"zh-Hans\": \"<string>\",\n    \"zh-Hant\": \"<string>\",\n    \"zh\": \"<string>\",\n    \"hr\": \"<string>\",\n    \"cs\": \"<string>\",\n    \"da\": \"<string>\",\n    \"nl\": \"<string>\",\n    \"et\": \"<string>\",\n    \"fi\": \"<string>\",\n    \"fr\": \"<string>\",\n    \"ka\": \"<string>\",\n    \"de\": \"<string>\",\n    \"el\": \"<string>\",\n    \"hi\": \"<string>\",\n    \"he\": \"<string>\",\n    \"hu\": \"<string>\",\n    \"id\": \"<string>\",\n    \"it\": \"<string>\",\n    \"ja\": \"<string>\",\n    \"ko\": \"<string>\",\n    \"lv\": \"<string>\",\n    \"lt\": \"<string>\",\n    \"ms\": \"<string>\",\n    \"nb\": \"<string>\",\n    \"pl\": \"<string>\",\n    \"fa\": \"<string>\",\n    \"pt\": \"<string>\",\n    \"pa\": \"<string>\",\n    \"ro\": \"<string>\",\n    \"ru\": \"<string>\",\n    \"sr\": \"<string>\",\n    \"sk\": \"<string>\",\n    \"es\": \"<string>\",\n    \"sv\": \"<string>\",\n    \"th\": \"<string>\",\n    \"tr\": \"<string>\",\n    \"uk\": \"<string>\",\n    \"vi\": \"<string>\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4e8715f5-19ba-4acc-91fb-f997ffbab9c3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n  \"name\": \"name\",\n  \"channel\": \"push\",\n  \"created_at\": \"2000-01-23 04:56:07+00:00\",\n  \"content\": {\n    \"key\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "037faafc-b6d5-449e-908c-4b1fdd2059f1",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"contents\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"headings\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"subtitle\": {\n    \"de\": \"de\",\n    \"hi\": \"hi\",\n    \"fi\": \"fi\",\n    \"ru\": \"ru\",\n    \"pt\": \"pt\",\n    \"bg\": \"bg\",\n    \"lt\": \"lt\",\n    \"hr\": \"hr\",\n    \"lv\": \"lv\",\n    \"fr\": \"fr\",\n    \"hu\": \"hu\",\n    \"bs\": \"bs\",\n    \"zh-Hans\": \"zh-Hans\",\n    \"zh-Hant\": \"zh-Hant\",\n    \"ka\": \"ka\",\n    \"uk\": \"uk\",\n    \"sk\": \"sk\",\n    \"ca\": \"ca\",\n    \"sr\": \"sr\",\n    \"sv\": \"sv\",\n    \"ko\": \"ko\",\n    \"ms\": \"ms\",\n    \"el\": \"el\",\n    \"en\": \"en\",\n    \"it\": \"it\",\n    \"zh\": \"zh\",\n    \"es\": \"es\",\n    \"et\": \"et\",\n    \"cs\": \"cs\",\n    \"ar\": \"ar\",\n    \"pa\": \"pa\",\n    \"vi\": \"vi\",\n    \"nb\": \"nb\",\n    \"th\": \"th\",\n    \"ja\": \"ja\",\n    \"fa\": \"fa\",\n    \"pl\": \"pl\",\n    \"da\": \"da\",\n    \"he\": \"he\",\n    \"ro\": \"ro\",\n    \"nl\": \"nl\",\n    \"tr\": \"tr\"\n  },\n  \"isEmail\": \"<boolean>\",\n  \"email_subject\": \"<string>\",\n  \"email_body\": \"<string>\",\n  \"email_bcc\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"isSMS\": \"<boolean>\",\n  \"dynamic_content\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "81e8b5b9-3f2b-47fc-ab4a-3ce5b35313b8",
+          "name": "Copy template to another app",
+          "request": {
+            "name": "Copy template to another app",
+            "description": {
+              "content": "Copy a template to a destination app.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "templates",
+                ":template_id",
+                "copy_to_app"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "app_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "template_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_app_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cbd56ee1-cda5-4c66-8ea1-b17e772afe9e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id",
+                    "copy_to_app"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target_app_id\": \"target_app_id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n  \"name\": \"name\",\n  \"channel\": \"push\",\n  \"created_at\": \"2000-01-23 04:56:07+00:00\",\n  \"content\": {\n    \"key\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc4365d2-2ad8-4c9a-87ed-8a67596c0032",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":template_id",
+                    "copy_to_app"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "app_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "template_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target_app_id\": \"target_app_id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"\",\n  \"success\": false,\n  \"reference\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.onesignal.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5007abbb-a1ea-4696-af68-91dfae52023f",
+    "name": "OneSignal Templates API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com\n\nContact Support:\n Name: OneSignal DevRel\n Email: devrel@onesignal.com",
+      "type": "text/plain"
+    }
+  }
+}

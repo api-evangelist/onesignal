@@ -1,0 +1,111 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/.well-known/agent-skills/onesignal/skill.md
+  and https://github.com/OneSignal/onesignal-ai-skills
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Every skill in this directory is provider-published and saved verbatim.
+  Nothing here was authored by API Evangelist. OneSignal publishes skills from
+  two places: one platform-wide skill served from its docs host and referenced
+  by its A2A agent card, and five domain skills in a public GitHub repo that
+  OneSignal describes as product-owned packages teaching OneSignal AI to reason
+  about a specific area of the platform.
+skill_count: 6
+sources:
+- id: well-known
+  url: https://documentation.onesignal.com/.well-known/agent-skills/onesignal/skill.md
+  http_status: 200
+  probed: '2026-08-13'
+  note: Referenced by a2a/onesignal-agent-card.json as skills[0].url.
+- id: github
+  url: https://github.com/OneSignal/onesignal-ai-skills
+  note: 'Repository README: "example domain skills for OneSignal AI", reusable across
+    OneSignal AI chat, UI-initiated AI experiences, OneSignal MCP server workflows,
+    and text fallback experiences.'
+- id: cursor-plugin
+  url: https://github.com/OneSignal/onesignal-cursor-plugin
+  note: >-
+    Ships an additional onesignal-setup skill plus three commands
+    (setup-onesignal, send-onesignal-test-notification,
+    debug-onesignal-delivery) and an always-on safety rule. Not mirrored here —
+    it is Cursor-plugin-scoped rather than a standalone SKILL.md.
+skills:
+- id: onesignal-platform
+  file: onesignal-platform.md
+  name: Onesignal
+  method: searched
+  source: https://documentation.onesignal.com/.well-known/agent-skills/onesignal/skill.md
+  scope: platform-wide
+  description: >-
+    Product summary, when-to-use triggers, essential API endpoints, the
+    Authorization/Content-Type header contract, key identifiers, and pointers
+    into the SDK and API documentation.
+  metadata:
+    mintlify-proj: onesignal
+    version: '1.0'
+- id: onesignal-segments
+  file: onesignal-segments.md
+  name: onesignal-segments
+  method: searched
+  source: https://github.com/OneSignal/onesignal-ai-skills/blob/main/skills/segments/SKILL.md
+  scope: audiences and targeting
+  description: Guides an agent from a broad audience request to a valid OneSignal Segment
+    definition — cohorts, suppression groups, engaged/inactive/VIP users, purchasers,
+    message clickers, custom-event audiences.
+  related_operations:
+  - create-segments
+  - view-segments
+  - update-segment
+  - delete-segments
+- id: onesignal-journeys
+  file: onesignal-journeys.md
+  name: onesignal-journeys
+  method: searched
+  source: https://github.com/OneSignal/onesignal-ai-skills/blob/main/skills/journeys/SKILL.md
+  scope: lifecycle automation
+  description: Designing multichannel Journeys — onboarding, welcome series, re-engagement,
+    win-back, abandoned cart — including entry/exit/re-entry rules, branches, and action
+    step selection (wait, wait until, time window, yes/no, split, tag).
+- id: onesignal-mobile-sdk-setup
+  file: onesignal-mobile-sdk-setup.md
+  name: onesignal-mobile-sdk-setup
+  method: searched
+  source: https://github.com/OneSignal/onesignal-ai-skills/blob/main/skills/mobile-sdk-setup/SKILL.md
+  scope: SDK integration
+  description: Setting up, integrating and troubleshooting OneSignal mobile SDKs across
+    Android, iOS, Huawei, React Native, Expo, Flutter, Unity, .NET MAUI, Cordova, Ionic,
+    Capacitor, FlutterFlow and Median.co, including APNs/FCM/HMS configuration and permission
+    prompting.
+- id: onesignal-iam-html-composer
+  file: onesignal-iam-html-composer.md
+  name: onesignal-iam-html-composer
+  method: searched
+  source: https://github.com/OneSignal/onesignal-ai-skills/blob/main/skills/iam-html-composer/SKILL.md
+  scope: in-app message authoring
+  description: Generating and restyling production-ready HTML for OneSignal mobile in-app
+    messages — soft push prompts, permission prompts, feature announcement modals, onboarding
+    modals, promo modals.
+  allowed_tools:
+  - ask_user
+  - apply_to_iam_composer
+  - generate_brand_kit_from_website
+  note: The only skill in the set that declares an allowed-tools list, naming three
+    OneSignal AI runtime tools not exposed on the public MCP surface.
+- id: onesignal-skill-creator
+  file: onesignal-skill-creator.md
+  name: onesignal-skill-creator
+  method: searched
+  source: https://github.com/OneSignal/onesignal-ai-skills/blob/main/skills/skill-creator/SKILL.md
+  scope: meta
+  description: Helper skill for OneSignal PMs, designers and engineers creating or revising
+    OneSignal AI domain skills. Internal-facing rather than customer-facing.
+notes:
+- No API Evangelist-generated skills were added. OneSignal's own skills already cover
+  the marquee flows (segments, journeys, SDK setup, in-app authoring), and a generated
+  skill would be strictly weaker provenance than the published ones sitting beside it.
+- The published skills are written for OneSignal AI and its MCP workflows, not for direct
+  REST callers, so they reference product concepts and dashboard paths more than operationIds.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

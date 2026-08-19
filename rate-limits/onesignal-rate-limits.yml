@@ -4,34 +4,148 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: OneSignal
 providerId: onesignal
 created: '2026-05-08'
-modified: '2026-05-08'
-reconciled: false
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/reference/rate-limits
+docs: https://documentation.onesignal.com/reference/rate-limits
+modified: '2026-08-13'
+reconciled: true
 tags:
 - Notifications
 - Push
 - Email
 - SMS
-- Mobile
 - Rate Limiting
 - Quotas
 - Throttling
-description: Placeholder rate-limit artifact for OneSignal. Replace with real limits once researched.
-notes: "Initial scaffold \u2014 limits have not yet been reconciled."
+description: >-
+  OneSignal publishes two independent limit systems that are easy to confuse and
+  have very different consequences. API rate limits are per app and per endpoint
+  and return 429 with Retry-After; they only throttle. Application message
+  limits count delivered messages in a rolling 15-minute window and, when
+  exceeded, temporarily DISABLE the app. Only the second one can take a
+  customer offline.
+notes: >-
+  Replaces the 2026-05-08 placeholder scaffold. Every limit below is published
+  on OneSignal's rate-limits reference page and was read on 2026-08-13.
 sources:
-- https://onesignal.com/
-- https://documentation.onesignal.com/
-- https://documentation.onesignal.com/reference
+- https://documentation.onesignal.com/reference/rate-limits
+- https://documentation.onesignal.com/reference/rest-api-overview
+- https://documentation.onesignal.com/reference/idempotent-notification-requests
+limit_count: 6
+scope_basis: per app and per endpoint, evaluated when the request is received
 responseCodes:
   throttled: 429
+  server_error: 5xx
+  non_retryable:
+  - 400
+  - 401
+  - 403
+headers:
+  request: []
+  response:
+  - name: Retry-After
+    on_status: 429
+    unit: seconds
+    description: Number of seconds to wait before retrying. Treat as a minimum delay;
+      wait max(Retry-After, backoff).
+  note: >-
+    OneSignal documents Retry-After only. No X-RateLimit-* or RFC 9331
+    RateLimit-* headers are documented, so a client cannot see remaining budget
+    before it is exhausted — the 429 is the first signal.
+error_body:
+  status: 429
+  example: '{"errors": ["API rate limit exceeded."]}'
 limits:
-- name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+- name: Create message / Cancel message
+  scope: per app, per endpoint
+  endpoints:
+  - POST /notifications
+  - DELETE /notifications
+  operations:
+  - push-notification
+  - email
+  - sms
+  - cancel-message
+  window: second
+  limit: 6000
+  limit_free_tier: 150
+  unit: requests/sec/app
+  note: >-
+    Create and cancel share one bucket regardless of method: 3,000 creates +
+    3,000 cancels = 6,000 req/sec on a paid plan. Each request can target many
+    users or segments, so high volume should mean fewer requests with larger
+    audiences, not more requests.
+- name: Create custom events
+  scope: per app, per endpoint
+  endpoints:
+  - POST /apps/{app_id}/custom_events
+  operations:
+  - create-custom-events
+  limit: rate-limited independently from Create Message; exact rate not published
+  request_size_limits:
+  - 2024 bytes per event
+  - 1 MB per request body
+- name: Create, update or delete users and subscriptions
+  scope: per app
+  window: second
+  limit: 1000
+  unit: requests/sec/app
+  sub_limits:
+  - scope: per user or subscription
+    limit: 1
+    unit: request/sec
+  - scope: per request
+    limit: 100
+    unit: property updates
+- name: View endpoints (messages, templates, users)
+  scope: per app
+  window: second
+  limit: 1
+  unit: request/sec/app
+  sub_limits:
+  - scope: look-back requests
+    limit: 10
+    unit: requests/sec
+- name: Message History and CSV exports
+  scope: per app
+  limit: keep parallel exports under 100 GB per file
+- name: Application message limit (app disablement)
+  scope: per app
+  window: 15 minutes, rolling
+  limit: 10x the app's total subscribed Subscriptions
+  metric: messages delivered, not API requests
+  consequence: app is temporarily disabled; all app administrators are emailed and
+    a re-enable banner appears in the dashboard
+  recovery: pause sending, identify the cause, then click Re-enable in the dashboard
+    banner; support@onesignal.com can help
+  note: >-
+    An app with 1,000 subscribed Subscriptions may deliver up to 10,000 messages
+    in any rolling 15-minute span. This is the ONLY limit that can disable an
+    app; 429s never do.
+timeouts:
+  api_response_timeout: 100 seconds
+  note: Default maximum API response timeout. A request that timed out may still be
+    processing, which is why retries require an idempotency_key.
 policies:
-- name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+- name: Simple retry strategy
+  description: Wait 100 seconds before retrying (aligned with the maximum API response
+    timeout). Retry up to 3 total attempts (original + 2 retries). Always reuse the
+    same idempotency_key.
+- name: Time-sensitive retry strategy
+  description: 'Exponential backoff with jitter (2s, 4s, 8s, up to 60s). Cap at 10
+    total attempts and stop after 10-15 minutes. For 429s: wait max(Retry-After, backoff).'
+- name: Retry classification
+  description: 'Retriable: network timeouts, no response, 429, 5xx. Non-retryable:
+    400, 401, 403 — these are input, authentication or permission problems, not temporary
+    failures.'
+- name: Idempotency on retry
+  description: Never retry a message send without an idempotency_key. Reuse the SAME
+    key for every attempt. See conventions/onesignal-conventions.yml.
+increase_path:
+  available: true
+  detail: Paid plans get 6,000 req/sec versus 150 on free. Beyond the paid tier, contact
+    support@onesignal.com with the use case and expected volume.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

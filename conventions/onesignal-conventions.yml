@@ -1,0 +1,167 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/reference/rest-api-overview, https://documentation.onesignal.com/reference/idempotent-notification-requests,
+  https://documentation.onesignal.com/reference/rate-limits, openapi/_original/onesignal-api-openapi.json
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Cross-cutting runtime semantics for the OneSignal REST API — the rules an
+  agent or SDK has to hold regardless of which endpoint it calls.
+base_url: https://api.onesignal.com
+transport:
+  scheme: https
+  port: 443
+  tls_minimum: TLS 1.2
+  dns_ttl_seconds: 300
+  edge: Cloudflare (inbound API and SDK traffic)
+  outbound_origin: Google Cloud Platform, europe-west4 (Groningen, Netherlands) — the
+    region webhooks and event streams originate from
+  cert_note: >-
+    Cloudflare-managed edge certificates rotate every few months. Pin the root
+    or intermediate CA public key (SPKI), never the leaf.
+authentication:
+  style: bearer API key in the Authorization header
+  format: 'Authorization: Key <APP_API_KEY>'
+  tiers:
+  - app
+  - organization
+  agent_alternative: OAuth 2.1 authorization code + PKCE at https://api.onesignal.com,
+    used by the hosted MCP server
+  detail: authentication/onesignal-authentication.yml
+idempotency:
+  supported: true
+  mechanism: body field
+  field: idempotency_key
+  header: null
+  header_note: >-
+    Unlike the Stripe-style Idempotency-Key HTTP header, OneSignal carries the
+    key in the JSON request BODY. A client that sets an Idempotency-Key header
+    gets no deduplication.
+  format: RFC 9562 UUID
+  retention_days: 30
+  scope:
+  - notifications#create
+  - custom_events#create
+  operations:
+  - push-notification
+  - email
+  - sms
+  - create-custom-events
+  guarantee: at-most-once processing. Retrying with the same key returns the result
+    of the original request; only one message or event is created.
+  legacy_alias: external_id
+  legacy_note: >-
+    The field used to be called external_id, which collided with the Users
+    external_id alias. Both names are still accepted; idempotency_key is the
+    recommended one.
+  pitfalls:
+  - Reusing one key across different messages means only the first is ever processed.
+  - Keys expire after 30 days; reuse after that may send a new message.
+  - Generating a NEW key on each retry attempt defeats the mechanism entirely.
+  - Idempotency guarantees at-most-once processing, not delivery.
+  docs: https://documentation.onesignal.com/reference/idempotent-notification-requests
+pagination:
+  style: limit/offset
+  params:
+  - name: limit
+    in: query
+    default: 50
+    max: 50
+    applies_to: view-messages
+  - name: offset
+    in: query
+    default: 0
+    description: Page offset. Results are sorted by queued_at descending.
+  cursor_params:
+  - name: last_broadcast_id
+    in: query
+    applies_to: view-broadcasts
+    style: cursor
+  - name: last_message_id
+    in: query
+    applies_to: view-user-inbox-messages
+    style: cursor
+  response_fields:
+  - total_count
+  - offset
+  - limit
+  note: >-
+    Two styles coexist. The older collection endpoints (messages, templates) use
+    limit/offset with a total_count envelope; the newer inbox endpoints use an
+    opaque last-seen-id cursor.
+filtering:
+  style: filters array in the request body
+  detail: Messages can target a dynamic audience with an inline filters[] array (tag,
+    behavior, location, session and message-interaction operators) instead of a persisted
+    Segment.
+  docs: https://documentation.onesignal.com/reference/create-message#filters
+metadata:
+  mechanism: tags and custom properties on the User object
+  detail: Arbitrary key/value data tags per user, tier-capped (2 on Free, 10 on Growth,
+    100 on Professional). Used for personalization via Liquid syntax and for segment
+    filters.
+  extra: Notifications carry an arbitrary JSON `data` payload delivered to the device.
+identity:
+  primary_alias: external_id
+  detail: >-
+    Users are addressed by alias label + alias id in the path
+    (/apps/{app_id}/users/by/{alias_label}/{alias_id}), which lets a caller
+    address a user by its own identifier without ever learning OneSignal's.
+    Subscriptions belong to Users and can be transferred between them.
+  verification: optional Identity Verification prevents impersonation via an exposed
+    subscription_id
+request_id_tracing:
+  supported: false
+  note: >-
+    No request-id or correlation header is documented on API responses. The
+    documented debugging handle is the idempotency_key the caller itself
+    generated and is advised to store alongside request metadata. Outbound web
+    push webhooks do carry an X-OneSignal-Event header identifying the event
+    type.
+versioning:
+  style: none in the URL path
+  detail: >-
+    api.onesignal.com is unversioned — there is no /v1 or /v2 segment and no
+    version header. The published OpenAPI carries info.version 11.6, but that
+    is a document version, not a negotiable API version. Change is communicated
+    through the dated changelog.
+  spec_version: '11.6'
+  changelog: https://documentation.onesignal.com/release-notes/changelog
+  detail_artifact: lifecycle/onesignal-lifecycle.yml
+error_envelope:
+  format: proprietary JSON
+  rfc9457: false
+  shape: '{"errors": ["<message>", ...]}'
+  content_type: application/json
+  note: >-
+    Errors are a flat array of human-readable strings under an `errors` key.
+    There is no machine-readable error code, type URI, or per-field pointer, so
+    a client cannot branch on anything but the HTTP status. Some 200 responses
+    also carry a non-empty `errors` array for partial failures — see
+    errors/onesignal-problem-types.yml.
+  detail: errors/onesignal-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  headers:
+  - Retry-After
+  standard_headers: false
+  note: Retry-After only. No X-RateLimit-* or RFC 9331 RateLimit-* budget headers, so
+    exhaustion is unforeseeable from the response.
+  detail: rate-limits/onesignal-rate-limits.yml
+timeouts:
+  api_response_timeout_seconds: 100
+  recommended_client_timeout_seconds: 60
+retries:
+  retriable:
+  - 429
+  - 5xx
+  - timeout
+  - no response
+  non_retriable:
+  - 400
+  - 401
+  - 403
+  requirement: reuse the same idempotency_key on every attempt
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,285 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/onesignal-api-openapi.json (path structure and id-reference
+  fields), enriched from https://documentation.onesignal.com/docs/en/users and https://documentation.onesignal.com/docs/en/subscriptions
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Entity graph for the OneSignal REST API, derived from path nesting and
+  id-reference fields. The spine is App > User > Subscription: an App is the
+  tenant boundary and appears in almost every path; a User is a person addressed
+  by an alias pair rather than by a OneSignal id; a Subscription is one reachable
+  channel endpoint (a device, an email address, a phone number) owned by a User
+  and transferable between Users.
+derivation_note: >-
+  The published spec declares only 7 named component schemas (ApiKeyToken,
+  BasicErrorResponse, StructuredErrorItem, StructuredErrorResponse,
+  TemplateResource, TemplateResourceContent, CreateUserConflictResponse), so
+  most request and response bodies are inline. Relationships below are therefore
+  derived from path nesting and id-reference parameters, not from $ref graphs.
+tenancy:
+  root: Organization
+  boundary: App
+  note: An Organization owns Apps. App API keys are scoped to one App; Organization
+    API keys span every App.
+entities:
+- name: Organization
+  id_field: organization_id
+  operations:
+  - list-audit-logs
+  description: Top-level account grouping. Owns Apps, Organization API keys and audit
+    logs.
+- name: App
+  id_field: app_id
+  id_visibility: public
+  operations:
+  - view-apps
+  - view-an-app
+  - create-an-app
+  - update-an-app
+  description: The tenant boundary. Groups platforms (mobile apps, websites) under one
+    ID. Required on nearly every request, in the path or as a query parameter.
+  relationships:
+  - type: belongs_to
+    target: Organization
+    via: organization_id
+  - type: has_many
+    target: User
+  - type: has_many
+    target: Subscription
+  - type: has_many
+    target: Segment
+  - type: has_many
+    target: Template
+  - type: has_many
+    target: ApiKeyToken
+  - type: has_many
+    target: Message
+- name: User
+  id_field: alias_label + alias_id
+  id_note: >-
+    Users are addressed by an alias PAIR in the path, not by a single opaque id
+    — /apps/{app_id}/users/by/{alias_label}/{alias_id}. The canonical alias
+    label is external_id, the caller's own identifier.
+  operations:
+  - create-user
+  - view-user
+  - update-user
+  - delete-user
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: has_many
+    target: Alias
+  - type: has_many
+    target: Subscription
+  - type: has_many
+    target: Tag
+  - type: has_many
+    target: CustomEvent
+  - type: has_many
+    target: InboxMessage
+  properties:
+  - tags (key/value personalization data, plan-capped)
+  - identity (the alias map)
+  - subscriptions
+- name: Alias
+  id_field: alias_label
+  operations:
+  - fetch-aliases
+  - create-alias
+  - delete-alias
+  - fetch-identity-by-subscription
+  - create-alias-by-subscription
+  description: A named external identifier mapped onto a User. Multiple aliases can
+    resolve to the same User, which is how identity is unified across devices and channels.
+  relationships:
+  - type: belongs_to
+    target: User
+- name: Subscription
+  id_field: subscription_id
+  operations:
+  - create-subscription
+  - update-subscription
+  - delete-subscription
+  - transfer-subscription
+  - update-subscription-by-token
+  description: One reachable channel endpoint — a push token on a device, an email address,
+    or a phone number. The unit that message limits are counted against.
+  relationships:
+  - type: belongs_to
+    target: User
+    via: alias_label/alias_id, transferable via transfer-subscription
+  - type: belongs_to
+    target: App
+    via: app_id
+  addressable_by:
+  - subscription_id
+  - token_type + token (update-subscription-by-token)
+  security_note: A subscription_id can be used to send notifications to that specific
+    device, so it must never be shared across users. Identity Verification mitigates
+    impersonation.
+- name: Segment
+  id_field: segment_id
+  operations:
+  - create-segments
+  - view-segments
+  - view-segment
+  - update-segment
+  - delete-segments
+  description: A persisted, filter-defined audience within an App. Plan-capped (6 Free,
+    10 Growth, 20 Professional).
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: has_many
+    target: User
+    via: filter evaluation, not a stored join
+  alternative: inline filters[] on a message avoid creating a persisted Segment.
+- name: Message
+  id_field: message_id
+  aliases:
+  - notification_id
+  operations:
+  - push-notification
+  - email
+  - sms
+  - view-messages
+  - view-message
+  - cancel-message
+  - message-history
+  - start-live-activity
+  - update-live-activity-api
+  description: >-
+    A send across any channel. The create surface is one endpoint,
+    POST /notifications, discriminated by a `c` query parameter (push, email,
+    sms) — which is why the OpenAPI lists three separate operationIds against
+    the same path.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: has_one
+    target: Template
+    via: template_id
+    optional: true
+  - type: has_many
+    target: Subscription
+    via: delivery targeting
+  - type: has_many
+    target: Outcome
+    via: attribution
+  idempotency_field: idempotency_key
+- name: Template
+  id_field: template_id
+  schema: TemplateResource
+  operations:
+  - create-template
+  - view-templates
+  - view-template
+  - update-template
+  - delete-template
+  - copy-template-to-another-app
+  description: A reusable push, email or SMS message layout. Copyable between Apps.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: has_one
+    target: TemplateResourceContent
+- name: CustomEvent
+  operations:
+  - create-custom-events
+  description: A recorded user action (purchase, content view, milestone) used to enter
+    users into Journeys or satisfy Wait Until nodes. Supports idempotency_key.
+  relationships:
+  - type: belongs_to
+    target: User
+  - type: belongs_to
+    target: App
+    via: app_id
+  limits:
+    max_event_bytes: 2024
+    max_body_bytes: 1048576
+- name: Outcome
+  operations:
+  - view-outcomes
+  description: A measured conversion attributed back to messaging, queried by outcome
+    name, time range, platform and attribution model.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: belongs_to
+    target: Message
+    via: attribution
+- name: InboxMessage
+  id_field: message_id
+  operations:
+  - create-inbox-broadcast-message
+  - view-broadcasts
+  - view-user-inbox-messages
+  - view-user-unread-message-count
+  - update-message-state
+  - bulk-update-or-delete-message-state
+  description: Persistent per-user message centre entries, distinct from a push send.
+    Broadcasts fan out to users; per-user state (read/unread/deleted) is mutated individually
+    or in bulk.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  - type: belongs_to
+    target: User
+    via: alias_label/alias_id
+  - type: belongs_to
+    target: Broadcast
+    via: last_broadcast_id cursor
+- name: ApiKeyToken
+  id_field: token_id
+  schema: ApiKeyToken
+  operations:
+  - create-api-key
+  - view-api-keys
+  - update-api-key
+  - rotate-api-key
+  - delete-api-key
+  description: An App API key. Carries a name and an optional IP allowlist. Rotation
+    keeps the token_id and replaces the secret.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+  max_per_app: 16
+- name: Export
+  operations:
+  - csv-export
+  - export-csv-of-events
+  description: Asynchronous CSV export of subscriptions or of message events. Not a
+    persisted resource — the operation returns a download URL.
+  relationships:
+  - type: belongs_to
+    target: App
+    via: app_id
+- name: AuditLog
+  operations:
+  - list-audit-logs
+  description: Organization-scoped user activity records, exportable to JSONL.
+  relationships:
+  - type: belongs_to
+    target: Organization
+    via: organization_id
+id_prefixes:
+- prefix: os_v2_app_
+  applies_to: App API key secret
+  secret: true
+  source: https://documentation.onesignal.com/docs/en/keys-and-ids
+graph_summary:
+  entity_count: 14
+  root: Organization
+  primary_chain: Organization > App > User > Subscription
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

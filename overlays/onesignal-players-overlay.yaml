@@ -1,0 +1,77 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for OneSignal Players API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: openapi/onesignal-players-api-openapi.yml plus https://documentation.onesignal.com/reference/rest-api-overview,
+    /reference/rate-limits, /reference/idempotent-notification-requests, /docs/en/keys-and-ids
+  note: Captures API Evangelist enhancements only. The underlying OpenAPI is never mutated; apply this
+    overlay to produce the enriched document.
+extends: openapi/onesignal-players-api-openapi.yml
+actions:
+- target: $.info
+  description: Record the enrichment provenance and the runtime rules this specification omits.
+  update:
+    x-apievangelist-enrichment:
+      generated: '2026-08-13'
+      provider: onesignal
+      extends: openapi/onesignal-players-api-openapi.yml
+      artifacts:
+      - authentication/onesignal-authentication.yml
+      - conventions/onesignal-conventions.yml
+      - errors/onesignal-problem-types.yml
+      - rate-limits/onesignal-rate-limits.yml
+      - lifecycle/onesignal-lifecycle.yml
+      - data-model/onesignal-data-model.yml
+      - conformance/onesignal-conformance.yml
+- target: $.info.description
+  description: Append the cross-cutting runtime semantics an agent needs but the specification does not
+    carry.
+  update: 'API Evangelist enrichment. Runtime semantics OneSignal documents in prose but does not express
+    in this specification:
+
+
+    - **Auth**: `Authorization: Key <APP_API_KEY>` (App tier) or an Organization API key for org-level
+    endpoints. See `authentication/onesignal-authentication.yml`.
+
+    - **Rate limits**: per app AND per endpoint. Message create/cancel share one bucket: 150 req/sec/app
+    on free plans, 6,000 on paid. A separate application message limit (10x subscribed Subscriptions in
+    a rolling 15 minutes) can temporarily DISABLE the app. See `rate-limits/onesignal-rate-limits.yml`.
+
+    - **429 handling**: honor `Retry-After`. No RateLimit-* budget headers are published.
+
+    - **Idempotency**: `idempotency_key` is a BODY field (RFC 9562 UUID, 30-day retention) on message
+    and custom-event creation, not an `Idempotency-Key` header. Reuse the SAME key on every retry. See
+    `conventions/onesignal-conventions.yml`.
+
+    - **Errors**: two proprietary envelopes, not RFC 9457. Some 2xx responses also carry a non-empty `errors`
+    array. See `errors/onesignal-problem-types.yml`.
+
+    - **Timeout**: default API response timeout is 100 seconds.
+
+    - **Versioning**: the API is unversioned; change is announced in a dated changelog with no Sunset
+    or Deprecation headers. See `lifecycle/onesignal-lifecycle.yml`.
+
+    - **Currency**: this document is generated from OneSignal''s 5.5.0 OpenAPI. OneSignal now publishes
+    an 11.6 document at https://documentation.onesignal.com/openapi.json with 59 operations, captured
+    verbatim at `openapi/_original/onesignal-api-openapi.json`.'
+- target: $.servers
+  description: Confirm the production base URL; OneSignal publishes exactly one host and it is unversioned.
+  update:
+  - url: https://api.onesignal.com
+    description: Production. HTTPS on port 443, TLS 1.2 minimum, fronted by Cloudflare. Respect a DNS
+      TTL of 300 seconds.
+- target: $.components.securitySchemes.rest_api_key
+  description: Describe the App API key tier the bearer scheme actually represents.
+  update:
+    description: 'App API key. Header form is `Authorization: Key <APP_API_KEY>`. Values are prefixed
+      `os_v2_app_` and shown exactly once, at creation or rotation. Up to 16 per app. Optional per-key
+      IP allowlist.'
+- target: $.paths['/players/csv_export?app_id={app_id}'].post
+  description: Add OneSignal-documented runtime behavior for this operation.
+  update:
+    x-apievangelist-note: Legacy /players surface. The Users and Subscriptions model has superseded it;
+      the current 11.6 specification retains only this export operation and drops the other player endpoints.
+      Keep parallel exports under 100 GB per file.

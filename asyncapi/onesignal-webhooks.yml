@@ -1,0 +1,146 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/docs/en/event-streams, https://documentation.onesignal.com/docs/en/webhooks,
+  https://documentation.onesignal.com/docs/en/journeys-webhook
+provider: OneSignal
+providerId: onesignal
+type: webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  OneSignal publishes no AsyncAPI document. Its event surface is outbound HTTP
+  POST from OneSignal infrastructure to a customer endpoint — there is no
+  WebSocket, SSE, MQTT or gRPC endpoint a customer connects to. This confirms
+  and extends the 2026-05-29 review in review.yml. No AsyncAPI was authored;
+  fabricating one would misrepresent the surface.
+description: >-
+  Three distinct things at OneSignal are called "webhooks" and they are not
+  interchangeable. Event Streams is the real server-side event surface and the
+  one OneSignal recommends. Web push webhooks are a legacy browser-side callback
+  limited to web push. Journey webhook steps are an outbound action inside an
+  automation flow, gated to annual plans.
+surfaces:
+- id: event-streams
+  name: Event Streams
+  recommended: true
+  url: https://documentation.onesignal.com/docs/en/event-streams
+  data_reference: https://documentation.onesignal.com/docs/en/event-streams-data
+  direction: outbound
+  transport: HTTP POST (method configurable)
+  configured_in: Dashboard > Data > Event Streams
+  body_format: JSON, fully caller-defined via key/value pairs or a custom body block
+  templating: Liquid syntax over event, message and user properties
+  authentication: customer-defined request headers (Authorization or custom headers)
+    set on the stream configuration
+  filtering: optional filters limiting a stream to specific message IDs or template
+    IDs
+  scope: all channels — push, email, SMS, in-app messages, Live Activities
+  events:
+  - channel: push
+    types:
+    - sent
+    - received
+    - clicked
+    - failed
+    - unsubscribed
+  - channel: email
+    types:
+    - sent
+    - opened
+    - clicked
+    - bounced
+    - unsubscribed
+  - channel: sms
+    types:
+    - sent
+    - delivered
+    - undelivered
+    - failed
+  - channel: in-app message
+    types:
+    - impression
+    - clicked
+  - channel: live activity
+    types:
+    - sent
+    - delivered
+    - confirmed receipt
+    - failed
+    - unsubscribed
+    - clicked
+  quota_note: >-
+    Every event counts against the plan's message-event volume. One send to
+    100,000 users generates 100,000 `sent` events on its own, so OneSignal
+    advises selecting only the needed event types and using stream filters.
+  billing_gate: message event retention is plan-tiered (none on Free, 30/60/90 days
+    on Growth/Professional/Enterprise)
+- id: web-push-webhooks
+  name: Web push webhooks
+  recommended: false
+  legacy: true
+  url: https://documentation.onesignal.com/docs/en/webhooks
+  direction: outbound
+  transport: HTTP POST from the browser service worker
+  scope: web push only — does not fire for mobile push, email, SMS or in-app messages
+  headers:
+  - name: X-OneSignal-Event
+    description: Event type that triggered the webhook.
+  body_fields:
+  - name: event
+    type: string
+    description: Event type that triggered the webhook.
+  events:
+  - name: notification.willDisplay
+    browsers:
+    - Chrome
+    - Firefox
+    - Safari
+  - name: notification.clicked
+    browsers:
+    - Chrome
+    - Firefox
+    - Safari
+  - name: notification.dismissed
+    browsers:
+    - Chrome
+    note: Chrome only.
+  browser_support:
+  - browser: Chrome
+    platforms:
+    - macOS
+    - Windows
+    - Android
+    events: all (display, click, dismiss)
+  - browser: Firefox
+    platforms:
+    - macOS
+    - Windows
+    - Android
+    events: display and click
+  note: Kept for teams that specifically need client-side web push callbacks. OneSignal
+    directs most integrations to Event Streams instead.
+- id: journey-webhooks
+  name: Journey webhook steps
+  url: https://documentation.onesignal.com/docs/en/journeys-webhook
+  direction: outbound
+  transport: HTTP request issued as an action step inside a Journey
+  scope: per-Journey, per-user
+  use_case: calling an external system mid-automation — for example sending WhatsApp
+    messages via a third-party API
+  billing_gate: annual plans only; talk to sales
+network:
+  outbound_origin: Google Cloud Platform, europe-west4 (Groningen, Netherlands)
+  allowlist_guidance: allow inbound traffic from https://api.onesignal.com, or filter
+    GCP's published IP ranges to europe-west4
+  source: https://documentation.onesignal.com/reference/rest-api-overview
+inbound_streaming:
+  websocket: false
+  server_sent_events: false
+  grpc: false
+  mqtt: false
+  note: >-
+    The one SSE response observed anywhere on OneSignal's surface is the MCP
+    transport at documentation.onesignal.com/mcp, which is an MCP session
+    channel, not a customer event stream.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

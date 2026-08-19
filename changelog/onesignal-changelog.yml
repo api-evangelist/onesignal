@@ -1,0 +1,129 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/release-notes/changelog
+provider: OneSignal
+providerId: onesignal
+description: >-
+  OneSignal publishes a dated product changelog with per-entry product-area
+  tags, plus a separate SDK release feed. Entries are product-level, not
+  API-contract-level: they announce features and dashboard changes rather than
+  endpoint additions, breaking changes, or field deprecations. A caller cannot
+  learn from this changelog that an endpoint changed shape.
+scheme: dated entries, no semantic version
+url: https://documentation.onesignal.com/release-notes/changelog
+sdk_releases_url: https://documentation.onesignal.com/release-notes/sdk-releases
+machine_readable: false
+breaking_change_labels: false
+current_spec_version: '11.6'
+current_spec_source: https://documentation.onesignal.com/openapi.json
+window: 2026-07-06 to 2026-08-12
+entry_count: 11
+entries:
+- date: '2026-08-12'
+  tags:
+  - Integrations
+  - AI
+  - Users
+  - Dashboard
+  breaking: false
+  highlights:
+  - HubSpot contact timeline now shows OneSignal send, delivery, open, click and failure
+    events across push, email, SMS and in-app.
+  - OneSignal can now be installed from the HubSpot marketplace; existing customers
+    must reauthenticate to grant timeline-write permissions.
+  - File uploads in OneSignal AI — images, PDF, CSV and .xlsx, kept in conversation
+    context and actionable (CSV user import, image into a composer, calendar spreadsheet
+    to bulk sends).
+  - Users can now be searched by IPv4 or IPv6 address from Audience > Users; full addresses
+    only, returns the first match.
+- date: '2026-08-06'
+  tags:
+  - Dashboard
+  - AI
+  breaking: false
+  highlights:
+  - OneSignal Home (/apps/{app_id}/home) is now the default landing page for new sign-ups,
+    replacing the classic analytics dashboard.
+  - Home is an AI-first full-page chat experience; users can switch back to the classic
+    dashboard in account preferences.
+  - Beta, rolling out to all customers.
+- date: '2026-07-31'
+  tags:
+  - Integrations
+  - AI
+  breaking: false
+  api_relevant: true
+  highlights:
+  - OneSignal is now an officially listed connector in Claude's directory, authenticating
+    over OAuth with access to every app the authenticating user can reach.
+  - Any MCP-compatible client — Claude, GitHub Copilot, Cursor, ChatGPT — can connect
+    to OneSignal MCP over browser-based OAuth instead of copied API keys and App IDs.
+  - Connected AI tools appear in account settings and can be revoked at any time.
+  note: This is the entry that introduced the OAuth authorization server recorded in
+    authentication/onesignal-authentication.yml.
+- date: '2026-07-21'
+  tags:
+  - Email
+  - AI
+  breaking: false
+  highlights:
+  - Email Deliverability Insights beta — per-mailbox-provider breakdown (Gmail, Outlook,
+    Yahoo, Apple) with reputation, per-provider performance and timeseries panels.
+- date: '2026-07-15'
+  tags:
+  - In-App Messages
+  breaking: false
+  highlights:
+  - Refreshed default in-app message templates for the Block and HTML editors. Existing
+    messages unaffected.
+- date: '2026-07-14'
+  tags:
+  - Integrations
+  - AI
+  breaking: false
+  api_relevant: true
+  highlights:
+  - OneSignal MCP listed in the Cursor marketplace; Cursor prompts to add it when OneSignal
+    is mentioned.
+- date: '2026-07-14'
+  tags:
+  - RCS
+  breaking: false
+  highlights:
+  - Test RCS sender resource issued immediately on starting an RCS application, before
+    carrier approval (which typically takes 8-16 weeks).
+  - Production RCS sending still requires an approved sender resource.
+- date: '2026-07-09'
+  tags:
+  - AI
+  breaking: false
+  highlights:
+  - OneSignal AI open beta to all customers, with Global AI Settings to opt out entirely
+    for security, privacy or compliance.
+  - Journeys authoring and creation, and expanded analytics/reporting data access, added
+    to the AI.
+- date: '2026-07-06'
+  tags:
+  - Dashboard
+  - Onboarding
+  breaking: false
+  highlights:
+  - Sign-up flow now branches by persona — developer, marketer, or both.
+  - Marketers get a brand asset collection step that scrapes colors, fonts and logos
+    from their website into Brand Kit; developers get SDK installation pulled forward.
+- date: '2026-07-06'
+  tags:
+  - Analytics
+  breaking: false
+  highlights:
+  - Conversion metrics available to all customers, attributing purchases, sign-ups,
+    trial starts and custom events back to the messages that drove them across push,
+    email, SMS, in-app and RCS.
+observations:
+- The changelog is dominated by AI and agent-surface work — 7 of the 11 entries in this
+  window carry an AI or Integrations tag.
+- No entry in this window announces an endpoint addition, removal, field change or deprecation,
+  even though the published spec moved from 44 operations (5.5.0) to 59 (11.6).
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -4,40 +4,204 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: OneSignal
 providerId: onesignal
 created: '2026-05-08'
-modified: '2026-05-08'
-reconciled: false
+generated: '2026-08-13'
+method: searched
+source: https://onesignal.com/pricing
+modified: '2026-08-13'
+reconciled: true
 tags:
 - Notifications
 - Push
 - Email
 - SMS
-- Mobile
 - Plans
-description: Placeholder plans/pricing artifact for OneSignal. Replace with real published pricing once the pipeline researches
-  the provider's plans page.
-notes: "Initial scaffold \u2014 plans/pricing have not yet been reconciled against the provider's documentation."
+- Pricing
+description: >-
+  OneSignal publishes four tiers. Two are self-service with listed prices (Free
+  and Growth); two are annual-contract and quote-only (Professional and
+  Enterprise). Growth is the only tier with published per-channel unit
+  economics. Note the plan tier is also a rate-limit tier — free apps are capped
+  at 150 req/sec on message creation versus 6,000 on paid.
+notes: >-
+  Replaces the 2026-05-08 placeholder scaffold. Every price, quota and limit
+  below was read off the published pricing page on 2026-08-13. Where a cell
+  reads "Custom" on OneSignal's own comparison table it is recorded as custom,
+  not guessed.
 sources:
-- https://onesignal.com/
-- https://documentation.onesignal.com/
-- https://documentation.onesignal.com/reference
+- https://onesignal.com/pricing
+- https://documentation.onesignal.com/docs/en/billing-faq
+- https://documentation.onesignal.com/reference/rate-limits
+plan_count: 4
+currency: USD
 plans:
-- id: onesignal-default
-  name: To Be Reconciled
-  type: enterprise
-  description: Initial scaffold; replace with provider plan tiers once pricing is reconciled.
-  entries:
-  - label: API Access
-    name: api_access
-    type: flat
-    metric: varies
+- id: free
+  name: Free
+  type: free
+  price: 0
+  currency: USD
+  billing_period: month
+  self_service: true
+  description: Free access to all channels; message limits may apply.
+  included:
+  - label: Email sends
+    limit: 10000
+    timeFrame: month
+  - label: Mobile push sends
     limit: -1
-    timeFrame: usage
-    geo: global
-    unit: 1
-    price: see https://onesignal.com/
-    userMultiplied: false
-  elements:
-  - name: Pending Reconciliation
+    note: Unlimited
+  - label: Web push subscribers per send
+    limit: 10000
+  - label: In-app messages
+    limit: 1
+    note: 1 active message
+  - label: Live Activities push subscribers
+    limit: 10000
+    note: Max total push subscribers
+  - label: Active Journeys
+    limit: 1
+  - label: Journey message steps
+    limit: 2
+  - label: Audience segments
+    limit: 6
+  - label: Data tags
+    limit: 2
+  - label: Contacts
+    limit: -1
+    note: Unlimited
+  - label: API send access
+    limit: -1
+    note: Unlimited
+  features:
+  - Basic analytics and automation
+  - Basic marketing capabilities
+  - MCP and OneSignal AI (beta)
+  - Basic A/B testing
+  excludes:
+  - Journey branching
+  - Message events and custom events
+  - Intelligent delivery
+  - Confirmed receipt
+  - Message throttling
+  - Conversion metrics
+  - Frequency capping
+  api_rate_limit: 150 requests/sec/app on message create and cancel
+- id: growth
+  name: Growth
+  type: paid
+  price: 19
+  price_qualifier: starts at
+  currency: USD
+  billing_period: month
+  self_service: true
+  description: Base subscription plus usage costs by channel.
+  usage_pricing:
+  - channel: Mobile push
+    price: 0.012
+    unit: monthly active user
+  - channel: Web push
+    price: 0.004
+    unit: web push subscriber
+  - channel: Email
+    included: 20000
+    included_timeFrame: month
+    overage_price: 1.5
+    overage_unit: 1000 sends
+  - channel: In-app messaging
+    price: 0
+    note: Unlimited, included with mobile push
+  included:
+  - label: Live Activities push subscribers
+    limit: 100000
+  - label: Active Journeys
+    limit: 3
+  - label: Journey message steps
+    limit: 6
+  - label: Audience segments
+    limit: 10
+  - label: Data tags
+    limit: 10
+  - label: Message event retention
+    limit: 30
+    unit: days
+  - label: Contacts
+    limit: -1
+  features:
+  - Everything in Free
+  - Unlimited in-app messaging
+  - Improved analytics and automation
+  - Enterprise integrations
+  - Permission management
+  - Journey branching and cross-channel flows
+  - Custom events
+  - Intelligent delivery
+  - Confirmed receipt
+  - Message throttling
+  - Conversion metrics
+  api_rate_limit: 6,000 requests/sec/app on message create and cancel
+- id: professional
+  name: Professional
+  type: quote
+  price: null
+  price_display: Custom
+  billing_period: annual
+  self_service: false
+  description: Pricing by channel with volume-based discounting; annual plan, contact
+    sales.
+  included:
+  - label: Active Journeys
+    limit: 20
+  - label: Journey message steps
+    limit: 50
+  - label: Audience segments
+    limit: 20
+  - label: Data tags
+    limit: 100
+  - label: Message event retention
+    limit: 60
+    unit: days
+  features:
+  - Everything in Growth
+  - 24/7 prioritized support
+  - Advanced marketing capabilities
+  - Advanced permission management
+  - Personalized platform implementation
+  - SMS and RCS messaging
+  - Advanced A/B testing
+  - Advanced analytics
+  - Notification data exports (CSV)
+  - Notification History API
+- id: enterprise
+  name: Enterprise
+  type: quote
+  price: null
+  price_display: Custom
+  billing_period: annual
+  self_service: false
+  description: Tailored contract and features with volume-based discounting.
+  included:
+  - label: Message event retention
+    limit: 90
+    unit: days
+  - label: Reporting history
+    limit: 2
+    unit: years
+  - label: Personalization and automation
+    limit: -1
+    note: Unlimited
+  features:
+  - Everything in Professional
+  - Dedicated success manager
+  - Security/legal package and SLA
+  - Frequency capping
+  - HIPAA Business Associate Agreement (BAA)
+gated_features:
+- name: SMS / RCS
+  note: Talk to sales for trial or pricing; not self-service on Free or Growth.
+- name: Journey webhook steps
+  note: Available on annual plans only; talk to sales.
+- name: Business Associate Agreement (BAA)
+  note: Enterprise plan only.
+  source: https://documentation.onesignal.com/docs/en/hipaa
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

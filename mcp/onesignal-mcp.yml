@@ -1,0 +1,109 @@
+generated: '2026-08-13'
+method: probed
+source: https://api.onesignal.com/mcp/oauth (from https://github.com/OneSignal/onesignal-cursor-plugin/blob/main/mcp.json)
+  and https://documentation.onesignal.com/mcp
+provider: OneSignal
+providerId: onesignal
+name: OneSignal MCP
+description: >-
+  OneSignal ships two distinct remote MCP servers. The product server at
+  api.onesignal.com/mcp/oauth is the one Cursor, Claude, Copilot and ChatGPT
+  connect to; it is OAuth-gated, so its tool schemas require an authenticated
+  introspection we did not perform. The documentation server at
+  documentation.onesignal.com/mcp is anonymous and answered tools/list on the
+  first probe — its three tools are captured verbatim in
+  mcp/onesignal-mcp-tools.json.
+status: published
+deployment:
+  mode: remote
+  endpoint: https://api.onesignal.com/mcp/oauth
+  auth: oauth
+  verified: probed
+servers:
+- id: onesignal-product-mcp
+  name: OneSignal MCP (product)
+  endpoint: https://api.onesignal.com/mcp/oauth
+  transport: http
+  auth: oauth
+  auth_detail: >-
+    Browser-based OAuth 2.1 authorization_code + PKCE (S256) against
+    https://api.onesignal.com, with RFC 7591 dynamic client registration at
+    /oauth/register. See authentication/onesignal-authentication.yml.
+  probe:
+    method: POST tools/list
+    http_status: 401
+    body: 'Access denied. Please include an ''Authorization: ...'' header with a valid
+      API key.'
+    date: '2026-08-13'
+  discovery:
+    protected_resource: https://api.onesignal.com/.well-known/oauth-protected-resource/mcp/oauth
+    authorization_server: https://api.onesignal.com/.well-known/oauth-authorization-server
+  tools_captured: false
+  tools_note: >-
+    Live tool schemas are auth-gated. OneSignal's own Cursor plugin README names
+    three read-only tools by hand — onesignal_health, onesignal_config,
+    onesignal_reference_overview — but publishes no inputSchema for them. Names
+    only; full schemas need an authenticated tools/list.
+  evidence:
+  - url: https://github.com/OneSignal/onesignal-cursor-plugin/blob/main/mcp.json
+    kind: first-party MCP client config naming the endpoint
+  - url: https://documentation.onesignal.com/release-notes/changelog
+    kind: 'changelog, 2026-07-31: "Connect OneSignal MCP to any AI client via OAuth"'
+  - url: https://claude.ai/directory/connectors/onesignal
+    kind: listed in Claude's official connector directory (per OneSignal changelog
+      2026-07-31)
+- id: onesignal-docs-mcp
+  name: OneSignal documentation MCP
+  endpoint: https://documentation.onesignal.com/mcp
+  transport: http (SSE response)
+  auth: none
+  probe:
+    method: POST tools/list
+    http_status: 200
+    content_type: text/event-stream
+    date: '2026-08-13'
+  tools_captured: true
+  tools_file: onesignal-mcp-tools.json
+  tool_count: 3
+  tools:
+  - name: search_one_signal
+    title: Search documentation
+    inputs:
+    - query
+    - language
+    summary: Search the OneSignal knowledge base for docs, code examples and API reference
+      content.
+  - name: query_docs_filesystem_one_signal
+    inputs:
+    - command
+    summary: Read-only shell-like query over a virtual in-memory filesystem containing
+      only OneSignal documentation pages and OpenAPI specs.
+  - name: submit_feedback
+    title: Submit documentation feedback
+    inputs:
+    - path
+    - feedback
+    summary: Report an incorrect, outdated or incomplete documentation page.
+  note: Mintlify-hosted docs MCP. Read-only over documentation; it does not touch the
+    OneSignal REST API.
+clients:
+- name: OneSignal Cursor plugin
+  url: https://github.com/OneSignal/onesignal-cursor-plugin
+  official: true
+  note: First-party Cursor plugin packaging the hosted MCP server, an onesignal-setup
+    skill, three commands and an always-on safety rule requiring explicit approval
+    before sends, mutations, deletes, exports and production actions.
+- name: Cursor marketplace listing
+  official: true
+  note: Per changelog 2026-07-14, OneSignal MCP is listed in the Cursor marketplace.
+misses:
+- url: https://mcp.onesignal.com/mcp
+  status: 404
+- url: https://api.onesignal.com/mcp
+  status: 401
+  note: Bare /mcp also demands an Authorization header; the OAuth path is /mcp/oauth.
+- url: https://onesignal.com/mcp
+  status: 404
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

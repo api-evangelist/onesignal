@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/docs/en/keys-and-ids, https://api.onesignal.com/.well-known/oauth-authorization-server,
+  openapi/onesignal-apps-api-openapi.yml
+docs: https://documentation.onesignal.com/docs/en/keys-and-ids
+provider: OneSignal
+providerId: onesignal
+description: >-
+  OneSignal authenticates the REST API with bearer API keys in two tiers, and
+  authenticates agent/MCP clients with a separate OAuth 2.1 authorization
+  server. The OAuth server is real and probed — RFC 8414 metadata at
+  api.onesignal.com, PKCE S256 required, RFC 7591 dynamic client registration
+  open — but it is not referenced anywhere in the published OpenAPI, so a spec
+  reader sees only the bearer schemes.
+summary:
+  types:
+  - http
+  - oauth2
+  primary: API key (bearer)
+  agent_surface: OAuth 2.1 authorization code + PKCE
+schemes:
+- name: rest_api_key
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  format: 'Authorization: Key <APP_API_KEY>'
+  tier: app
+  description: >-
+    App API key. Scoped to one app: sending messages, creating and updating
+    users and subscriptions, reading message history and stats. Values are
+    prefixed os_v2_app_ and are shown exactly once, at creation or rotation.
+    Up to 16 per app.
+  managed_by_api: true
+  management_operations:
+  - create-api-key
+  - view-api-keys
+  - update-api-key
+  - rotate-api-key
+  - delete-api-key
+  sources:
+  - https://documentation.onesignal.com/docs/en/keys-and-ids
+  - openapi/onesignal-apps-api-openapi.yml
+- name: organization_api_key
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  tier: organization
+  description: >-
+    Organization API key. Spans every app in the organization; required for
+    creating apps and managing other API keys. Dashboard-only — there is no API
+    endpoint to create one. Up to 16 per organization.
+  managed_by_api: false
+  sources:
+  - https://documentation.onesignal.com/docs/en/keys-and-ids
+  - openapi/_original/onesignal-openapi.yml
+- name: onesignal_oauth
+  type: oauth2
+  flow: authorization_code
+  pkce: required
+  pkce_methods:
+  - S256
+  issuer: https://api.onesignal.com
+  authorization_endpoint: https://dashboard.onesignal.com/oauth/authorize
+  token_endpoint: https://api.onesignal.com/oauth/token
+  revocation_endpoint: https://api.onesignal.com/oauth/revoke
+  registration_endpoint: https://api.onesignal.com/oauth/register
+  grant_types:
+  - authorization_code
+  - refresh_token
+  response_types:
+  - code
+  token_endpoint_auth_methods:
+  - client_secret_post
+  - none
+  scopes_published: false
+  scopes_note: >-
+    The authorization-server metadata publishes no scopes_supported field and
+    the docs document no scope vocabulary, so there is nothing to record in a
+    scopes artifact. Access appears to be granted per authenticating user across
+    every OneSignal app that user can reach.
+  used_by: https://api.onesignal.com/mcp/oauth
+  description: >-
+    OAuth 2.1 server backing the hosted MCP endpoint. Added 2026-07-31 so
+    MCP-compatible clients (Claude, Cursor, Copilot, ChatGPT) can connect
+    without a customer pasting an API key. Connected clients are listed in
+    account settings and can be revoked.
+  sources:
+  - https://api.onesignal.com/.well-known/oauth-authorization-server
+  - https://api.onesignal.com/.well-known/oauth-protected-resource
+  - https://documentation.onesignal.com/release-notes/changelog
+protected_resource:
+  resource: https://api.onesignal.com
+  authorization_servers:
+  - https://api.onesignal.com
+  bearer_methods_supported:
+  - header
+  source: https://api.onesignal.com/.well-known/oauth-protected-resource
+controls:
+- name: IP allowlist
+  detail: Optional per-key IP allowlist so a leaked key cannot be used from another
+    address. Settable at creation and editable afterwards.
+- name: Key rotation
+  detail: Rotation issues a new secret while keeping the same Key ID, name and IP allowlist.
+    The old secret stops working immediately.
+- name: Two-step authentication
+  detail: Organization administrators can enforce 2FA for all team members.
+- name: Single sign-on
+  detail: SSO through WorkOS, integrating major identity providers.
+- name: Identity Verification
+  detail: Optional subscription-level identity verification to prevent impersonation
+    using an exposed subscription_id.
+legacy:
+  detail: >-
+    App and Organization API keys were introduced November 2024. The legacy User
+    Auth key and original REST API key are still accepted, but their management
+    UI has been removed and new legacy keys cannot be created.
+  source: https://documentation.onesignal.com/docs/en/keys-and-ids
+public_identifiers:
+- name: App ID
+  secret: false
+  note: Public and safe to share; can only create new user records.
+- name: Organization ID
+  secret: false
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

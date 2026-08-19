@@ -1,0 +1,124 @@
+generated: '2026-08-13'
+method: derived
+source: mcp/onesignal-mcp-tools.json, openapi/_original/onesignal-api-openapi.json,
+  graphql/onesignal-schema.graphql
+provider: OneSignal
+providerId: onesignal
+description: >-
+  Binding between OneSignal's MCP tools and its REST operations. The honest
+  finding is that the two MCP surfaces sit on opposite sides of the crosswalk:
+  the tools we could actually introspect are documentation-search tools with no
+  REST backing at all, while the product MCP server that presumably does wrap
+  the REST API is OAuth-gated and would not return its tool list. Nothing here
+  is mapped by guesswork — an unmappable tool is recorded as unmappable.
+surfaces:
+  openapi: openapi/_original/onesignal-api-openapi.json
+  openapi_note: OneSignal's published OpenAPI 3.1.0, info.version 11.6, servers[] https://api.onesignal.com.
+  mcp_product: https://api.onesignal.com/mcp/oauth
+  mcp_product_gated: true
+  mcp_product_note: tools/list returned HTTP 401 anonymously on 2026-08-13; tool schemas
+    require an authenticated OAuth session.
+  mcp_docs: https://documentation.onesignal.com/mcp
+  mcp_docs_gated: false
+  graphql: null
+  graphql_note: >-
+    graphql/onesignal-schema.graphql is an API Evangelist conceptual schema
+    derived from the REST reference, not a OneSignal-published or
+    OneSignal-served GraphQL endpoint. It is deliberately excluded from this
+    crosswalk so it cannot be mistaken for a provider surface.
+crosswalk: []
+crosswalk_note: >-
+  Zero rows. Not one introspectable MCP tool binds to a published REST
+  operationId. Recording an empty crosswalk is the finding, not a gap in the
+  work.
+mcp_only:
+- tool: search_one_signal
+  reason: Documentation knowledge-base search. No public REST endpoint exposes OneSignal
+    docs search.
+- tool: query_docs_filesystem_one_signal
+  reason: Read-only query over a virtualized in-memory filesystem of documentation
+    pages and OpenAPI specs. Docs-infrastructure only; no REST equivalent.
+- tool: submit_feedback
+  reason: Documentation feedback submission. Not part of the OneSignal REST API.
+mcp_unmappable:
+- tool: onesignal_health
+  server: https://api.onesignal.com/mcp/oauth
+  reason: Name published in the OneSignal Cursor plugin README, but the server refused
+    anonymous tools/list, so no inputSchema and no operationId binding can be established.
+  confidence: low
+- tool: onesignal_config
+  server: https://api.onesignal.com/mcp/oauth
+  reason: Same — named in the plugin README only.
+  confidence: low
+- tool: onesignal_reference_overview
+  server: https://api.onesignal.com/mcp/oauth
+  reason: Same — named in the plugin README only.
+  confidence: low
+rest_only:
+  note: >-
+    All 59 published REST operations are rest_only with respect to the MCP tools
+    we could introspect. The marquee ones are listed; the full set is in
+    openapi/_original/onesignal-api-openapi.json.
+  operations:
+  - push-notification
+  - email
+  - sms
+  - start-live-activity
+  - update-live-activity-api
+  - view-messages
+  - view-message
+  - cancel-message
+  - message-history
+  - create-user
+  - view-user
+  - update-user
+  - delete-user
+  - create-alias
+  - delete-alias
+  - fetch-aliases
+  - create-subscription
+  - update-subscription
+  - delete-subscription
+  - transfer-subscription
+  - create-segments
+  - view-segments
+  - view-segment
+  - update-segment
+  - delete-segments
+  - create-template
+  - view-templates
+  - view-template
+  - update-template
+  - delete-template
+  - copy-template-to-another-app
+  - create-custom-events
+  - csv-export
+  - export-csv-of-events
+  - view-outcomes
+  - view-apps
+  - view-an-app
+  - create-an-app
+  - update-an-app
+  - create-api-key
+  - view-api-keys
+  - update-api-key
+  - rotate-api-key
+  - delete-api-key
+  - list-audit-logs
+  - create-inbox-broadcast-message
+  - view-broadcasts
+  - view-user-inbox-messages
+  - view-user-unread-message-count
+  - update-message-state
+  - bulk-update-or-delete-message-state
+coverage:
+  mcp_tools_introspected: 3
+  mcp_tools_named_but_gated: 3
+  rest_operations: 59
+  bound: 0
+  mcp_only: 3
+  rest_only: 59
+  binding_rate: 0.0
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

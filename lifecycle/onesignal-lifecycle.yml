@@ -1,0 +1,109 @@
+generated: '2026-08-13'
+method: searched
+source: https://documentation.onesignal.com/release-notes/changelog, https://status.onesignal.com,
+  https://documentation.onesignal.com/docs/en/keys-and-ids, openapi/_original/onesignal-api-openapi.json
+provider: OneSignal
+providerId: onesignal
+description: >-
+  How the OneSignal REST API changes over time. The short version: it does not
+  version, it does not sunset, and it does not signal deprecation in HTTP. What
+  it does have is a well-maintained dated changelog and a public status page.
+  The one real deprecation on record — the November 2024 legacy API key
+  migration — was announced in docs and left the old keys working indefinitely.
+versioning:
+  strategy: unversioned
+  url_versioning: false
+  header_versioning: false
+  detail: >-
+    api.onesignal.com has no version path segment and no version request header.
+    The published OpenAPI carries info.version 11.6, which is a document
+    revision, not a version a caller can pin or negotiate.
+  spec_version: '11.6'
+  spec_url: https://documentation.onesignal.com/openapi.json
+  legacy_spec_version: 5.5.0
+  legacy_spec_note: openapi/_original/onesignal-openapi.yml, the previously harvested
+    3.0.0 document, declares info.version 5.5.0 and 44 operations — 15 fewer than the
+    current spec.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  detail: >-
+    No published deprecation policy, and no RFC 8594 Sunset or Deprecation
+    response headers are documented. Zero operations in the published OpenAPI
+    carry deprecated: true.
+  deprecated_operations: []
+  historical_deprecations:
+  - name: Legacy User Auth key and original REST API key
+    announced: '2024-11'
+    status: still accepted
+    detail: >-
+      App and Organization API keys replaced them in November 2024. The
+      management UI was removed and new legacy keys cannot be created, but
+      existing legacy keys continue to work with no announced end date.
+    source: https://documentation.onesignal.com/docs/en/keys-and-ids
+  - name: Players API
+    status: superseded
+    detail: >-
+      The /players surface has been superseded by the Users and Subscriptions
+      model (/apps/{app_id}/users, /apps/{app_id}/subscriptions). The current
+      published spec retains only POST /players/csv_export; the other player
+      operations present in the 5.5.0 document are gone from 11.6. This
+      removal was never marked with deprecated: true in either spec.
+  - name: external_id as the idempotency field
+    status: still accepted
+    detail: Renamed to idempotency_key to remove the collision with the Users external_id
+      alias. Both names remain supported.
+    source: https://documentation.onesignal.com/reference/idempotent-notification-requests
+changelog:
+  published: true
+  url: https://documentation.onesignal.com/release-notes/changelog
+  format: dated entries with product-area tags
+  cadence: several entries per month
+  sdk_releases: https://documentation.onesignal.com/release-notes/sdk-releases
+  detail: changelog/onesignal-changelog.yml
+status_page:
+  published: true
+  url: https://status.onesignal.com
+  provider: Statuspage
+  machine_readable: https://status.onesignal.com/api/v2/summary.json
+  probed: '2026-08-13'
+  http_status: 200
+  status_at_probe: All Systems Operational
+  components_include:
+  - SMS
+  - Push
+  - Email
+  - Dashboard
+  - API
+sla:
+  published: false
+  detail: An SLA is bundled into the Enterprise "Security/Legal Package & SLA" line
+    item on the pricing page but its terms are not published; it is contract-negotiated.
+  source: https://onesignal.com/pricing
+support:
+  email: support@onesignal.com
+  tiers: 24/7 prioritized support from the Professional plan up
+data_retention:
+  message_data_days: 30
+  message_data_note: Messages sent via API or Journeys are retained 30 days before
+    deletion. Dashboard-composed messages are retained until manually deleted.
+  user_data_paid: retained indefinitely until deleted
+  user_data_free: retained for 18 months of inactivity
+  message_event_retention_by_plan:
+    free: none
+    growth: 30 days
+    professional: 60 days
+    enterprise: 90 days
+  source: https://documentation.onesignal.com/docs/en/data-questions
+app_lifecycle:
+  disablement: >-
+    Apps are disabled automatically when the rolling 15-minute application
+    message limit is exceeded, and can be re-enabled from a dashboard banner.
+    This is an operational lifecycle event a caller must handle, not a billing
+    one.
+  source: https://documentation.onesignal.com/reference/rate-limits
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
