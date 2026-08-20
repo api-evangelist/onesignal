@@ -22,6 +22,23 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/onesignal.png
 tags:
+- Notification
+- Push
+- Email
+- SMS
+- Mobile
+- Push Notifications
+- Web Push
+- Customer Engagement
+- Marketing Automation
+- Live Activities
+- RCS
+- In-App Messaging
+- Journeys
+- Lifecycle Marketing
+- MCP
+- Agent Ready
+tags_raw:
 - Notifications
 - Push
 - Email
@@ -51,6 +68,13 @@ apis:
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
   tags:
+  - Notification
+  - User
+  - Subscription
+  - Segments
+  - Templates
+  - Messaging
+  tags_raw:
   - Notifications
   - Users
   - Subscriptions
@@ -78,6 +102,8 @@ apis:
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
   tags:
+  - Application
+  tags_raw:
   - Apps
   properties:
   - type: OpenAPI
@@ -94,6 +120,8 @@ apis:
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -145,6 +173,10 @@ apis:
   humanURL: https://documentation.onesignal.com/docs/en/onesignal-ai
   baseURL: https://api.onesignal.com/mcp/oauth
   tags:
+  - MCP
+  - Artificial Intelligence
+  - Agents
+  tags_raw:
   - MCP
   - AI
   - Agents
