@@ -59,43 +59,6 @@ created: '2026-05-08'
 modified: '2026-08-13'
 specificationVersion: '0.23'
 apis:
-- aid: onesignal:onesignal-rest-api
-  name: OneSignal REST API
-  description: The complete OneSignal REST API as OneSignal publishes it — OpenAPI 3.1.0, info.version 11.6, 39
-    paths and 59 operations covering messaging, users, subscriptions, segments, templates, custom events, inbox,
-    exports, apps, API keys and audit logs. Harvested verbatim from https://documentation.onesignal.com/openapi.json
-    on 2026-08-13; servers[] names https://api.onesignal.com.
-  humanURL: https://documentation.onesignal.com/reference
-  baseURL: https://api.onesignal.com
-  tags:
-  - Notification
-  - User
-  - Subscription
-  - Segments
-  - Templates
-  - Messaging
-  tags_raw:
-  - Notifications
-  - Users
-  - Subscriptions
-  - Segments
-  - Templates
-  - Messaging
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/onesignal-api-openapi.json
-  - type: Documentation
-    url: https://documentation.onesignal.com/reference
-  - type: APIReference
-    url: https://documentation.onesignal.com/reference/rest-api-overview
-  - type: DataModel
-    url: data-model/onesignal-data-model.yml
-  - type: ErrorCatalog
-    url: errors/onesignal-problem-types.yml
-  - type: Conventions
-    url: conventions/onesignal-conventions.yml
-  - type: Authentication
-    url: authentication/onesignal-authentication.yml
 - aid: onesignal:onesignal-apps-api
   name: OneSignal Apps API
   description: The Apps API from OneSignal — 21 operation(s) for apps.
@@ -166,10 +129,11 @@ apis:
     url: overlays/onesignal-templates-overlay.yaml
 - aid: onesignal:onesignal-mcp
   name: OneSignal MCP Server
-  description: OneSignal's hosted Model Context Protocol server at https://api.onesignal.com/mcp/oauth, connected
-    over browser-based OAuth 2.1 with PKCE. Listed in the Cursor marketplace and Claude's connector directory. A
-    second, anonymous documentation MCP server runs at https://documentation.onesignal.com/mcp and answered tools/list
-    on probe.
+  description: >-
+    OneSignal's hosted Model Context Protocol server at https://api.onesignal.com/mcp/oauth, connected
+    over browser-based OAuth 2.1 with PKCE. Listed in the Cursor marketplace and Claude's connector directory.
+    A second, anonymous documentation MCP server runs at https://documentation.onesignal.com/mcp and answered
+    tools/list on probe.
   humanURL: https://documentation.onesignal.com/docs/en/onesignal-ai
   baseURL: https://api.onesignal.com/mcp/oauth
   tags:
