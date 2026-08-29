@@ -1,19 +1,801 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  contact:
-    email: devrel@onesignal.com
-    name: OneSignal DevRel
-    url: https://onesignal.com
-  description: A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com
-  termsOfService: https://onesignal.com/tos
-  title: OneSignal Templates API
-  version: 5.5.0
+  title: Onesignal Templates API
+  version: '1.0'
+  description: 'Operations tagged Templates across 2 of this provider''s published API definitions: onesignal-api-openapi.json, onesignal-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.onesignal.com
 tags:
 - name: Templates
 paths:
+  /templates/{template_id}?app_id={app_id}:
+    get:
+      summary: View template
+      description: Retrieve the details of a specific message template in your OneSignal app using its template ID. This API returns the template content, target channel, and timestamps for creation and last update.
+      operationId: view-template
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst templateId: string = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n// string\nconst appId: string = \"YOUR_APP_ID\";\n\ntry {\n  const response = await apiInstance.viewTemplate(templateId, appId);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"viewTemplate failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    template_id = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" \n    app_id = \"YOUR_APP_ID\" \n\n    try:\n        # View template\n        api_response = api_instance.view_template(template_id, app_id)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->view_template: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$template_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c'; // string\n$app_id = 'YOUR_APP_ID'; // string\n\ntry {\n    $result = $apiInstance->viewTemplate($template_id, $app_id);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->viewTemplate: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->viewTemplate: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    templateId := \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" // string | \n    appId := \"YOUR_APP_ID\" // string | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.ViewTemplate(restAuth, templateId).AppId(appId).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.ViewTemplate``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `ViewTemplate`: TemplateResource\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.ViewTemplate`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\ntemplate_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c' # String | \napp_id = 'YOUR_APP_ID' # String | \n\nbegin\n  # View template\n  result = api_instance.view_template(template_id, app_id)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->view_template: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\"; // String | \n    String appId = \"YOUR_APP_ID\"; // String | \n    try {\n      TemplateResource result = apiInstance.viewTemplate(templateId, appId);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#viewTemplate\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class ViewTemplateExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";  // string | \n            var appId = \"YOUR_APP_ID\";  // string | \n\n            try\n            {\n                // View template\n                TemplateResource result = apiInstance.ViewTemplate(templateId, appId);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.ViewTemplate: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let template_id: &str = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n    let app_id: &str = \"YOUR_APP_ID\";\n\n    match default_api::view_template(&configuration, template_id, app_id).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"view_template failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"view_template failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: template_id
+        in: path
+        description: The template ID in UUID v4 format. See [Templates](/docs/en/templates).
+        schema:
+          type: string
+          default: YOUR_TEMPLATE_ID
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      - name: Content-Type
+        in: header
+        required: true
+        schema:
+          type: string
+          default: application/json; charset=utf-8
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: 200 OK - Push
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: The template ID in UUID v4 format.
+                      example: Template-ID-in-UUID-v4-format
+                    name:
+                      type: string
+                      description: An internal name you set to help organize and track Templates. Maximum 128 characters.
+                    channel:
+                      type: string
+                      description: 'Options are: `push`, `email`, and `SMS`.'
+                      example: push
+                    created_at:
+                      type: string
+                      description: The date and time the template was created in ISO 8601 format.
+                      example: '2023-07-20T19:16:55Z'
+                    updated_at:
+                      type: string
+                      description: The date and time the template was last updated in ISO 8601 format.
+                      example: '2023-07-20T19:16:55Z'
+                    content:
+                      type: object
+                      description: The template content.
+                      properties:
+                        isAndroid:
+                          type: boolean
+                          description: Template enabled for Android.
+                        isIos:
+                          type: boolean
+                          description: Template enabled for iOS.
+                        isMacOSX:
+                          type: boolean
+                          description: Template enabled for macOS.
+                        isAdm:
+                          type: boolean
+                          description: Template enabled for Amazon.
+                        isWP_WNS:
+                          type: boolean
+                          description: Template enabled for Windows.
+                        isChromeWeb:
+                          type: boolean
+                          description: Template enabled for Chrome Web.
+                        isSafari:
+                          type: boolean
+                          description: Template enabled for Safari.
+                        isFirefox:
+                          type: boolean
+                          description: Template enabled for Firefox.
+                        isEdge:
+                          type: boolean
+                          description: Template enabled for Edge.
+                        headings:
+                          type: object
+                          properties:
+                            en:
+                              type: string
+                              description: The push message title in each set language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                        contents:
+                          type: object
+                          description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Supports [Personalization](/docs/en/message-personalization).
+                          required:
+                          - en
+                          properties:
+                            en:
+                              type: string
+                              description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                        global_image: {}
+                        url:
+                          type: string
+                          example: https://example.com
+                        isEmail:
+                          type: boolean
+                          description: Required to be set `true` for email templates.
+                        email_body:
+                          type: string
+                          description: The body of the email in HTML format. Required if `template_id` is not set. Supports [Message Personalization](/docs/message-personalization).
+                        email_subject:
+                          description: The subject of the email. Supports [Message Personalization](/docs/message-personalization).
+                          default: This is your email subject.
+                        email_preheader:
+                          description: The preheader text of the email. Supports [Message Personalization](/docs/message-personalization).
+                        email_from_address:
+                          type: string
+                          description: The full email address shown in the 'From' field of the email (e.g., `promotions@news.example.com`). This is what recipients see as the sender. If not specified, OneSignal uses the default 'Sender Email' set in your Dashboard's Email Settings. See [Senders](/docs/senders).
+                        email_from_name:
+                          description: The name of the sender.
+                        isSMS:
+                          type: boolean
+                          description: Required to be set `true` for SMS templates.
+                        sms_from: {}
+                        sms_media_urls: {}
+                        email_reply_to_address: {}
+                        disable_email_click_tracking: {}
+                - title: 200 OK - Email
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 05b5d060-5e07-40ec-953c-4f2b8be0c83e
+                    name:
+                      type: string
+                      example: An internal name you set to help organize and track Templates. Maximum 128 characters.
+                    created_at:
+                      type: string
+                      example: '2022-06-30T23:23:22Z'
+                    updated_at:
+                      type: string
+                      example: '2023-06-29T23:34:07Z'
+                    content:
+                      type: object
+                      properties:
+                        isAndroid: {}
+                        isIos: {}
+                        isMacOSX: {}
+                        isAdm: {}
+                        isAlexa: {}
+                        isWP: {}
+                        isWP_WNS: {}
+                        isChrome: {}
+                        isChromeWeb: {}
+                        isSafari: {}
+                        isFirefox: {}
+                        isEdge: {}
+                        headings:
+                          type: object
+                          properties: {}
+                        subtitle: {}
+                        contents:
+                          type: object
+                          description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Supports [Message Personalization](/docs/message-personalization).
+                          required:
+                          - en
+                          properties:
+                            en:
+                              type: string
+                              description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                        global_image: {}
+                        url: {}
+                        isEmail:
+                          type: boolean
+                          description: Required to be set `true` for email templates.
+                        email_body:
+                          type: string
+                          description: The body of the email in HTML format. Required if `template_id` is not set. Supports [Message Personalization](/docs/message-personalization).
+                        email_subject:
+                          type: string
+                          description: The subject of the email. Supports [Message Personalization](/docs/message-personalization).
+                        email_preheader:
+                          type: string
+                          example: ''
+                        isSMS:
+                          type: boolean
+                          description: Required to be set `true` for SMS templates.
+                        sms_from: {}
+                        sms_media_urls: {}
+                        email_reply_to_address:
+                          type: string
+                          example: ''
+                        disable_email_click_tracking:
+                          type: boolean
+                          example: false
+                          default: true
+                        email_from_address:
+                          type: string
+                          example: ''
+                        email_from_name:
+                          type: string
+                          example: ''
+                        email_bcc:
+                          type: array
+                          items:
+                            type: string
+                            format: email
+                          maxItems: 5
+                          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - 'Request is malformed: Failed to parse app_id from request'
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - template not found
+        '429':
+          description: '429'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StructuredErrorResponse'
+              example:
+                errors:
+                - code: Rate Limit Exceeded
+                  title: Example error title
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Templates
+    delete:
+      summary: Delete template
+      description: Permanently delete a specific message template from your OneSignal app using its template ID. Templates used in Journeys must be removed from those Journeys before deletion.
+      operationId: delete-template
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst templateId: string = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n// string\nconst appId: string = \"YOUR_APP_ID\";\n\ntry {\n  const response = await apiInstance.deleteTemplate(templateId, appId);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"deleteTemplate failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    template_id = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" \n    app_id = \"YOUR_APP_ID\" \n\n    try:\n        # Delete template\n        api_response = api_instance.delete_template(template_id, app_id)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->delete_template: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$template_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c'; // string\n$app_id = 'YOUR_APP_ID'; // string\n\ntry {\n    $result = $apiInstance->deleteTemplate($template_id, $app_id);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->deleteTemplate: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->deleteTemplate: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    templateId := \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" // string | \n    appId := \"YOUR_APP_ID\" // string | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.DeleteTemplate(restAuth, templateId).AppId(appId).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.DeleteTemplate``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `DeleteTemplate`: GenericSuccessBoolResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.DeleteTemplate`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\ntemplate_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c' # String | \napp_id = 'YOUR_APP_ID' # String | \n\nbegin\n  # Delete template\n  result = api_instance.delete_template(template_id, app_id)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->delete_template: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\"; // String | \n    String appId = \"YOUR_APP_ID\"; // String | \n    try {\n      GenericSuccessBoolResponse result = apiInstance.deleteTemplate(templateId, appId);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#deleteTemplate\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class DeleteTemplateExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";  // string | \n            var appId = \"YOUR_APP_ID\";  // string | \n\n            try\n            {\n                // Delete template\n                GenericSuccessBoolResponse result = apiInstance.DeleteTemplate(templateId, appId);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.DeleteTemplate: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let template_id: &str = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n    let app_id: &str = \"YOUR_APP_ID\";\n\n    match default_api::delete_template(&configuration, template_id, app_id).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"delete_template failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"delete_template failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: template_id
+        in: path
+        description: The template ID in UUID v4 format. See [Templates](/docs/en/templates).
+        schema:
+          type: string
+          default: YOUR_TEMPLATE_ID
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App's API key found in [Settings > Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: Bad Request (Missing App ID)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: 'Request is malformed: Failed to parse app_id from request'
+                - title: Bad Request (Template In Use)
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                      default: true
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: Can not delete a template that has journeys using it.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - template not found
+        '429':
+          description: '429'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StructuredErrorResponse'
+              example:
+                errors:
+                - code: Rate Limit Exceeded
+                  title: Example error title
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Templates
+    patch:
+      summary: Update template
+      description: Update existing OneSignal message templates for push, email, or SMS. Changes apply immediately across dashboard and API usage via the `template_id` reference.
+      operationId: update-template
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst templateId: string = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n// string\nconst appId: string = \"YOUR_APP_ID\";\n// UpdateTemplateRequest\nconst updateTemplateRequest: Onesignal.UpdateTemplateRequest = {\n    name: \"name_example\",\n    contents: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    headings: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    subtitle: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    is_email: true,\n    email_subject: \"email_subject_example\",\n    email_body: \"email_body_example\",\n    email_bcc: [\n      \"email_bcc_example\",\n    ],\n    is_sms: true,\n    dynamic_content: \"dynamic_content_example\",\n  };\n\ntry {\n  const response = await apiInstance.updateTemplate(templateId, appId, updateTemplateRequest);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"updateTemplate failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    template_id = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" \n    app_id = \"YOUR_APP_ID\" \n    update_template_request = UpdateTemplateRequest(\n        name=\"name_example\",\n        contents=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        headings=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        subtitle=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        is_email=True,\n        email_subject=\"email_subject_example\",\n        email_body=\"email_body_example\",\n        email_bcc=[\n            \"email_bcc_example\",\n        ],\n        is_sms=True,\n        dynamic_content=\"dynamic_content_example\",\n    ) \n\n    try:\n        # Update template\n        api_response = api_instance.update_template(template_id, app_id, update_template_request)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->update_template: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$template_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c'; // string\n$app_id = 'YOUR_APP_ID'; // string\n$update_template_request = new \\onesignal\\client\\model\\UpdateTemplateRequest(); // \\onesignal\\client\\model\\UpdateTemplateRequest\n\ntry {\n    $result = $apiInstance->updateTemplate($template_id, $app_id, $update_template_request);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->updateTemplate: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->updateTemplate: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    templateId := \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" // string | \n    appId := \"YOUR_APP_ID\" // string | \n    updateTemplateRequest := *onesignal.NewUpdateTemplateRequest() // UpdateTemplateRequest | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.UpdateTemplate(restAuth, templateId).AppId(appId).UpdateTemplateRequest(updateTemplateRequest).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.UpdateTemplate``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `UpdateTemplate`: TemplateResource\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.UpdateTemplate`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\ntemplate_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c' # String | \napp_id = 'YOUR_APP_ID' # String | \nupdate_template_request = OneSignal::UpdateTemplateRequest.new # UpdateTemplateRequest | \n\nbegin\n  # Update template\n  result = api_instance.update_template(template_id, app_id, update_template_request)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->update_template: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\"; // String | \n    String appId = \"YOUR_APP_ID\"; // String | \n    UpdateTemplateRequest updateTemplateRequest = new UpdateTemplateRequest(); // UpdateTemplateRequest | \n    try {\n      TemplateResource result = apiInstance.updateTemplate(templateId, appId, updateTemplateRequest);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#updateTemplate\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class UpdateTemplateExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";  // string | \n            var appId = \"YOUR_APP_ID\";  // string | \n            var updateTemplateRequest = new UpdateTemplateRequest(); // UpdateTemplateRequest | \n\n            try\n            {\n                // Update template\n                TemplateResource result = apiInstance.UpdateTemplate(templateId, appId, updateTemplateRequest);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.UpdateTemplate: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\nuse onesignal_rust_api::models;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let template_id: &str = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n    let app_id: &str = \"YOUR_APP_ID\";\n    let update_template_request: models::UpdateTemplateRequest = todo!();\n\n    match default_api::update_template(&configuration, template_id, app_id, update_template_request).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"update_template failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"update_template failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: template_id
+        in: path
+        description: The template ID in UUID v4 format. See [Templates](/docs/en/templates).
+        schema:
+          type: string
+          default: YOUR_TEMPLATE_ID
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: An internal name you set to help organize and track Templates. Maximum 128 characters.
+                  default: YOUR_TEMPLATE_NAME
+                contents:
+                  type: object
+                  description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Supports [Message Personalization](/docs/message-personalization).
+                  required:
+                  - en
+                  properties:
+                    en:
+                      type: string
+                      description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                isEmail:
+                  type: boolean
+                  description: Required to be set `true` for email templates.
+                email_body:
+                  type: string
+                  description: The body of the email in HTML format. Required for email templates. Supports [Message Personalization](/docs/message-personalization).
+                isSMS:
+                  type: boolean
+                  description: Required to be set `true` for SMS templates.
+                dynamic_content:
+                  type: object
+                  description: Add personalization to your templates programmatically. No need to upload a CSV. See [Dynamic Content](/docs/dynamic-content) for details.
+                  example:
+                    campaign_id:
+                      A:
+                        title: Custom Title A
+                        message: Custom Message A
+                        url: https://www.onesignal.com
+                      B:
+                        title: Custom Title B
+                        message: Custom Message B
+                        url: https://www.onesignal.com/login
+      responses:
+        '200':
+          description: The updated template record. Same shape as POST /templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                      default: true
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: '''message'' Notifications must have Any/English language content'
+                - title: Bad Request (Email)
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                      default: true
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: '''message'' Email body can not be blank'
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Templates
+    servers:
+    - url: https://api.onesignal.com
   /templates:
+    post:
+      summary: Create template
+      description: Create reusable message templates for push, email, and SMS channels. Templates can be accessed through both the dashboard and API using a `template_id`.
+      operationId: create-template
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// CreateTemplateRequest\nconst createTemplateRequest: Onesignal.CreateTemplateRequest = {\n    app_id: \"app_id_example\",\n    name: \"name_example\",\n    contents: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    headings: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    subtitle: {\n      en: \"en_example\",\n      ar: \"ar_example\",\n      bs: \"bs_example\",\n      bg: \"bg_example\",\n      ca: \"ca_example\",\n      zh_hans: \"zh_hans_example\",\n      zh_hant: \"zh_hant_example\",\n      zh: \"zh_example\",\n      hr: \"hr_example\",\n      cs: \"cs_example\",\n      da: \"da_example\",\n      nl: \"nl_example\",\n      et: \"et_example\",\n      fi: \"fi_example\",\n      fr: \"fr_example\",\n      ka: \"ka_example\",\n      de: \"de_example\",\n      el: \"el_example\",\n      hi: \"hi_example\",\n      he: \"he_example\",\n      hu: \"hu_example\",\n      id: \"id_example\",\n      it: \"it_example\",\n      ja: \"ja_example\",\n      ko: \"ko_example\",\n      lv: \"lv_example\",\n      lt: \"lt_example\",\n      ms: \"ms_example\",\n      nb: \"nb_example\",\n      pl: \"pl_example\",\n      fa: \"fa_example\",\n      pt: \"pt_example\",\n      pa: \"pa_example\",\n      ro: \"ro_example\",\n      ru: \"ru_example\",\n      sr: \"sr_example\",\n      sk: \"sk_example\",\n      es: \"es_example\",\n      sv: \"sv_example\",\n      th: \"th_example\",\n      tr: \"tr_example\",\n      uk: \"uk_example\",\n      vi: \"vi_example\",\n    },\n    is_email: true,\n    email_subject: \"email_subject_example\",\n    email_body: \"email_body_example\",\n    email_bcc: [\n      \"email_bcc_example\",\n    ],\n    is_sms: true,\n    dynamic_content: \"dynamic_content_example\",\n  };\n\ntry {\n  const response = await apiInstance.createTemplate(createTemplateRequest);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"createTemplate failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    create_template_request = CreateTemplateRequest(\n        app_id=\"app_id_example\",\n        name=\"name_example\",\n        contents=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        headings=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        subtitle=LanguageStringMap(\n            en=\"en_example\",\n            ar=\"ar_example\",\n            bs=\"bs_example\",\n            bg=\"bg_example\",\n            ca=\"ca_example\",\n            zh_hans=\"zh_hans_example\",\n            zh_hant=\"zh_hant_example\",\n            zh=\"zh_example\",\n            hr=\"hr_example\",\n            cs=\"cs_example\",\n            da=\"da_example\",\n            nl=\"nl_example\",\n            et=\"et_example\",\n            fi=\"fi_example\",\n            fr=\"fr_example\",\n            ka=\"ka_example\",\n            de=\"de_example\",\n            el=\"el_example\",\n            hi=\"hi_example\",\n            he=\"he_example\",\n            hu=\"hu_example\",\n            id=\"id_example\",\n            it=\"it_example\",\n            ja=\"ja_example\",\n            ko=\"ko_example\",\n            lv=\"lv_example\",\n            lt=\"lt_example\",\n            ms=\"ms_example\",\n            nb=\"nb_example\",\n            pl=\"pl_example\",\n            fa=\"fa_example\",\n            pt=\"pt_example\",\n            pa=\"pa_example\",\n            ro=\"ro_example\",\n            ru=\"ru_example\",\n            sr=\"sr_example\",\n            sk=\"sk_example\",\n            es=\"es_example\",\n            sv=\"sv_example\",\n            th=\"th_example\",\n            tr=\"tr_example\",\n            uk=\"uk_example\",\n            vi=\"vi_example\",\n        ),\n        is_email=True,\n        email_subject=\"email_subject_example\",\n        email_body=\"email_body_example\",\n        email_bcc=[\n            \"email_bcc_example\",\n        ],\n        is_sms=True,\n        dynamic_content=\"dynamic_content_example\",\n    ) \n\n    try:\n        # Create template\n        api_response = api_instance.create_template(create_template_request)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->create_template: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$create_template_request = new \\onesignal\\client\\model\\CreateTemplateRequest(); // \\onesignal\\client\\model\\CreateTemplateRequest\n\ntry {\n    $result = $apiInstance->createTemplate($create_template_request);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->createTemplate: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->createTemplate: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    createTemplateRequest := *onesignal.NewCreateTemplateRequest(\"AppId_example\", \"Name_example\", *onesignal.NewLanguageStringMap()) // CreateTemplateRequest | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.CreateTemplate(restAuth).CreateTemplateRequest(createTemplateRequest).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.CreateTemplate``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `CreateTemplate`: TemplateResource\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.CreateTemplate`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\ncreate_template_request = OneSignal::CreateTemplateRequest.new({app_id: 'app_id_example', name: 'name_example', contents: OneSignal::LanguageStringMap.new}) # CreateTemplateRequest | \n\nbegin\n  # Create template\n  result = api_instance.create_template(create_template_request)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->create_template: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    CreateTemplateRequest createTemplateRequest = new CreateTemplateRequest(); // CreateTemplateRequest | \n    try {\n      TemplateResource result = apiInstance.createTemplate(createTemplateRequest);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#createTemplate\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class CreateTemplateExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var createTemplateRequest = new CreateTemplateRequest(); // CreateTemplateRequest | \n\n            try\n            {\n                // Create template\n                TemplateResource result = apiInstance.CreateTemplate(createTemplateRequest);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.CreateTemplate: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\nuse onesignal_rust_api::models;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let create_template_request: models::CreateTemplateRequest = todo!();\n\n    match default_api::create_template(&configuration, create_template_request).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"create_template failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"create_template failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      - name: Content-Type
+        in: header
+        required: true
+        schema:
+          type: string
+          default: application/json; charset=utf-8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - app_id
+              - name
+              properties:
+                app_id:
+                  type: string
+                  description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+                  default: YOUR_APP_ID
+                name:
+                  type: string
+                  description: An internal name you set to help organize and track Templates. Maximum 128 characters.
+                  default: YOUR_TEMPLATE_NAME
+                contents:
+                  type: object
+                  description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Required for push and SMS templates. Supports [Message Personalization](/docs/message-personalization).
+                  required:
+                  - en
+                  properties:
+                    en:
+                      type: string
+                      description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                isEmail:
+                  type: boolean
+                  description: Required to be set `true` for email templates.
+                email_subject:
+                  type: string
+                  description: Required for email templates. The subject of the email. Supports [Message Personalization](/docs/message-personalization).
+                email_body:
+                  type: string
+                  description: The body of the email in HTML format. Required for email templates. Supports [Message Personalization](/docs/message-personalization).
+                isSMS:
+                  type: boolean
+                  description: Required to be set `true` for SMS templates.
+                dynamic_content:
+                  type: object
+                  description: Add personalization to your templates programmatically. No need to upload a CSV. See [Dynamic Content](/docs/dynamic-content) for details.
+                  example:
+                    campaign_id:
+                      A:
+                        title: Custom Title A
+                        message: Custom Message A
+                        url: https://www.onesignal.com
+                      B:
+                        title: Custom Title B
+                        message: Custom Message B
+                        url: https://www.onesignal.com/login
+      responses:
+        '200':
+          description: The created template record. `content` reflects the configuration as stored — fields not relevant to the chosen channel are returned as null.
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    id: b17ebe45-ae35-4dce-11f8-8c3b3894a432
+                    name: new template created via the API
+                    created_at: '2023-08-02T18:09:02Z'
+                    updated_at: '2023-08-02T18:09:02Z'
+                    content:
+                      isAndroid: true
+                      isIos: true
+                      isMacOSX: true
+                      isAdm: true
+                      isAlexa: null
+                      isWP: true
+                      isWP_WNS: true
+                      isChrome: true
+                      isChromeWeb: true
+                      isSafari: true
+                      isFirefox: true
+                      isEdge: true
+                      headings:
+                        en: hello from the api!
+                      subtitle: null
+                      contents:
+                        en: why hello there!
+                      global_image: null
+                      url: https://example.com
+                      isEmail: null
+                      email_body: null
+                      email_subject: null
+                      email_preheader: null
+                      isSMS: null
+                      sms_from: null
+                      sms_media_urls: null
+                      email_reply_to_address: null
+                      disable_email_click_tracking: null
+              schema:
+                $ref: '#/components/schemas/TemplateResource'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Bad Request (Email):
+                  value:
+                    success: false
+                    errors:
+                    - '''message'' Email body can not be blank'
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+        '422':
+          description: '422'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: '<!-- returned when the request does not contain any contents available to be saved in the template -->
+
+                    <!-- can also be returned if creating a push template without setting the value as an object -->
+
+                    <title>The change you wanted was rejected (422)</title>'
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Templates
     get:
       description: List templates for an app.
       operationId: view_templates
@@ -80,39 +862,152 @@ paths:
       summary: View templates
       tags:
       - Templates
+    servers:
+    - url: https://api.onesignal.com
+  /templates/{template_id}/copy_to_app?app_id={app_id}:
     post:
-      description: Create reusable message templates for push, email, and SMS channels.
-      operationId: create_template
+      summary: Copy template to another app
+      description: Create a duplicate of a OneSignal message template in another app within the same organization. The new template will retain the same content but have a unique template ID.
+      operationId: copy-template-to-another-app
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    organizationApiKey: 'YOUR_ORGANIZATION_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst templateId: string = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n// string\nconst appId: string = \"YOUR_APP_ID\";\n// CopyTemplateRequest\nconst copyTemplateRequest: Onesignal.CopyTemplateRequest = {\n    target_app_id: \"target_app_id_example\",\n  };\n\ntry {\n  const response = await apiInstance.copyTemplateToApp(templateId, appId, copyTemplateRequest);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"copyTemplateToApp failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    template_id = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" \n    app_id = \"YOUR_APP_ID\" \n    copy_template_request = CopyTemplateRequest(\n        target_app_id=\"target_app_id_example\",\n    ) \n\n    try:\n        # Copy template to another app\n        api_response = api_instance.copy_template_to_app(template_id, app_id, copy_template_request)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->copy_template_to_app: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: organization_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$template_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c'; // string\n$app_id = 'YOUR_APP_ID'; // string\n$copy_template_request = new \\onesignal\\client\\model\\CopyTemplateRequest(); // \\onesignal\\client\\model\\CopyTemplateRequest\n\ntry {\n    $result = $apiInstance->copyTemplateToApp($template_id, $app_id, $copy_template_request);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->copyTemplateToApp: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->copyTemplateToApp: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    templateId := \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\" // string | \n    appId := \"YOUR_APP_ID\" // string | \n    copyTemplateRequest := *onesignal.NewCopyTemplateRequest(\"TargetAppId_example\") // CopyTemplateRequest | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    orgAuth := context.WithValue(context.Background(), onesignal.OrganizationApiKey, \"YOUR_ORGANIZATION_API_KEY\") // Organization API key is only required for creating new apps and other top-level endpoints\n\n    resp, r, err := apiClient.DefaultApi.CopyTemplateToApp(orgAuth, templateId).AppId(appId).CopyTemplateRequest(copyTemplateRequest).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.CopyTemplateToApp``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `CopyTemplateToApp`: TemplateResource\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.CopyTemplateToApp`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: organization_api_key\n  config.organization_api_key = 'YOUR_ORGANIZATION_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\ntemplate_id = 'e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c' # String | \napp_id = 'YOUR_APP_ID' # String | \ncopy_template_request = OneSignal::CopyTemplateRequest.new({target_app_id: 'target_app_id_example'}) # CopyTemplateRequest | \n\nbegin\n  # Copy template to another app\n  result = api_instance.copy_template_to_app(template_id, app_id, copy_template_request)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->copy_template_to_app: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: organization_api_key\n    HttpBearerAuth organization_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"organization_api_key\");\n    organization_api_key.setBearerToken(\"YOUR_ORGANIZATION_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\"; // String | \n    String appId = \"YOUR_APP_ID\"; // String | \n    CopyTemplateRequest copyTemplateRequest = new CopyTemplateRequest(); // CopyTemplateRequest | \n    try {\n      TemplateResource result = apiInstance.copyTemplateToApp(templateId, appId, copyTemplateRequest);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#copyTemplateToApp\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class CopyTemplateToAppExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: organization_api_key\n            config.AccessToken = \"YOUR_ORGANIZATION_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var templateId = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";  // string | \n            var appId = \"YOUR_APP_ID\";  // string | \n            var copyTemplateRequest = new CopyTemplateRequest(); // CopyTemplateRequest | \n\n            try\n            {\n                // Copy template to another app\n                TemplateResource result = apiInstance.CopyTemplateToApp(templateId, appId, copyTemplateRequest);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.CopyTemplateToApp: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\nuse onesignal_rust_api::models;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.organization_api_key_token = Some(\"YOUR_ORGANIZATION_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let template_id: &str = \"e4d3c2b1-a09f-4f1e-8d7c-6b5a4f3e2d1c\";\n    let app_id: &str = \"YOUR_APP_ID\";\n    let copy_template_request: models::CopyTemplateRequest = todo!();\n\n    match default_api::copy_template_to_app(&configuration, template_id, app_id, copy_template_request).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"copy_template_to_app failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"copy_template_to_app failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: template_id
+        in: path
+        description: The template ID in UUID v4 format. See [Templates](/docs/en/templates).
+        schema:
+          type: string
+          default: YOUR_TEMPLATE_ID
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your Organization API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_ORGANIZATION_API_KEY
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateTemplateRequest'
-        required: true
+              type: object
+              required:
+              - target_app_id
+              properties:
+                target_app_id:
+                  type: string
+                  description: Specifies the OneSignal app ID that the template will be copied to. Cannot be the same as the `app_id`.
+                  default: YOUR_OTHER_APP_ID
       responses:
         '200':
+          description: '200'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateResource'
-          description: OK
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the template was copied successfully.
         '400':
+          description: '400'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
-          description: Bad Request
-        '422':
+                oneOf:
+                - title: Bad Request (Missing Body Parameter)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        description: 'Missing body parameter.Request is malformed: Failed to parse app_id from request'
+                - title: Bad Request (Missing Query Parameter)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        description: 'Missing query parameter. app_id not found. You may be missing a Content-Type: application/json header.'
+        '404':
+          description: '404'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
-          description: Unprocessable Entity
-      security:
-      - rest_api_key: []
-      summary: Create template
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the template was copied successfully.
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
       tags:
       - Templates
+      security:
+      - {}
+    servers:
+    - url: https://api.onesignal.com
   /templates/{template_id}:
     delete:
       description: Delete a template by id.
@@ -179,7 +1074,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateResource'
+                $ref: '#/components/schemas/TemplateResource_2'
           description: OK
         '400':
           content:
@@ -227,7 +1122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateResource'
+                $ref: '#/components/schemas/TemplateResource_2'
           description: OK
         '400':
           content:
@@ -240,6 +1135,8 @@ paths:
       summary: Update template
       tags:
       - Templates
+    servers:
+    - url: https://api.onesignal.com
   /templates/{template_id}/copy_to_app:
     post:
       description: Copy a template to a destination app.
@@ -270,7 +1167,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateResource'
+                $ref: '#/components/schemas/TemplateResource_2'
           description: OK
         '400':
           content:
@@ -283,15 +1180,243 @@ paths:
       summary: Copy template to another app
       tags:
       - Templates
+    servers:
+    - url: https://api.onesignal.com
 components:
   schemas:
-    GenericError:
+    StructuredErrorItem:
+      type: object
+      required:
+      - code
+      - title
       properties:
-        errors: {}
+        code:
+          type: string
+          description: Stable error-code identifier. Use this for programmatic branching in your integration.
+        title:
+          type: string
+          description: Human-readable error message intended for logs and operator-facing surfaces.
+        meta:
+          type: object
+          additionalProperties: true
+          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
+    TemplateResourceContent:
+      type: object
+      description: 'The content block of a template. Every field is nullable: a field is populated only when the corresponding channel feature is enabled for the template. For example, push fields (`isAndroid`, `isIos`, `headings`, ...) are populated for push templates; email fields (`isEmail`, `email_body`, ...) for email templates; and SMS fields (`isSMS`, `sms_from`, ...) for SMS templates. Cross-channel templates may have multiple feature blocks populated.'
+      properties:
+        isAndroid:
+          type:
+          - boolean
+          - 'null'
+        isIos:
+          type:
+          - boolean
+          - 'null'
+        isMacOSX:
+          type:
+          - boolean
+          - 'null'
+        isAdm:
+          type:
+          - boolean
+          - 'null'
+        isAlexa:
+          type:
+          - boolean
+          - 'null'
+        isWP:
+          type:
+          - boolean
+          - 'null'
+        isWP_WNS:
+          type:
+          - boolean
+          - 'null'
+        isChrome:
+          type:
+          - boolean
+          - 'null'
+        isChromeWeb:
+          type:
+          - boolean
+          - 'null'
+        isSafari:
+          type:
+          - boolean
+          - 'null'
+        isFirefox:
+          type:
+          - boolean
+          - 'null'
+        isEdge:
+          type:
+          - boolean
+          - 'null'
+        isHuawei:
+          type:
+          - boolean
+          - 'null'
+        headings:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Map of language code to localized string. Keys are 2-letter ISO codes (e.g., `en`, `es`); values are the message text.
+        subtitle:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Map of language code to localized string. Keys are 2-letter ISO codes (e.g., `en`, `es`); values are the message text.
+        contents:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Map of language code to localized string. Keys are 2-letter ISO codes (e.g., `en`, `es`); values are the message text.
+        global_image:
+          type:
+          - string
+          - 'null'
+          description: URL of the image to render with the push notification.
+        url:
+          type:
+          - string
+          - 'null'
+          description: Click-action URL for push notifications.
+          format: uri
+        isEmail:
+          type:
+          - boolean
+          - 'null'
+        email_body:
+          type:
+          - string
+          - 'null'
+          description: HTML body of the email.
+        email_subject:
+          type:
+          - string
+          - 'null'
+        email_preheader:
+          type:
+          - string
+          - 'null'
+        email_from_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        email_from_name:
+          type:
+          - string
+          - 'null'
+        email_reply_to_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        email_bcc:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: email
+          maxItems: 5
+          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+        disable_email_click_tracking:
+          type:
+          - boolean
+          - 'null'
+        isSMS:
+          type:
+          - boolean
+          - 'null'
+        sms_from:
+          type:
+          - string
+          - 'null'
+          description: Sender phone number in E.164 format.
+        sms_media_urls:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uri
+          description: Optional array of media URLs to attach to the SMS (MMS).
+        huawei_badge_add_num:
+          type:
+          - integer
+          - 'null'
+          description: Increment value for the Huawei badge counter.
+        huawei_badge_class:
+          type:
+          - string
+          - 'null'
+          description: Activity class associated with the Huawei badge counter.
+        huawei_badge_set_num:
+          type:
+          - integer
+          - 'null'
+          description: Absolute value to set the Huawei badge counter to.
+    StructuredErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredErrorItem'
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
         success:
           type: boolean
-        reference: {}
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    TemplateResource:
       type: object
+      required:
+      - id
+      description: A template record. The `content` block is a `TemplateResourceContent` whose populated fields depend on the template's channel(s).
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Template ID in UUID v4 format.
+        name:
+          type: string
+          description: Internal label set when the template was created or last updated. Maximum 128 characters.
+        channel:
+          type: string
+          enum:
+          - push
+          - email
+          - SMS
+          description: 'The primary channel the template is configured for. Note: `SMS` is uppercased while the others are lowercased.'
+        created_at:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp when the template was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp when the template was last updated.
+        content:
+          $ref: '#/components/schemas/TemplateResourceContent'
     UpdateTemplateRequest:
       example:
         isSMS: true
@@ -453,91 +1578,30 @@ components:
           type: boolean
         email_subject:
           description: Subject of the email.
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
         email_body:
           description: Body of the email (HTML supported).
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
         email_bcc:
           description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
           items:
             type: string
           maxItems: 5
-          nullable: true
-          type: array
+          type:
+          - array
+          - 'null'
         isSMS:
           description: Set true for an SMS template.
           type: boolean
         dynamic_content:
           description: JSON string for dynamic content personalization.
-          nullable: true
-          type: string
-      type: object
-    TemplateResource:
-      example:
-        updated_at: 2000-01-23 04:56:07+00:00
-        name: name
-        channel: push
-        created_at: 2000-01-23 04:56:07+00:00
-        id: id
-        content:
-          key: ''
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-        channel:
-          enum:
-          - push
-          - email
-          - sms
-          nullable: true
-          type: string
-        content:
-          additionalProperties: true
-          description: Rendered content and channel/platform flags for the template.
-          type: object
-      type: object
-    CopyTemplateRequest:
-      example:
-        target_app_id: target_app_id
-      properties:
-        target_app_id:
-          description: Destination OneSignal App ID in UUID v4 format.
-          type: string
-      required:
-      - target_app_id
-      type: object
-    TemplatesListResponse:
-      example:
-        templates:
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
-      properties:
-        templates:
-          items:
-            $ref: '#/components/schemas/TemplateResource'
-          type: array
+          type:
+          - string
+          - 'null'
       type: object
     CreateTemplateRequest:
       example:
@@ -704,26 +1768,30 @@ components:
           type: boolean
         email_subject:
           description: Subject of the email.
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
         email_body:
           description: Body of the email (HTML supported).
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
         email_bcc:
           description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
           items:
             type: string
           maxItems: 5
-          nullable: true
-          type: array
+          type:
+          - array
+          - 'null'
         isSMS:
           description: Set true for an SMS template.
           type: boolean
         dynamic_content:
           description: JSON string for dynamic content personalization.
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - app_id
       - contents
@@ -736,14 +1804,55 @@ components:
         success:
           type: boolean
       type: object
-    RateLimitError:
+    TemplateResource_2:
+      example:
+        updated_at: 2000-01-23 04:56:07+00:00
+        name: name
+        channel: push
+        created_at: 2000-01-23 04:56:07+00:00
+        id: id
+        content:
+          key: ''
       properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
+        id:
           type: string
+        name:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        channel:
+          enum:
+          - push
+          - email
+          - sms
+          type:
+          - string
+          - 'null'
+        content:
+          additionalProperties: true
+          description: Rendered content and channel/platform flags for the template.
+          type: object
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    CopyTemplateRequest:
+      example:
+        target_app_id: target_app_id
+      properties:
+        target_app_id:
+          description: Destination OneSignal App ID in UUID v4 format.
+          type: string
+      required:
+      - target_app_id
       type: object
     LanguageStringMap:
       example:
@@ -921,6 +2030,38 @@ components:
           description: Text in Vietnamese.
           type: string
       type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
+    TemplatesListResponse:
+      example:
+        templates:
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateResource_2'
+          type: array
+      type: object
   securitySchemes:
     rest_api_key:
       scheme: bearer
@@ -928,3 +2069,6 @@ components:
     organization_api_key:
       scheme: bearer
       type: http
+x-refined-from:
+- onesignal-api-openapi.json
+- onesignal-openapi.yml

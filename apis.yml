@@ -163,6 +163,77 @@ apis:
     url: mcp/onesignal-tool-crosswalk.yml
   - type: Authentication
     url: authentication/onesignal-authentication.yml
+- aid: >-
+    onesignal:onesignal-notifications-app-id-app-id-limit-limit-offset-offset-kind-kind-template-id-template-id-time-offset-time-offset-api
+  name: >-
+    OneSignal Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template
+    Id}&time Offset={time Offset} API
+  description: >-
+    The Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template
+    Id}&time Offset={time Offset} API from OneSignal — 1 operation(s) for notifications?app id={app id}&limit={limit}&offset={offset}&kind={kind}&template
+    id={template id}&time offset={time offset}.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - >-
+    Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time
+    Offset={time Offset}
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/onesignal-notifications-app-id-app-id-limit-limit-offset-offset-kind-kind-template-id-template-id-time-offset-time-offset-api-openapi.yml
+- aid: onesignal:onesignal-notifications-c-email-api
+  name: OneSignal Notifications?c=email API
+  description: The Notifications?c=email API from OneSignal — 1 operation(s) for notifications?c=email.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Notifications?c=email
+  properties:
+  - type: OpenAPI
+    url: openapi/onesignal-notifications-c-email-api-openapi.yml
+- aid: onesignal:onesignal-notifications-c-push-api
+  name: OneSignal Notifications?c=push API
+  description: The Notifications?c=push API from OneSignal — 1 operation(s) for notifications?c=push.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Notifications?c=push
+  properties:
+  - type: OpenAPI
+    url: openapi/onesignal-notifications-c-push-api-openapi.yml
+- aid: onesignal:onesignal-notifications-c-sms-api
+  name: OneSignal Notifications?c=sms API
+  description: The Notifications?c=sms API from OneSignal — 1 operation(s) for notifications?c=sms.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Notifications?c=sms
+  properties:
+  - type: OpenAPI
+    url: openapi/onesignal-notifications-c-sms-api-openapi.yml
+- aid: onesignal:onesignal-organizations-api
+  name: OneSignal Organizations API
+  description: The Organizations API from OneSignal — 1 operation(s) for organizations.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/onesignal-organizations-api-openapi.yml
+- aid: onesignal:onesignal-templates-app-id-app-id-limit-limit-offset-offset-api
+  name: OneSignal Templates?app Id={app Id}&limit={limit}&offset={offset} API
+  description: >-
+    The Templates?app Id={app Id}&limit={limit}&offset={offset} API from OneSignal — 1 operation(s) for
+    templates?app id={app id}&limit={limit}&offset={offset}.
+  humanURL: https://documentation.onesignal.com/reference
+  baseURL: https://api.onesignal.com
+  tags:
+  - Templates?app Id={app Id}&limit={limit}&offset={offset}
+  properties:
+  - type: OpenAPI
+    url: openapi/onesignal-templates-app-id-app-id-limit-limit-offset-offset-api-openapi.yml
 common:
 - type: Authentication
   url: authentication/onesignal-authentication.yml

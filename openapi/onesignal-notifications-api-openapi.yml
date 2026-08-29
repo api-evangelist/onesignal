@@ -1,18 +1,632 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  contact:
-    email: devrel@onesignal.com
-    name: OneSignal DevRel
-    url: https://onesignal.com
-  description: A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com
-  termsOfService: https://onesignal.com/tos
-  title: OneSignal Notifications API
-  version: 5.5.0
+  title: Onesignal Notifications API
+  version: '1.0'
+  description: 'Operations tagged Notifications across 2 of this provider''s published API definitions: onesignal-api-openapi.json, onesignal-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.onesignal.com
 tags:
 - name: Notifications
 paths:
+  /notifications/{message_id}/history:
+    x-mcp:
+      enabled: true
+    post:
+      summary: Message history
+      description: View which subscriptions received a particular message
+      operationId: message-history
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | The \\\"id\\\" of the message found in the Notification object\nconst notificationId: string = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n// GetNotificationHistoryRequestBody\nconst getNotificationHistoryRequestBody: Onesignal.GetNotificationHistoryRequestBody = {\n    events: \"sent\",\n    email: \"email_example\",\n    app_id: \"app_id_example\",\n  };\n\ntry {\n  const response = await apiInstance.getNotificationHistory(notificationId, getNotificationHistoryRequestBody);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"getNotificationHistory failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    notification_id = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" # The \\\"id\\\" of the message found in the Notification object \n    get_notification_history_request_body = GetNotificationHistoryRequestBody(\n        events=\"sent\",\n        email=\"email_example\",\n        app_id=\"app_id_example\",\n    ) \n\n    try:\n        # Notification History\n        api_response = api_instance.get_notification_history(notification_id, get_notification_history_request_body)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->get_notification_history: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$notification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88'; // string | The \\\"id\\\" of the message found in the Notification object\n$get_notification_history_request_body = new \\onesignal\\client\\model\\GetNotificationHistoryRequestBody(); // \\onesignal\\client\\model\\GetNotificationHistoryRequestBody\n\ntry {\n    $result = $apiInstance->getNotificationHistory($notification_id, $get_notification_history_request_body);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->getNotificationHistory: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->getNotificationHistory: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    notificationId := \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" // string | The \\\"id\\\" of the message found in the Notification object\n    getNotificationHistoryRequestBody := *onesignal.NewGetNotificationHistoryRequestBody() // GetNotificationHistoryRequestBody | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.GetNotificationHistory(restAuth, notificationId).GetNotificationHistoryRequestBody(getNotificationHistoryRequestBody).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.GetNotificationHistory``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `GetNotificationHistory`: NotificationHistorySuccessResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.GetNotificationHistory`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\nnotification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88' # String | The \\\"id\\\" of the message found in the Notification object\nget_notification_history_request_body = OneSignal::GetNotificationHistoryRequestBody.new # GetNotificationHistoryRequestBody | \n\nbegin\n  # Notification History\n  result = api_instance.get_notification_history(notification_id, get_notification_history_request_body)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->get_notification_history: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\"; // String | The \\\"id\\\" of the message found in the Notification object\n    GetNotificationHistoryRequestBody getNotificationHistoryRequestBody = new GetNotificationHistoryRequestBody(); // GetNotificationHistoryRequestBody | \n    try {\n      NotificationHistorySuccessResponse result = apiInstance.getNotificationHistory(notificationId, getNotificationHistoryRequestBody);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#getNotificationHistory\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class GetNotificationHistoryExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";  // string | The \\\"id\\\" of the message found in the Notification object\n            var getNotificationHistoryRequestBody = new GetNotificationHistoryRequestBody(); // GetNotificationHistoryRequestBody | \n\n            try\n            {\n                // Notification History\n                NotificationHistorySuccessResponse result = apiInstance.GetNotificationHistory(notificationId, getNotificationHistoryRequestBody);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.GetNotificationHistory: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\nuse onesignal_rust_api::models;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let notification_id: &str = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n    let get_notification_history_request_body: models::GetNotificationHistoryRequestBody = todo!();\n\n    match default_api::get_notification_history(&configuration, notification_id, get_notification_history_request_body).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"get_notification_history failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"get_notification_history failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: message_id
+        in: path
+        description: The identifier of the message in UUID v4 format. Get this `id` in the response of your Create Message API request, the [View Messages API](/reference/view-messages), and in your OneSignal dashboard Message Reports.
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - app_id
+              - events
+              properties:
+                app_id:
+                  type: string
+                  description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+                  default: YOUR_APP_ID
+                events:
+                  type: string
+                  description: 'Specifies the type of event to retrieve. `sent` — retrieves all subscriptions sent the specified message. Note: sent events are not recorded for messages targeting fewer than 1,000 recipients. `clicked` — retrieves all subscriptions that interacted with the message. Note: There isn''t a recipient count threshold for tracking clicked event.'
+                  default: sent
+                email:
+                  type: string
+                  description: The email address in which to deliver the report.
+      responses:
+        '202':
+          description: Accepted. The history-export job was enqueued. The export is delivered asynchronously to the configured S3 destination.
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    success: true
+                    destination_url: https://onesignal-aws-link.csv
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                    default: true
+                  destination_url:
+                    type: string
+                    example: https://onesignal-aws-link.csv
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    errors:
+                    - param `email` must be a valid email
+                    success: false
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications
+      security:
+      - {}
+    servers:
+    - url: https://api.onesignal.com
+  /notifications/{message_id}/export_events:
+    post:
+      summary: Export audience activity CSV
+      description: Export a compressed CSV report of audience-level delivery and engagement data for a specific message. This includes sent, delivered, clicked, failed, and unsubscribed events across Push, Email, and SMS channels.
+      operationId: export-csv-of-events
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | The ID of the notification to export events from.\nconst notificationId: string = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n// string | The ID of the app that the notification belongs to.\nconst appId: string = \"YOUR_APP_ID\";\n\ntry {\n  const response = await apiInstance.exportEvents(notificationId, appId);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"exportEvents failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    notification_id = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" # The ID of the notification to export events from. \n    app_id = \"YOUR_APP_ID\" # The ID of the app that the notification belongs to. \n\n    try:\n        # Export CSV of Events\n        api_response = api_instance.export_events(notification_id, app_id)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->export_events: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$notification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88'; // string | The ID of the notification to export events from.\n$app_id = 'YOUR_APP_ID'; // string | The ID of the app that the notification belongs to.\n\ntry {\n    $result = $apiInstance->exportEvents($notification_id, $app_id);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->exportEvents: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->exportEvents: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    notificationId := \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" // string | The ID of the notification to export events from.\n    appId := \"YOUR_APP_ID\" // string | The ID of the app that the notification belongs to.\n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.ExportEvents(restAuth, notificationId).AppId(appId).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.ExportEvents``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `ExportEvents`: ExportEventsSuccessResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.ExportEvents`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\nnotification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88' # String | The ID of the notification to export events from.\napp_id = 'YOUR_APP_ID' # String | The ID of the app that the notification belongs to.\n\nbegin\n  # Export CSV of Events\n  result = api_instance.export_events(notification_id, app_id)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->export_events: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\"; // String | The ID of the notification to export events from.\n    String appId = \"YOUR_APP_ID\"; // String | The ID of the app that the notification belongs to.\n    try {\n      ExportEventsSuccessResponse result = apiInstance.exportEvents(notificationId, appId);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#exportEvents\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class ExportEventsExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";  // string | The ID of the notification to export events from.\n            var appId = \"YOUR_APP_ID\";  // string | The ID of the app that the notification belongs to.\n\n            try\n            {\n                // Export CSV of Events\n                ExportEventsSuccessResponse result = apiInstance.ExportEvents(notificationId, appId);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.ExportEvents: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let notification_id: &str = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n    let app_id: &str = \"YOUR_APP_ID\";\n\n    match default_api::export_events(&configuration, notification_id, app_id).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"export_events failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"export_events failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: message_id
+        in: path
+        description: The identifier of the message in UUID v4 format. Get this `id` in the response of your Create Message API request, the [View Messages API](/reference/view-messages), and in your OneSignal dashboard Message Reports.
+        schema:
+          type: string
+          default: YOUR_NOTIFICATION_ID
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csv_file_url:
+                    type: string
+                    description: The URL to download the CSV file. The file is available for 3 days after generation.
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - The reason for the error. Usually an invalid `message_id` format or missing required path parameter.
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Missing or invalid REST API key for the app.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - No message exists with the provided `message_id` in this app, or the message is older than 30 days and its audience activity has been purged.
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications
+      security:
+      - {}
+    servers:
+    - url: https://api.onesignal.com
+  /notifications/{message_id}?app_id={app_id}:
+    get:
+      summary: View message
+      description: View the details of a single message and the Outcomes associated with it.
+      operationId: view-message
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst appId: string = \"YOUR_APP_ID\";\n// string\nconst notificationId: string = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n\ntry {\n  const response = await apiInstance.getNotification(appId, notificationId);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"getNotification failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    app_id = \"YOUR_APP_ID\" \n    notification_id = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" \n\n    try:\n        # View notification\n        api_response = api_instance.get_notification(app_id, notification_id)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->get_notification: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$app_id = 'YOUR_APP_ID'; // string\n$notification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88'; // string\n\ntry {\n    $result = $apiInstance->getNotification($app_id, $notification_id);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->getNotification: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->getNotification: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    appId := \"YOUR_APP_ID\" // string | \n    notificationId := \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" // string | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.GetNotification(restAuth, notificationId).AppId(appId).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.GetNotification``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `GetNotification`: NotificationWithMeta\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.GetNotification`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\napp_id = 'YOUR_APP_ID' # String | \nnotification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88' # String | \n\nbegin\n  # View notification\n  result = api_instance.get_notification(app_id, notification_id)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->get_notification: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String appId = \"YOUR_APP_ID\"; // String | \n    String notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\"; // String | \n    try {\n      NotificationWithMeta result = apiInstance.getNotification(appId, notificationId);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#getNotification\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class GetNotificationExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var appId = \"YOUR_APP_ID\";  // string | \n            var notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";  // string | \n\n            try\n            {\n                // View notification\n                NotificationWithMeta result = apiInstance.GetNotification(appId, notificationId);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.GetNotification: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let app_id: &str = \"YOUR_APP_ID\";\n    let notification_id: &str = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n\n    match default_api::get_notification(&configuration, app_id, notification_id).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"get_notification failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"get_notification failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: message_id
+        in: path
+        description: The identifier of the message in UUID v4 format. Get this `id` in the response of your Create Message API request, the [View Messages API](/reference/view-messages), and in your OneSignal dashboard Message Reports.
+        schema:
+          type: string
+        required: true
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      - name: outcome_names
+        in: query
+        description: 'The name and aggregation type of the outcome(s) you want to fetch. Example: `my_outcome.count` or `my_outcome.sum`. For clicks, use `os__click.count`. For confirmed deliveries, use `os__confirmed_delivery.count`. For session duration, use `os__session_duration.count`.'
+        schema:
+          type: array
+          items:
+            type: string
+            default:
+            - os__click.count
+            - os__confirmed_delivery.count
+            - os__session_duration.count
+      - name: outcome_time_range
+        in: query
+        description: 'Time range for the returned data. Available values: `1h` (1 hour), `1d` (1 day), `1mo` (1 month)'
+        schema:
+          type: string
+          enum:
+          - 1h
+          - 1d
+          - 1mo
+          default: 1h
+      - name: outcome_platforms
+        in: query
+        description: The platforms in which you want to pull the data represented as the `device_type` integer.
+        schema:
+          type: string
+          default: 0,1,2,5,8,11,14,17
+      - name: outcome_attribution
+        in: query
+        description: Attribution type for the outcomes.
+        schema:
+          type: string
+          enum:
+          - direct
+          - influenced
+          - unattributed
+          - total
+          default: total
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Returns all message properties set. See the [Push notifications](/reference/push-notification), [Email](/reference/email), and/or [SMS](/reference/sms) Message Create APIs for all properties. Most commonly used properties for this endpoint are listed.
+                properties:
+                  app_id:
+                    description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+                    type: string
+                  big_picture:
+                    description: The URL of the image set in the push notification.
+                    type: string
+                  canceled:
+                    description: Whether the message was canceled.
+                    type: boolean
+                  chrome_web_icon:
+                    description: The URL of the icon set in the push notification.
+                    type: string
+                  chrome_web_image:
+                    description: The URL of the image set in the push notification.
+                    type: string
+                  name:
+                    description: An internal name you set to help organize and track messages. Not shown to recipients. Maximum 128 characters.
+                    type: string
+                  contents:
+                    description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages).
+                    type: object
+                    properties:
+                      en:
+                        type: string
+                        description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                  converted:
+                    type: integer
+                    description: The number of times the push was clicked.
+                  data:
+                    type: object
+                    description: The JSON data set in the push notification if applicable.
+                  delayed_option:
+                    type: string
+                    description: The per-user delay option set for the message.
+                  delivery_time_of_day:
+                    type: string
+                    description: The delivery time of day set for the message if `delayed_option` is `timezone`.
+                  remaining:
+                    type: integer
+                    description: The number of messages that have not been sent yet. If `null`, then the system is still processing the audience, try again later.
+                  errored:
+                    type: integer
+                    description: The number of times the message errored.
+                  excluded_segments:
+                    type: array
+                    description: The segments excluded from the message if applicable.
+                  failed:
+                    type: integer
+                    description: The number of subscriptions reported unsubscribed for the message.
+                  global_image:
+                    type: string
+                    description: The URL of the image set in the push notification.
+                  headings:
+                    type: object
+                    description: The title of the push notification.
+                  id:
+                    type: string
+                    description: The identifier of the message in UUID v4 format.
+                  included_segments:
+                    type: array
+                    description: The segments included in the message if applicable.
+                  ios_badgeCount:
+                    type: integer
+                    description: The badge count set for the message if applicable.
+                  ios_badgeType:
+                    type: string
+                    description: The badge type set for the message if applicable.
+                  queued_at:
+                    type: integer
+                    description: Unix timestamp of when the message was created.
+                  send_after:
+                    type: integer
+                    description: Unix timestamp of when the message delivery was scheduled to begin.
+                  completed_at:
+                    type: integer
+                    description: 'Unix timestamp of when the message delivery was completed. The delivery duration from start to finish can be calculated with `completed_at - send_after`. '
+                  successful:
+                    type: integer
+                    description: The number of messages successfully delivered to the push, email, or SMS servers.
+                  received:
+                    type: integer
+                    description: The number of messages that confirmed being received aka [Confirmed Deliveries](/docs/confirmed-delivery).
+                  filters:
+                    type: object
+                    description: The filters set for the message if applicable.
+                  template_id:
+                    type: string
+                    description: The template ID in UUID v4 format set for the message if applicable. See [Templates](/docs/en/templates).
+                  url:
+                    type: string
+                    description: The URL of the push notification.
+                  web_url:
+                    type: string
+                    description: The URL of the push notification for web push subscriptions.
+                  app_url:
+                    type: string
+                    description: The URL of the push notification for mobile subscriptions.
+                  platform_delivery_stats:
+                    type: object
+                    description: The successful, errored, failed, converted, received and frequency cap counts for each platform applicable.
+                  throttle_rate_per_minute:
+                    type: number
+                    description: The throttle rate of the push notification if applicable.
+                  fcap_status:
+                    type: string
+                    description: The frequency cap status of the push notification if applicable.
+                  outcomes:
+                    type: object
+                    description: The id, value, and aggregation type of the outcome set in the request.
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications
+      security:
+      - {}
+    delete:
+      summary: Cancel message
+      description: Stop a scheduled or currently outgoing message.
+      operationId: cancel-message
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string\nconst appId: string = \"YOUR_APP_ID\";\n// string\nconst notificationId: string = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n\ntry {\n  const response = await apiInstance.cancelNotification(appId, notificationId);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"cancelNotification failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    app_id = \"YOUR_APP_ID\" \n    notification_id = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" \n\n    try:\n        # Stop a scheduled or currently outgoing notification\n        api_response = api_instance.cancel_notification(app_id, notification_id)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->cancel_notification: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$app_id = 'YOUR_APP_ID'; // string\n$notification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88'; // string\n\ntry {\n    $result = $apiInstance->cancelNotification($app_id, $notification_id);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->cancelNotification: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->cancelNotification: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    appId := \"YOUR_APP_ID\" // string | \n    notificationId := \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\" // string | \n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.CancelNotification(restAuth, notificationId).AppId(appId).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.CancelNotification``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `CancelNotification`: GenericSuccessBoolResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.CancelNotification`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\napp_id = 'YOUR_APP_ID' # String | \nnotification_id = 'b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88' # String | \n\nbegin\n  # Stop a scheduled or currently outgoing notification\n  result = api_instance.cancel_notification(app_id, notification_id)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->cancel_notification: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String appId = \"YOUR_APP_ID\"; // String | \n    String notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\"; // String | \n    try {\n      GenericSuccessBoolResponse result = apiInstance.cancelNotification(appId, notificationId);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#cancelNotification\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class CancelNotificationExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var appId = \"YOUR_APP_ID\";  // string | \n            var notificationId = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";  // string | \n\n            try\n            {\n                // Stop a scheduled or currently outgoing notification\n                GenericSuccessBoolResponse result = apiInstance.CancelNotification(appId, notificationId);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.CancelNotification: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let app_id: &str = \"YOUR_APP_ID\";\n    let notification_id: &str = \"b3a0c8bd-3a4c-4b22-9a73-3f1a8c2d1b88\";\n\n    match default_api::cancel_notification(&configuration, app_id, notification_id).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"cancel_notification failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"cancel_notification failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: message_id
+        in: path
+        description: The identifier of the message in UUID v4 format. Get this `id` in the response of your Create Message API request, the [View Messages API](/reference/view-messages), and in your OneSignal dashboard Message Reports.
+        schema:
+          type: string
+        required: true
+      - name: app_id
+        in: path
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the message was successfully canceled.
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Reason for the message not being canceled. Usually due to the message already being sent to all recipients.
+        '404':
+          description: The notification was not found, or it is older than the retention window and its audience activity has been purged.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Notification not found
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications
+      security:
+      - {}
+    servers:
+    - url: https://api.onesignal.com
   /notifications:
     get:
       description: View the details of multiple notifications
@@ -135,6 +749,8 @@ paths:
       x-onesignal-flat-notification-example: true
       tags:
       - Notifications
+    servers:
+    - url: https://api.onesignal.com
   /notifications/{notification_id}:
     delete:
       description: Used to stop a scheduled or currently outgoing notification
@@ -232,6 +848,8 @@ paths:
       summary: View notification
       tags:
       - Notifications
+    servers:
+    - url: https://api.onesignal.com
   /notifications/{notification_id}/history:
     post:
       description: -> View the devices sent a message - OneSignal Paid Plan Required This method will return all devices that were sent the given notification_id of an Email or Push Notification if used within 7 days of the date sent. After 7 days of the sending date, the message history data will be unavailable. After a successful response is received, the destination url may be polled until the file becomes available. Most exports are done in ~1-3 minutes, so setting a poll interval of 10 seconds should be adequate. For use cases that are not meant to be consumed by a script, an email will be sent to the supplied email address. &#x1F6A7; Requirements A OneSignal Paid Plan. Turn on Send History via OneSignal API in Settings -> Analytics. Cannot get data before this was turned on. Must be called within 7 days after sending the message. Messages targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. Requires your OneSignal App's REST API Key, available in Keys & IDs.
@@ -297,6 +915,8 @@ paths:
       summary: Notification History
       tags:
       - Notifications
+    servers:
+    - url: https://api.onesignal.com
   /notifications/{notification_id}/export_events?app_id={app_id}:
     post:
       description: 'Generate a compressed CSV report of all of the events data for a notification.
@@ -350,22 +970,1309 @@ paths:
       summary: Export CSV of Events
       tags:
       - Notifications
+    servers:
+    - url: https://api.onesignal.com
 components:
   schemas:
-    PlatformDeliveryData_sms_allOf:
+    BasicErrorResponse:
+      type: object
       properties:
-        provider_successful:
-          description: Number of messages reported as delivered successfully by the SMS service provider.
-          nullable: true
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    CreateNotificationSuccessResponse:
+      example:
+        external_id: external_id
+        id: id
+        errors: ''
+      properties:
+        id:
+          description: Notification identifier when the request created a notification. An empty string means no notification was created; read `errors` for details (HTTP may still be 200).
+          type: string
+        external_id:
+          description: Optional correlation / idempotency-related value from the API response. This is not the end-user External ID used for targeting recipients (that lives under `include_aliases.external_id`).
+          type:
+          - string
+          - 'null'
+        errors:
+          description: 'Polymorphic field: may be an array of human-readable strings and/or an object (for example with `invalid_aliases`, `invalid_external_user_ids`, or `invalid_player_ids`) depending on the API response; HTTP may still be 200 with partial success. Typed SDKs model this loosely so both shapes deserialize.'
+      type: object
+    BasicNotification_allOf:
+      properties:
+        id:
+          type: string
+        value:
+          readOnly: true
           type: integer
-        provider_failed:
-          description: Number of recipients who didn't receive your message as reported by the SMS service provider.
-          nullable: true
+        name:
+          description: 'Required for SMS Messages.
+
+            An identifier for tracking message within the OneSignal dashboard or export analytics.
+
+            Not shown to end user.'
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        aggregation:
+          enum:
+          - sum
+          - count
+          readOnly: true
+          type: string
+        isIos:
+          description: Indicates whether to send to all devices registered under your app's Apple iOS platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isAndroid:
+          description: Indicates whether to send to all devices registered under your app's Google Android platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isHuawei:
+          description: Indicates whether to send to all devices registered under your app's Huawei Android platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isAnyWeb:
+          description: 'Indicates whether to send to all subscribed web browser users, including Chrome, Firefox, and Safari.
+
+            You may use this instead as a combined flag instead of separately enabling isChromeWeb, isFirefox, and isSafari, though the three options are equivalent to this one.
+
+            '
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isChromeWeb:
+          description: Indicates whether to send to all Google Chrome, Chrome on Android, and Mozilla Firefox users registered under your Chrome & Firefox web push platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isFirefox:
+          description: Indicates whether to send to all Mozilla Firefox desktop users registered under your Firefox web push platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isSafari:
+          description: Does not support iOS Safari. Indicates whether to send to all Apple's Safari desktop users registered under your Safari web push platform. Read more iOS Safari
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isWP_WNS:
+          description: Indicates whether to send to all devices registered under your app's Windows platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isAdm:
+          description: Indicates whether to send to all devices registered under your app's Amazon Fire platform.
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        isChrome:
+          description: 'This flag is not used for web push Please see isChromeWeb for sending to web push users. This flag only applies to Google Chrome Apps & Extensions.
+
+            Indicates whether to send to all devices registered under your app''s Google Chrome Apps & Extension platform.
+
+            '
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        app_id:
+          description: 'Required: Your OneSignal Application ID, which can be found in Keys & IDs.
+
+            It is a UUID and looks similar to 8250eaf6-1a58-489e-b136-7c74a864b434.
+
+            '
+          type: string
+          writeOnly: true
+        external_id:
+          deprecated: true
+          description: "This field does **not** target users by their External ID. To send to External IDs, use `include_aliases` with the label `external_id` plus `target_channel` as documented for alias-based targeting.\n\n[DEPRECATED] Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same external_id. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same external_id will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
+          type:
+          - string
+          - 'null'
+        idempotency_key:
+          description: "Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same idempotency key. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same idempotency key will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
+          type:
+          - string
+          - 'null'
+        contents:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'Required unless content_available=true or template_id is set.
+
+              The message''s content (excluding the title), a map of language codes to text for each language.
+
+              Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              English must be included in the hash.
+
+              Example: {"en": "English Message", "es": "Spanish Message"}
+
+              '
+            writeOnly: true
+        headings:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'The message''s title, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              Example: {"en": "English Title", "es": "Spanish Title"}
+
+              '
+            writeOnly: true
+        subtitle:
+          allOf:
+          - $ref: '#/components/schemas/LanguageStringMap'
+          - description: 'The message''s subtitle, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
+
+              This field supports inline substitutions.
+
+              Example: {"en": "English Subtitle", "es": "Spanish Subtitle"}
+
+              '
+            writeOnly: true
+        data:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            A custom map of data that is passed back to your app. Same as using Additional Data within the dashboard. Can use up to 2048 bytes of data.
+
+            Example: {"abc": 123, "foo": "bar", "event_performed": true, "amount": 12.1}
+
+            '
+          type:
+          - object
+          - 'null'
+          writeOnly: true
+        huawei_msg_type:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Use "data" or "message" depending on the type of notification you are sending. More details in Data & Background Notifications.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        url:
+          description: 'Channel: Push Notifications
+
+            Platform: All
+
+            The URL to open in the browser when a user clicks on the notification.
+
+            Note: iOS needs https or updated NSAppTransportSecurity in plist
+
+            This field supports inline substitutions.
+
+            Omit if including web_url or app_url
+
+            Example: https://onesignal.com
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        web_url:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Same as url but only sent to web push platforms.
+
+            Including Chrome, Firefox, Safari, Opera, etc.
+
+            Example: https://onesignal.com
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        app_url:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Same as url but only sent to web push platforms.
+
+            Including iOS, Android, macOS, Windows, ChromeApps, etc.
+
+            Example: https://onesignal.com
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        ios_attachments:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            Adds media attachments to notifications. Set as JSON object, key as a media id of your choice and the value as a valid local filename or URL. User must press and hold on the notification to view.
+
+            Do not set mutable_content to download attachments. The OneSignal SDK does this automatically
+
+            Example: {"id1": "https://domain.com/image.jpg"}
+
+            '
+          type:
+          - object
+          - 'null'
+          writeOnly: true
+        template_id:
+          description: 'Channel: Push Notifications
+
+            Platform: All
+
+            Use a template you setup on our dashboard. The template_id is the UUID found in the URL when viewing a template on our dashboard.
+
+            Example: be4a8044-bbd6-11e4-a581-000c2940e62c
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        content_available:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Sending true wakes your app from background to run custom native code (Apple interprets this as content-available=1). Note: Not applicable if the app is in the "force-quit" state (i.e app was swiped away). Omit the contents field to prevent displaying a visible notification.
+
+            '
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        mutable_content:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            Always defaults to true and cannot be turned off. Allows tracking of notification receives and changing of the notification content in your app before it is displayed. Triggers didReceive(_:withContentHandler:) on your UNNotificationServiceExtension.
+
+            '
+          type: boolean
+          writeOnly: true
+        target_content_identifier:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 13+
+
+            Use to target a specific experience in your App Clip, or to target your notification to a specific window in a multi-scene App.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Picture to display in the expanded view. Can be a drawable resource name or a URL.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        chrome_big_picture:
+          description: 'Channel: Push Notifications
+
+            Platform: ChromeApp
+
+            Large picture to display below the notification text. Must be a local URL.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        chrome_web_image:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome 56+
+
+            Sets the web push notification''s large image to be shown below the notification''s title and text. Please see Web Push Notification Icons.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        buttons:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 8.0+, Android 4.1+, and derivatives like Amazon Buttons to add to the notification. Icon only works for Android.
+
+            Buttons show in reverse order of array position i.e. Last item in array shows as first button on device.
+
+            Example: [{"id": "id2", "text": "second button", "icon": "ic_menu_share"}, {"id": "id1", "text": "first button", "icon": "ic_menu_send"}]
+
+            '
+          items:
+            $ref: '#/components/schemas/Button'
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        web_buttons:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome 48+
+
+            Add action buttons to the notification. The id field is required.
+
+            Example: [{"id": "like-button", "text": "Like", "icon": "http://i.imgur.com/N8SN8ZS.png", "url": "https://yoursite.com"}, {"id": "read-more-button", "text": "Read more", "icon": "http://i.imgur.com/MIxJp1L.png", "url": "https://yoursite.com"}]
+
+            '
+          items:
+            $ref: '#/components/schemas/WebButton'
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        ios_category:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Category APS payload, use with registerUserNotificationSettings:categories in your Objective-C / Swift code.
+
+            Example: calendar category which contains actions like accept and decline
+
+            iOS 10+ This will trigger your UNNotificationContentExtension whose ID matches this category.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        existing_android_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_existing_channel_id:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_background_layout:
+          $ref: '#/components/schemas/BasicNotification_allOf_android_background_layout'
+        small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Icon shown in the status bar and on the top left of the notification.
+
+            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
+
+            See: How to create small icons
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Icon shown in the status bar and on the top left of the notification.
+
+            Use an Android resource path (E.g. /drawable/small_icon).
+
+            Defaults to your app icon if not set.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_small_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
+
+            See: How to create small icons
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_large_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            If blank the small_icon is used. Can be a drawable resource name or a URL.
+
+            See: How to create large icons
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        chrome_web_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome
+
+            Sets the web push notification''s icon. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices. Firefox will also use this icon, unless you specify firefox_icon.
+
+            '
+          type:
+          - string
+          - 'null'
+        chrome_web_badge:
+          description: 'Channel: Push Notifications
+
+            Platform: Chrome
+
+            Sets the web push notification icon for Android devices in the notification shade. Please see Web Push Notification Badge.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        firefox_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: Firefox
+
+            Not recommended Few people need to set Firefox-specific icons. We recommend setting chrome_web_icon instead, which Firefox will also use.
+
+            Sets the web push notification''s icon for Firefox. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        chrome_icon:
+          description: 'Channel: Push Notifications
+
+            Platform: ChromeApp
+
+            This flag is not used for web push For web push, please see chrome_web_icon instead.
+
+            The local URL to an icon to use. If blank, the app icon will be used.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        ios_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable vibration and sound for the notification.
+
+            Example: "notification.wav"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
+
+            NOTE: Leave off file extension for Android.
+
+            Example: "notification"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            Sound file that is included in your app to play instead of the default device notification sound. NOTE: Leave off file extension for and include the full path.
+
+
+            Example: "/res/raw/notification"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
+
+            NOTE: Leave off file extension for Android.
+
+            Example: "notification"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        wp_wns_sound:
+          description: 'Channel: Push Notifications
+
+            Platform: Windows
+
+            Sound file that is included in your app to play instead of the default device notification sound.
+
+            Example: "notification.wav"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_led_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            Sets the devices LED notification light if the device has one. ARGB Hex format.
+
+            Example(Blue): "FF0000FF"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_led_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            Sets the devices LED notification light if the device has one. RGB Hex format.
+
+            Example(Blue): "0000FF"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_accent_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Sets the background color of the notification circle to the left of the notification text. Only applies to apps targeting Android API level 21+ on Android 5.0+ devices.
+
+            Example(Red): "FFFF0000"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_accent_color:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Accent Color used on Action Buttons and Group overflow count.
+
+            Uses RGB Hex value (E.g. #9900FF).
+
+            Defaults to device''s theme color if not set.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_visibility:
+          description: 'Channel: Push Notifications
+
+            Platform: Android 5.0_
+
+            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
+
+            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
+
+            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
+
+            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
+
+            -1 = Secret (Notification does not show on the lock screen at all)
+
+            '
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        huawei_visibility:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
+
+            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
+
+            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
+
+            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
+
+            -1 = Secret (Notification does not show on the lock screen at all)
+
+            '
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        ios_badgeType:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Describes whether to set or increase/decrease your app''s iOS badge count by the ios_badgeCount specified count. Can specify None, SetTo, or Increase.
+
+            `None` leaves the count unaffected.
+
+            `SetTo` directly sets the badge count to the number specified in ios_badgeCount.
+
+            `Increase` adds the number specified in ios_badgeCount to the total. Use a negative number to decrease the badge count.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        ios_badgeCount:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            Used with ios_badgeType, describes the value to set or amount to increase/decrease your app''s iOS badge count by.
+
+            You can use a negative number to decrease the badge count when used with an ios_badgeType of Increase.
+
+            '
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        collapse_id:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+, Android
+
+            Only one notification with the same id will be shown on the device. Use the same id to update an existing notification instead of showing a new one. Limit of 64 characters.
+
+            '
+          type: string
+          writeOnly: true
+        web_push_topic:
+          description: 'Channel: Push Notifications
+
+            Platform: All Browsers
+
+            Display multiple notifications at once with different topics.
+
+            '
+          type:
+          - string
+          - 'null'
+        apns_alert:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 10+
+
+            iOS can localize push notification messages on the client using special parameters such as loc-key. When using the Create Notification endpoint, you must include these parameters inside of a field called apns_alert. Please see Apple''s guide on localizing push notifications to learn more.
+
+            '
+          type:
+          - object
+          - 'null'
+          writeOnly: true
+        delayed_option:
+          description: 'Channel: All
+
+            Possible values are:
+
+            timezone (Deliver at a specific time-of-day in each users own timezone)
+
+            last-active Same as Intelligent Delivery . (Deliver at the same time of day as each user last used your app).
+
+            If send_after is used, this takes effect after the send_after time has elapsed.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        delivery_time_of_day:
+          description: 'Channel: All
+
+            Use with delayed_option=timezone.
+
+            Examples: "9:00AM"
+
+            "21:45"
+
+            "9:45:30"
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        ttl:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS, Android, Chrome, Firefox, Safari, ChromeWeb
+
+            Time To Live - In seconds. The notification will be expired if the device does not come back online within this time. The default is 259,200 seconds (3 days).
+
+            Max value to set is 2419200 seconds (28 days).
+
+            '
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        priority:
+          description: 'Channel: Push Notifications
+
+            Platform: Android, Chrome, ChromeWeb
+
+            Delivery priority through the push server (example GCM/FCM). Pass 10 for high priority or any other integer for normal priority. Defaults to normal priority for Android and high for iOS. For Android 6.0+ devices setting priority to high will wake the device out of doze mode.
+
+            '
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        apns_push_type_override:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS
+
+            valid values: voip
+
+            Set the value to voip for sending VoIP Notifications
+
+            This field maps to the APNS header apns-push-type.
+
+            Note: alert and background are automatically set by OneSignal
+
+            '
+          type: string
+          writeOnly: true
+        throttle_rate_per_minute:
+          description: "Channel: All\nApps with throttling enabled:\n  - the parameter value will be used to override the default application throttling value set from the dashboard settings.\n  - parameter value 0 indicates not to apply throttling to the notification.\n  - if the parameter is not passed then the default app throttling value will be applied to the notification.\nApps with throttling disabled:\n  - this parameter can be used to throttle delivery for the notification even though throttling is not enabled at the application level.\nRefer to throttling for more details.\n"
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_group:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        android_group_message:
+          description: 'Channel: Push Notifications
+
+            Platform: Android
+
+            Note: This only works for Android 6 and older. Android 7+ allows full expansion of all message.
+
+            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number.
+
+            Languages - The value of each key is the message that will be sent to users for that language. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. Read more: supported languages.
+
+            Example: {"en": "You have $[notif_count] new messages"}
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_group:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        adm_group_message:
+          description: 'Channel: Push Notifications
+
+            Platform: Amazon
+
+            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. The value of each key is the message that will be sent to users for that language.
+
+            Example: {"en": "You have $[notif_count] new messages"}
+
+            '
+          type:
+          - object
+          - 'null'
+          writeOnly: true
+        thread_id:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            This parameter is supported in iOS 12 and above. It allows you to group related notifications together.
+
+            If two notifications have the same thread-id, they will both be added to the same group.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        summary_arg:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            When using thread_id to create grouped notifications in iOS 12+, you can also control the summary. For example, a grouped notification can say "12 more notifications from John Doe".
+
+            The summary_arg lets you set the name of the person/thing the notifications are coming from, and will show up as "X more notifications from summary_arg"
+
+            '
+          type: string
+          writeOnly: true
+        summary_arg_count:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 12+
+
+            When using thread_id, you can also control the count of the number of notifications in the group. For example, if the group already has 12 notifications, and you send a new notification with summary_arg_count = 2, the new total will be 14 and the summary will be "14 more notifications from summary_arg"
+
+            '
           type: integer
-        provider_errored:
-          description: Number of errors reported by the SMS service provider.
-          nullable: true
-          type: integer
+          writeOnly: true
+        ios_relevance_score:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 15+
+
+            A score to be set per notification to indicate how it should be displayed when grouped. Use a float between 0-1.
+
+            '
+          type:
+          - number
+          - 'null'
+          writeOnly: true
+        ios_interruption_level:
+          description: 'Channel: Push Notifications
+
+            Platform: iOS 15+
+
+            Focus Modes and Interruption Levels indicate the priority and delivery timing of a notification, to "interrupt" the user.
+
+            Can choose from options: [''active'', ''passive'', ''time_sensitive'', ''critical'']. Default is active.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        email_subject:
+          description: 'Channel: Email
+
+            Required.  The subject of the email.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        email_body:
+          description: 'Channel: Email
+
+            Required unless template_id is set.
+
+            HTML suported
+
+            The body of the email you wish to send. Typically, customers include their own HTML templates here. Must include [unsubscribe_url] in an <a> tag somewhere in the email.
+
+            Note: any malformed HTML content will be sent to users. Please double-check your HTML is valid.
+
+            '
+          type: string
+          writeOnly: true
+        email_from_name:
+          description: 'Channel: Email
+
+            The name the email is from. If not specified, will default to "from name" set in the OneSignal Dashboard Email Settings.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        email_from_address:
+          description: 'Channel: Email
+
+            The email address the email is from. If not specified, will default to "from email" set in the OneSignal Dashboard Email Settings.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        email_reply_to_address:
+          description: 'Channel: Email
+
+            The email address where replies should be sent. If not specified, replies will go to the from address.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        email_preheader:
+          description: 'Channel: Email
+
+            The preheader text of the email.
+
+            Preheader is the preview text displayed immediately after an email subject that provides additional context about the email content.
+
+            If not specified, will default to null.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        disable_email_click_tracking:
+          description: 'Channel: Email
+
+            Default is `false`. If set to `true`, the URLs sent within the email will not include link tracking and will be the same as originally set; otherwise, all the URLs in the email will be tracked.'
+          type:
+          - boolean
+          - 'null'
+          writeOnly: true
+        include_unsubscribed:
+          description: 'Channel: Email
+
+            Default is `false`. This field is used to send transactional notifications. If set to `true`, this notification will also be sent to unsubscribed emails. If a `template_id` is provided, the `include_unsubscribed` value from the template will be inherited. If you are using a third-party ESP, this field requires the ESP''s list of unsubscribed emails to be cleared.'
+          type: boolean
+          writeOnly: true
+        email_bcc:
+          description: 'Channel: Email
+
+            BCC recipients for the email. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+
+            '
+          items:
+            type: string
+          maxItems: 5
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        sms_from:
+          description: 'Channel: SMS
+
+            Phone Number used to send SMS. Should be a registered Twilio phone number in E.164 format.
+
+            '
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        sms_media_urls:
+          description: 'Channel: SMS
+
+            URLs for the media files to be attached to the SMS content.
+
+            Limit: 10 media urls with a total max. size of 5MBs.
+
+            '
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+          writeOnly: true
+        filters:
+          items:
+            $ref: '#/components/schemas/FilterExpression'
+          type:
+          - array
+          - 'null'
+        custom_data:
+          description: 'Channel: All
+
+            JSON object that can be used as a source of message personalization data for fields that support tag variable substitution.
+
+            Push, SMS: Can accept up to 2048 bytes of valid JSON. Email: Can accept up to 10000 bytes of valid JSON.
+
+            Example: {"order_id": 123, "currency": "USD", "amount": 25}
+
+            '
+          type:
+          - object
+          - 'null'
+          writeOnly: true
+        huawei_badge_class:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Full path of the app entry activity class'
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_badge_add_num:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Accumulative badge number, which is an integer ranging from 1 to 99'
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        huawei_badge_set_num:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Badge number, which is an integer ranging from 0 to 99'
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+        huawei_category:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            Category of the push notification for HMS classification.'
+          enum:
+          - IM
+          - VOIP
+          - SUBSCRIPTION
+          - TRAVEL
+          - HEALTH
+          - WORK
+          - ACCOUNT
+          - EXPRESS
+          - FINANCE
+          - DEVICE_REMINDER
+          - MAIL
+          - MARKETING
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+        huawei_bi_tag:
+          description: 'Channel: Push Notifications
+
+            Platform: Huawei
+
+            A tag used for Huawei business intelligence and analytics.'
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+      type: object
+    BasicNotification:
+      allOf:
+      - $ref: '#/components/schemas/NotificationTarget'
+      - $ref: '#/components/schemas/BasicNotification_allOf'
+      - required:
+        - app_id
+    WebButton:
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        icon:
+          type: string
+        url:
+          type: string
+      required:
+      - id
+      type: object
     NotificationSlice:
       example:
         offset: 6
@@ -386,43 +2293,64 @@ components:
             $ref: '#/components/schemas/NotificationWithMeta'
           type: array
       type: object
-    NotificationTarget:
-      anyOf:
-      - $ref: '#/components/schemas/SegmentNotificationTarget'
-      - $ref: '#/components/schemas/SubscriptionNotificationTarget'
-    ExportEventsSuccessResponse:
-      example:
-        csv_file_url: csv_file_url
+    Filter:
       properties:
-        csv_file_url:
+        field:
+          description: Required. Name of the field to use as the first operand in the filter expression.
+          type: string
+        key:
+          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
+          type: string
+        value:
+          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
+          type: string
+        hours_ago:
+          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
+          type: string
+        radius:
+          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
+          type: number
+        lat:
+          description: If `field` is `location`, this is *required* to specify the user's latitude.
+          type: number
+        long:
+          description: If `field` is `location`, this is *required* to specify the user's longitude.
+          type: number
+        relation:
+          description: Required. Operator of a filter expression.
+          enum:
+          - '>'
+          - <
+          - '='
+          - '!='
+          - exists
+          - not_exists
+          - time_elapsed_gt
+          - time_elapsed_lt
           type: string
       type: object
-    Button:
-      properties:
-        id:
-          type: string
-        text:
-          type: string
-        icon:
-          type: string
-      required:
-      - id
-      type: object
-    CreateNotificationSuccessResponse:
+    NotificationWithMeta:
+      allOf:
+      - $ref: '#/components/schemas/BasicNotification'
+      - $ref: '#/components/schemas/DeliveryData'
+      - $ref: '#/components/schemas/OutcomesData'
+      - $ref: '#/components/schemas/NotificationWithMeta_allOf'
+    GenericSuccessBoolResponse:
       example:
-        external_id: external_id
-        id: id
-        errors: ''
+        success: true
       properties:
-        id:
-          description: Notification identifier when the request created a notification. An empty string means no notification was created; read `errors` for details (HTTP may still be 200).
+        success:
+          type: boolean
+      type: object
+    NotificationHistorySuccessResponse:
+      example:
+        success: true
+        destination_url: destination_url
+      properties:
+        success:
+          type: boolean
+        destination_url:
           type: string
-        external_id:
-          description: Optional correlation / idempotency-related value from the API response. This is not the end-user External ID used for targeting recipients (that lives under `include_aliases.external_id`).
-          nullable: true
-          type: string
-        errors:
-          description: 'Polymorphic field: may be an array of human-readable strings and/or an object (for example with `invalid_aliases`, `invalid_external_user_ids`, or `invalid_player_ids`) depending on the API response; HTTP may still be 200 with partial success. Typed SDKs model this loosely so both shapes deserialize.'
       type: object
     SubscriptionNotificationTarget:
       properties:
@@ -438,8 +2366,9 @@ components:
             '
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+          - array
+          - 'null'
         include_email_tokens:
           description: 'Recommended for Sending Emails - Target specific email addresses.
 
@@ -566,8 +2495,9 @@ components:
             Limit of 2,000 entries per REST API call
 
             Note: If targeting push, email, or sms subscribers with same ids, use with target_channel to indicate you are sending a push or email or sms.'
-          nullable: true
-          type: object
+          type:
+          - object
+          - 'null'
         target_channel:
           enum:
           - push
@@ -575,6 +2505,43 @@ components:
           - sms
           type: string
       type: object
+    PlatformDeliveryData_email_allOf:
+      properties:
+        opened:
+          description: Number of times an email has been opened.
+          type:
+          - integer
+          - 'null'
+        unique_opens:
+          description: Number of unique recipients who have opened your email.
+          type:
+          - integer
+          - 'null'
+        clicks:
+          description: Number of clicked links from your email. This can include the recipient clicking email links multiple times.
+          type:
+          - integer
+          - 'null'
+        unique_clicks:
+          description: Number of unique clicks that your recipients have made on links from your email.
+          type:
+          - integer
+          - 'null'
+        bounced:
+          description: Number of recipients who registered as a hard or soft bounce and didn't receive your email.
+          type:
+          - integer
+          - 'null'
+        reported_spam:
+          description: Number of recipients who reported this email as spam.
+          type:
+          - integer
+          - 'null'
+        unsubscribed:
+          description: Number of recipients who opted out of your emails using the unsubscribe link in this email.
+          type:
+          - integer
+          - 'null'
     PlatformDeliveryData:
       description: Hash of delivery statistics broken out by target device platform.
       properties:
@@ -599,10 +2566,41 @@ components:
           - $ref: '#/components/schemas/DeliveryData'
           - $ref: '#/components/schemas/PlatformDeliveryData_email_allOf'
       type: object
-    Notification:
-      allOf:
-      - $ref: '#/components/schemas/BasicNotification'
-      - $ref: '#/components/schemas/Notification_allOf'
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    DeliveryData:
+      properties:
+        successful:
+          description: Number of messages delivered to push servers, mobile carriers, or email service providers.
+          type:
+          - integer
+          - 'null'
+        failed:
+          description: Number of messages sent to unsubscribed devices.
+          type:
+          - integer
+          - 'null'
+        errored:
+          description: Number of errors reported.
+          type:
+          - integer
+          - 'null'
+        converted:
+          description: Number of messages that were clicked.
+          type:
+          - integer
+          - 'null'
+        received:
+          description: Number of devices that received the message.
+          type:
+          - integer
+          - 'null'
+      type: object
     LanguageStringMap:
       example:
         de: de
@@ -800,25 +2798,127 @@ components:
             type: string
           type: array
       type: object
-    GenericError:
+    BasicNotification_allOf_android_background_layout:
+      description: 'Channel: Push Notifications
+
+        Platform: Android
+
+        Allowing setting a background image for the notification. This is a JSON object containing the following keys. See our Background Image documentation for image sizes.
+
+        '
       properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
+        image:
+          description: Asset file, android resource name, or URL to remote image.
+          type: string
+        headings_color:
+          description: Title text color ARGB Hex format. Example(Blue) "FF0000FF".
+          type: string
+        contents_color:
+          description: Body text color ARGB Hex format. Example(Red) "FFFF0000".
+          type: string
       type: object
-    NotificationWithMeta:
+      writeOnly: true
+    NotificationTarget:
+      anyOf:
+      - $ref: '#/components/schemas/SegmentNotificationTarget'
+      - $ref: '#/components/schemas/SubscriptionNotificationTarget'
+    PlatformDeliveryData_sms_allOf:
+      properties:
+        provider_successful:
+          description: Number of messages reported as delivered successfully by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+        provider_failed:
+          description: Number of recipients who didn't receive your message as reported by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+        provider_errored:
+          description: Number of errors reported by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+    FilterExpression:
+      oneOf:
+      - $ref: '#/components/schemas/Filter'
+      - $ref: '#/components/schemas/Operator'
+    Notification:
       allOf:
       - $ref: '#/components/schemas/BasicNotification'
-      - $ref: '#/components/schemas/DeliveryData'
-      - $ref: '#/components/schemas/OutcomesData'
-      - $ref: '#/components/schemas/NotificationWithMeta_allOf'
-    BasicNotification:
-      allOf:
-      - $ref: '#/components/schemas/NotificationTarget'
-      - $ref: '#/components/schemas/BasicNotification_allOf'
-      - required:
-        - app_id
+      - $ref: '#/components/schemas/Notification_allOf'
+    Notification_allOf:
+      properties:
+        send_after:
+          description: 'Channel: All
+
+            Schedule notification for future delivery. API defaults to UTC -1100
+
+            Examples: All examples are the exact same date & time.
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
+
+            "September 24th 2015, 2:00:00 pm UTC-07:00"
+
+            "2015-09-24 14:00:00 GMT-0700"
+
+            "Sept 24 2015 14:00:00 GMT-0700"
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (Pacific Daylight Time)"
+
+            Note: SMS currently only supports send_after parameter.
+
+            '
+          format: date-time
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+      type: object
+    get_notification_history_request_body:
+      properties:
+        events:
+          description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
+          enum:
+          - sent
+          - clicked
+          type: string
+        email:
+          description: The email address you would like the report sent.
+          type: string
+        app_id:
+          type: string
+      required:
+      - id
+      title: get_notification_history_request_body
+      type: object
+    OutcomeData:
+      example:
+        aggregation: sum
+        id: id
+        value: 0
+      properties:
+        id:
+          type: string
+        value:
+          type: integer
+        aggregation:
+          enum:
+          - sum
+          - count
+          type: string
+      required:
+      - aggregation
+      - id
+      - value
+      type: object
+    ExportEventsSuccessResponse:
+      example:
+        csv_file_url: csv_file_url
+      properties:
+        csv_file_url:
+          type: string
+      type: object
     NotificationWithMeta_allOf:
       properties:
         remaining:
@@ -843,23 +2943,27 @@ components:
         send_after:
           description: Unix timestamp indicating when notification delivery should begin.
           format: int64
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         completed_at:
           description: Unix timestamp indicating when notification delivery completed. The delivery duration from start to finish can be calculated with completed_at - send_after.
           format: int64
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         platform_delivery_stats:
           $ref: '#/components/schemas/PlatformDeliveryData'
         received:
           description: Confirmed Deliveries number of devices that received the push notification. Paid Feature Only. Free accounts will see 0.
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         throttle_rate_per_minute:
           description: number of push notifications sent per minute. Paid Feature Only. If throttling is not enabled for the app or the notification, and for free accounts, null is returned. Refer to Throttling for more details.
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         canceled:
           description: Indicates whether the notification was canceled before it could be sent.
           type: boolean
@@ -867,23 +2971,14 @@ components:
           description: BCC recipients that were set on this email notification.
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+          - array
+          - 'null'
         bcc_sent:
           description: Number of BCC copies successfully sent for this notification.
-          nullable: true
-          type: integer
-      type: object
-    FilterExpression:
-      oneOf:
-      - $ref: '#/components/schemas/Filter'
-      - $ref: '#/components/schemas/Operator'
-    GenericSuccessBoolResponse:
-      example:
-        success: true
-      properties:
-        success:
-          type: boolean
+          type:
+          - integer
+          - 'null'
       type: object
     Operator:
       properties:
@@ -894,7 +2989,7 @@ components:
           - AND
           type: string
       type: object
-    WebButton:
+    Button:
       properties:
         id:
           type: string
@@ -902,141 +2997,9 @@ components:
           type: string
         icon:
           type: string
-        url:
-          type: string
       required:
       - id
       type: object
-    Notification_allOf:
-      properties:
-        send_after:
-          description: 'Channel: All
-
-            Schedule notification for future delivery. API defaults to UTC -1100
-
-            Examples: All examples are the exact same date & time.
-
-            "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
-
-            "September 24th 2015, 2:00:00 pm UTC-07:00"
-
-            "2015-09-24 14:00:00 GMT-0700"
-
-            "Sept 24 2015 14:00:00 GMT-0700"
-
-            "Thu Sep 24 2015 14:00:00 GMT-0700 (Pacific Daylight Time)"
-
-            Note: SMS currently only supports send_after parameter.
-
-            '
-          format: date-time
-          nullable: true
-          type: string
-          writeOnly: true
-      type: object
-    NotificationHistorySuccessResponse:
-      example:
-        success: true
-        destination_url: destination_url
-      properties:
-        success:
-          type: boolean
-        destination_url:
-          type: string
-      type: object
-    OutcomeData:
-      example:
-        aggregation: sum
-        id: id
-        value: 0
-      properties:
-        id:
-          type: string
-        value:
-          type: integer
-        aggregation:
-          enum:
-          - sum
-          - count
-          type: string
-      required:
-      - aggregation
-      - id
-      - value
-      type: object
-    get_notification_history_request_body:
-      properties:
-        events:
-          description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
-          enum:
-          - sent
-          - clicked
-          type: string
-        email:
-          description: The email address you would like the report sent.
-          type: string
-        app_id:
-          type: string
-      required:
-      - id
-      title: get_notification_history_request_body
-      type: object
-    Filter:
-      properties:
-        field:
-          description: Required. Name of the field to use as the first operand in the filter expression.
-          type: string
-        key:
-          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
-          type: string
-        value:
-          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
-          type: string
-        hours_ago:
-          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
-          type: string
-        radius:
-          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
-          type: number
-        lat:
-          description: If `field` is `location`, this is *required* to specify the user's latitude.
-          type: number
-        long:
-          description: If `field` is `location`, this is *required* to specify the user's longitude.
-          type: number
-        relation:
-          description: Required. Operator of a filter expression.
-          enum:
-          - '>'
-          - <
-          - '='
-          - '!='
-          - exists
-          - not_exists
-          - time_elapsed_gt
-          - time_elapsed_lt
-          type: string
-      type: object
-    BasicNotification_allOf_android_background_layout:
-      description: 'Channel: Push Notifications
-
-        Platform: Android
-
-        Allowing setting a background image for the notification. This is a JSON object containing the following keys. See our Background Image documentation for image sizes.
-
-        '
-      properties:
-        image:
-          description: Asset file, android resource name, or URL to remote image.
-          type: string
-        headings_color:
-          description: Title text color ARGB Hex format. Example(Blue) "FF0000FF".
-          type: string
-        contents_color:
-          description: Body text color ARGB Hex format. Example(Red) "FFFF0000".
-          type: string
-      type: object
-      writeOnly: true
     OutcomesData:
       example:
         outcomes:
@@ -1052,1196 +3015,6 @@ components:
             $ref: '#/components/schemas/OutcomeData'
           type: array
       type: object
-    BasicNotification_allOf:
-      properties:
-        id:
-          type: string
-        value:
-          readOnly: true
-          type: integer
-        name:
-          description: 'Required for SMS Messages.
-
-            An identifier for tracking message within the OneSignal dashboard or export analytics.
-
-            Not shown to end user.'
-          nullable: true
-          type: string
-          writeOnly: true
-        aggregation:
-          enum:
-          - sum
-          - count
-          readOnly: true
-          type: string
-        isIos:
-          description: Indicates whether to send to all devices registered under your app's Apple iOS platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isAndroid:
-          description: Indicates whether to send to all devices registered under your app's Google Android platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isHuawei:
-          description: Indicates whether to send to all devices registered under your app's Huawei Android platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isAnyWeb:
-          description: 'Indicates whether to send to all subscribed web browser users, including Chrome, Firefox, and Safari.
-
-            You may use this instead as a combined flag instead of separately enabling isChromeWeb, isFirefox, and isSafari, though the three options are equivalent to this one.
-
-            '
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isChromeWeb:
-          description: Indicates whether to send to all Google Chrome, Chrome on Android, and Mozilla Firefox users registered under your Chrome & Firefox web push platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isFirefox:
-          description: Indicates whether to send to all Mozilla Firefox desktop users registered under your Firefox web push platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isSafari:
-          description: Does not support iOS Safari. Indicates whether to send to all Apple's Safari desktop users registered under your Safari web push platform. Read more iOS Safari
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isWP_WNS:
-          description: Indicates whether to send to all devices registered under your app's Windows platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isAdm:
-          description: Indicates whether to send to all devices registered under your app's Amazon Fire platform.
-          nullable: true
-          type: boolean
-          writeOnly: true
-        isChrome:
-          description: 'This flag is not used for web push Please see isChromeWeb for sending to web push users. This flag only applies to Google Chrome Apps & Extensions.
-
-            Indicates whether to send to all devices registered under your app''s Google Chrome Apps & Extension platform.
-
-            '
-          nullable: true
-          type: boolean
-          writeOnly: true
-        app_id:
-          description: 'Required: Your OneSignal Application ID, which can be found in Keys & IDs.
-
-            It is a UUID and looks similar to 8250eaf6-1a58-489e-b136-7c74a864b434.
-
-            '
-          type: string
-          writeOnly: true
-        external_id:
-          deprecated: true
-          description: "This field does **not** target users by their External ID. To send to External IDs, use `include_aliases` with the label `external_id` plus `target_channel` as documented for alias-based targeting.\n\n[DEPRECATED] Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same external_id. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same external_id will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
-          nullable: true
-          type: string
-        idempotency_key:
-          description: "Correlation and idempotency key.\nA request received with this parameter will first look for another notification with the same idempotency key. If one exists, a notification will not be sent, and result of the previous operation will instead be returned. Therefore, if you plan on using this feature, it's important to use a good source of randomness to generate the UUID passed here.\nThis key is only idempotent for 30 days. After 30 days, the notification could be removed from our system and a notification with the same idempotency key will be sent again.\n  See Idempotent Notification Requests for more details\nwriteOnly: true\n"
-          nullable: true
-          type: string
-        contents:
-          allOf:
-          - $ref: '#/components/schemas/LanguageStringMap'
-          - description: 'Required unless content_available=true or template_id is set.
-
-              The message''s content (excluding the title), a map of language codes to text for each language.
-
-              Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
-
-              This field supports inline substitutions.
-
-              English must be included in the hash.
-
-              Example: {"en": "English Message", "es": "Spanish Message"}
-
-              '
-            writeOnly: true
-        headings:
-          allOf:
-          - $ref: '#/components/schemas/LanguageStringMap'
-          - description: 'The message''s title, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
-
-              This field supports inline substitutions.
-
-              Example: {"en": "English Title", "es": "Spanish Title"}
-
-              '
-            writeOnly: true
-        subtitle:
-          allOf:
-          - $ref: '#/components/schemas/LanguageStringMap'
-          - description: 'The message''s subtitle, a map of language codes to text for each language. Each hash must have a language code string for a key, mapped to the localized text you would like users to receive for that language.
-
-              This field supports inline substitutions.
-
-              Example: {"en": "English Subtitle", "es": "Spanish Subtitle"}
-
-              '
-            writeOnly: true
-        data:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            A custom map of data that is passed back to your app. Same as using Additional Data within the dashboard. Can use up to 2048 bytes of data.
-
-            Example: {"abc": 123, "foo": "bar", "event_performed": true, "amount": 12.1}
-
-            '
-          nullable: true
-          type: object
-          writeOnly: true
-        huawei_msg_type:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Use "data" or "message" depending on the type of notification you are sending. More details in Data & Background Notifications.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        url:
-          description: 'Channel: Push Notifications
-
-            Platform: All
-
-            The URL to open in the browser when a user clicks on the notification.
-
-            Note: iOS needs https or updated NSAppTransportSecurity in plist
-
-            This field supports inline substitutions.
-
-            Omit if including web_url or app_url
-
-            Example: https://onesignal.com
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        web_url:
-          description: 'Channel: Push Notifications
-
-            Platform: All Browsers
-
-            Same as url but only sent to web push platforms.
-
-            Including Chrome, Firefox, Safari, Opera, etc.
-
-            Example: https://onesignal.com
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        app_url:
-          description: 'Channel: Push Notifications
-
-            Platform: All Browsers
-
-            Same as url but only sent to web push platforms.
-
-            Including iOS, Android, macOS, Windows, ChromeApps, etc.
-
-            Example: https://onesignal.com
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        ios_attachments:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 10+
-
-            Adds media attachments to notifications. Set as JSON object, key as a media id of your choice and the value as a valid local filename or URL. User must press and hold on the notification to view.
-
-            Do not set mutable_content to download attachments. The OneSignal SDK does this automatically
-
-            Example: {"id1": "https://domain.com/image.jpg"}
-
-            '
-          nullable: true
-          type: object
-          writeOnly: true
-        template_id:
-          description: 'Channel: Push Notifications
-
-            Platform: All
-
-            Use a template you setup on our dashboard. The template_id is the UUID found in the URL when viewing a template on our dashboard.
-
-            Example: be4a8044-bbd6-11e4-a581-000c2940e62c
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        content_available:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            Sending true wakes your app from background to run custom native code (Apple interprets this as content-available=1). Note: Not applicable if the app is in the "force-quit" state (i.e app was swiped away). Omit the contents field to prevent displaying a visible notification.
-
-            '
-          nullable: true
-          type: boolean
-          writeOnly: true
-        mutable_content:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 10+
-
-            Always defaults to true and cannot be turned off. Allows tracking of notification receives and changing of the notification content in your app before it is displayed. Triggers didReceive(_:withContentHandler:) on your UNNotificationServiceExtension.
-
-            '
-          type: boolean
-          writeOnly: true
-        target_content_identifier:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 13+
-
-            Use to target a specific experience in your App Clip, or to target your notification to a specific window in a multi-scene App.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        big_picture:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Picture to display in the expanded view. Can be a drawable resource name or a URL.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_big_picture:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Picture to display in the expanded view. Can be a drawable resource name or a URL.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_big_picture:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            Picture to display in the expanded view. Can be a drawable resource name or a URL.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        chrome_big_picture:
-          description: 'Channel: Push Notifications
-
-            Platform: ChromeApp
-
-            Large picture to display below the notification text. Must be a local URL.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        chrome_web_image:
-          description: 'Channel: Push Notifications
-
-            Platform: Chrome 56+
-
-            Sets the web push notification''s large image to be shown below the notification''s title and text. Please see Web Push Notification Icons.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        buttons:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 8.0+, Android 4.1+, and derivatives like Amazon Buttons to add to the notification. Icon only works for Android.
-
-            Buttons show in reverse order of array position i.e. Last item in array shows as first button on device.
-
-            Example: [{"id": "id2", "text": "second button", "icon": "ic_menu_share"}, {"id": "id1", "text": "first button", "icon": "ic_menu_send"}]
-
-            '
-          items:
-            $ref: '#/components/schemas/Button'
-          nullable: true
-          type: array
-          writeOnly: true
-        web_buttons:
-          description: 'Channel: Push Notifications
-
-            Platform: Chrome 48+
-
-            Add action buttons to the notification. The id field is required.
-
-            Example: [{"id": "like-button", "text": "Like", "icon": "http://i.imgur.com/N8SN8ZS.png", "url": "https://yoursite.com"}, {"id": "read-more-button", "text": "Read more", "icon": "http://i.imgur.com/MIxJp1L.png", "url": "https://yoursite.com"}]
-
-            '
-          items:
-            $ref: '#/components/schemas/WebButton'
-          nullable: true
-          type: array
-          writeOnly: true
-        ios_category:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            Category APS payload, use with registerUserNotificationSettings:categories in your Objective-C / Swift code.
-
-            Example: calendar category which contains actions like accept and decline
-
-            iOS 10+ This will trigger your UNNotificationContentExtension whose ID matches this category.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_channel_id:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_channel_id:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            The Android Oreo Notification Category to send the notification under. See the Category documentation on creating one and getting it''s id.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        existing_android_channel_id:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_existing_channel_id:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Use this if you have client side Android Oreo Channels you have already defined in your app with code.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_background_layout:
-          $ref: '#/components/schemas/BasicNotification_allOf_android_background_layout'
-        small_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Icon shown in the status bar and on the top left of the notification.
-
-            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
-
-            See: How to create small icons
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_small_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Icon shown in the status bar and on the top left of the notification.
-
-            Use an Android resource path (E.g. /drawable/small_icon).
-
-            Defaults to your app icon if not set.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        large_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Can be a drawable resource name or a URL.
-
-            See: How to create large icons
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_large_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Can be a drawable resource name or a URL.
-
-            See: How to create large icons
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_small_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            If not set a bell icon will be used or ic_stat_onesignal_default if you have set this resource name.
-
-            See: How to create small icons
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_large_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            If blank the small_icon is used. Can be a drawable resource name or a URL.
-
-            See: How to create large icons
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        chrome_web_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Chrome
-
-            Sets the web push notification''s icon. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices. Firefox will also use this icon, unless you specify firefox_icon.
-
-            '
-          nullable: true
-          type: string
-        chrome_web_badge:
-          description: 'Channel: Push Notifications
-
-            Platform: Chrome
-
-            Sets the web push notification icon for Android devices in the notification shade. Please see Web Push Notification Badge.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        firefox_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: Firefox
-
-            Not recommended Few people need to set Firefox-specific icons. We recommend setting chrome_web_icon instead, which Firefox will also use.
-
-            Sets the web push notification''s icon for Firefox. An image URL linking to a valid image. Common image types are supported; GIF will not animate. We recommend 256x256 (at least 80x80) to display well on high DPI devices.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        chrome_icon:
-          description: 'Channel: Push Notifications
-
-            Platform: ChromeApp
-
-            This flag is not used for web push For web push, please see chrome_web_icon instead.
-
-            The local URL to an icon to use. If blank, the app icon will be used.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        ios_sound:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable vibration and sound for the notification.
-
-            Example: "notification.wav"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_sound:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
-
-            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
-
-            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
-
-            NOTE: Leave off file extension for Android.
-
-            Example: "notification"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_sound:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
-
-            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
-
-            Sound file that is included in your app to play instead of the default device notification sound. NOTE: Leave off file extension for and include the full path.
-
-
-            Example: "/res/raw/notification"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_sound:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
-
-            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
-
-            Sound file that is included in your app to play instead of the default device notification sound. Pass nil to disable sound for the notification.
-
-            NOTE: Leave off file extension for Android.
-
-            Example: "notification"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        wp_wns_sound:
-          description: 'Channel: Push Notifications
-
-            Platform: Windows
-
-            Sound file that is included in your app to play instead of the default device notification sound.
-
-            Example: "notification.wav"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_led_color:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
-
-            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
-
-            Sets the devices LED notification light if the device has one. ARGB Hex format.
-
-            Example(Blue): "FF0000FF"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_led_color:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
-
-            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
-
-            Sets the devices LED notification light if the device has one. RGB Hex format.
-
-            Example(Blue): "0000FF"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_accent_color:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Sets the background color of the notification circle to the left of the notification text. Only applies to apps targeting Android API level 21+ on Android 5.0+ devices.
-
-            Example(Red): "FFFF0000"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_accent_color:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Accent Color used on Action Buttons and Group overflow count.
-
-            Uses RGB Hex value (E.g. #9900FF).
-
-            Defaults to device''s theme color if not set.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_visibility:
-          description: 'Channel: Push Notifications
-
-            Platform: Android 5.0_
-
-            &#9888;&#65039;Deprecated, this field doesn''t work on Android 8 (Oreo) and newer devices!
-
-            Please use Notification Categories / Channels noted above instead to support ALL versions of Android.
-
-            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
-
-            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
-
-            -1 = Secret (Notification does not show on the lock screen at all)
-
-            '
-          nullable: true
-          type: integer
-          writeOnly: true
-        huawei_visibility:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            &#9888;&#65039;Deprecated, this field ONLY works on EMUI 5 (Android 7 based) and older devices.
-
-            Please also set Notification Categories / Channels noted above to support EMUI 8 (Android 8 based) devices.
-
-            1 = Public (default) (Shows the full message on the lock screen unless the user has disabled all notifications from showing on the lock screen. Please consider the user and mark private if the contents are.)
-
-            0 = Private (Hides message contents on lock screen if the user set "Hide sensitive notification content" in the system settings)
-
-            -1 = Secret (Notification does not show on the lock screen at all)
-
-            '
-          nullable: true
-          type: integer
-          writeOnly: true
-        ios_badgeType:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            Describes whether to set or increase/decrease your app''s iOS badge count by the ios_badgeCount specified count. Can specify None, SetTo, or Increase.
-
-            `None` leaves the count unaffected.
-
-            `SetTo` directly sets the badge count to the number specified in ios_badgeCount.
-
-            `Increase` adds the number specified in ios_badgeCount to the total. Use a negative number to decrease the badge count.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        ios_badgeCount:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            Used with ios_badgeType, describes the value to set or amount to increase/decrease your app''s iOS badge count by.
-
-            You can use a negative number to decrease the badge count when used with an ios_badgeType of Increase.
-
-            '
-          nullable: true
-          type: integer
-          writeOnly: true
-        collapse_id:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 10+, Android
-
-            Only one notification with the same id will be shown on the device. Use the same id to update an existing notification instead of showing a new one. Limit of 64 characters.
-
-            '
-          type: string
-          writeOnly: true
-        web_push_topic:
-          description: 'Channel: Push Notifications
-
-            Platform: All Browsers
-
-            Display multiple notifications at once with different topics.
-
-            '
-          nullable: true
-          type: string
-        apns_alert:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 10+
-
-            iOS can localize push notification messages on the client using special parameters such as loc-key. When using the Create Notification endpoint, you must include these parameters inside of a field called apns_alert. Please see Apple''s guide on localizing push notifications to learn more.
-
-            '
-          nullable: true
-          type: object
-          writeOnly: true
-        delayed_option:
-          description: 'Channel: All
-
-            Possible values are:
-
-            timezone (Deliver at a specific time-of-day in each users own timezone)
-
-            last-active Same as Intelligent Delivery . (Deliver at the same time of day as each user last used your app).
-
-            If send_after is used, this takes effect after the send_after time has elapsed.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        delivery_time_of_day:
-          description: 'Channel: All
-
-            Use with delayed_option=timezone.
-
-            Examples: "9:00AM"
-
-            "21:45"
-
-            "9:45:30"
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        ttl:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS, Android, Chrome, Firefox, Safari, ChromeWeb
-
-            Time To Live - In seconds. The notification will be expired if the device does not come back online within this time. The default is 259,200 seconds (3 days).
-
-            Max value to set is 2419200 seconds (28 days).
-
-            '
-          nullable: true
-          type: integer
-          writeOnly: true
-        priority:
-          description: 'Channel: Push Notifications
-
-            Platform: Android, Chrome, ChromeWeb
-
-            Delivery priority through the push server (example GCM/FCM). Pass 10 for high priority or any other integer for normal priority. Defaults to normal priority for Android and high for iOS. For Android 6.0+ devices setting priority to high will wake the device out of doze mode.
-
-            '
-          nullable: true
-          type: integer
-          writeOnly: true
-        apns_push_type_override:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS
-
-            valid values: voip
-
-            Set the value to voip for sending VoIP Notifications
-
-            This field maps to the APNS header apns-push-type.
-
-            Note: alert and background are automatically set by OneSignal
-
-            '
-          type: string
-          writeOnly: true
-        throttle_rate_per_minute:
-          description: "Channel: All\nApps with throttling enabled:\n  - the parameter value will be used to override the default application throttling value set from the dashboard settings.\n  - parameter value 0 indicates not to apply throttling to the notification.\n  - if the parameter is not passed then the default app throttling value will be applied to the notification.\nApps with throttling disabled:\n  - this parameter can be used to throttle delivery for the notification even though throttling is not enabled at the application level.\nRefer to throttling for more details.\n"
-          nullable: true
-          type: string
-          writeOnly: true
-        android_group:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        android_group_message:
-          description: 'Channel: Push Notifications
-
-            Platform: Android
-
-            Note: This only works for Android 6 and older. Android 7+ allows full expansion of all message.
-
-            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number.
-
-            Languages - The value of each key is the message that will be sent to users for that language. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. Read more: supported languages.
-
-            Example: {"en": "You have $[notif_count] new messages"}
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_group:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            Notifications with the same group will be stacked together using Android''s Notification Grouping feature.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        adm_group_message:
-          description: 'Channel: Push Notifications
-
-            Platform: Amazon
-
-            Summary message to display when 2+ notifications are stacked together. Default is "# new messages". Include $[notif_count] in your message and it will be replaced with the current number. "en" (English) is required. The key of each hash is either a a 2 character language code or one of zh-Hans/zh-Hant for Simplified or Traditional Chinese. The value of each key is the message that will be sent to users for that language.
-
-            Example: {"en": "You have $[notif_count] new messages"}
-
-            '
-          nullable: true
-          type: object
-          writeOnly: true
-        thread_id:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 12+
-
-            This parameter is supported in iOS 12 and above. It allows you to group related notifications together.
-
-            If two notifications have the same thread-id, they will both be added to the same group.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        summary_arg:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 12+
-
-            When using thread_id to create grouped notifications in iOS 12+, you can also control the summary. For example, a grouped notification can say "12 more notifications from John Doe".
-
-            The summary_arg lets you set the name of the person/thing the notifications are coming from, and will show up as "X more notifications from summary_arg"
-
-            '
-          type: string
-          writeOnly: true
-        summary_arg_count:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 12+
-
-            When using thread_id, you can also control the count of the number of notifications in the group. For example, if the group already has 12 notifications, and you send a new notification with summary_arg_count = 2, the new total will be 14 and the summary will be "14 more notifications from summary_arg"
-
-            '
-          type: integer
-          writeOnly: true
-        ios_relevance_score:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 15+
-
-            A score to be set per notification to indicate how it should be displayed when grouped. Use a float between 0-1.
-
-            '
-          nullable: true
-          type: number
-          writeOnly: true
-        ios_interruption_level:
-          description: 'Channel: Push Notifications
-
-            Platform: iOS 15+
-
-            Focus Modes and Interruption Levels indicate the priority and delivery timing of a notification, to "interrupt" the user.
-
-            Can choose from options: [''active'', ''passive'', ''time_sensitive'', ''critical'']. Default is active.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        email_subject:
-          description: 'Channel: Email
-
-            Required.  The subject of the email.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        email_body:
-          description: 'Channel: Email
-
-            Required unless template_id is set.
-
-            HTML suported
-
-            The body of the email you wish to send. Typically, customers include their own HTML templates here. Must include [unsubscribe_url] in an <a> tag somewhere in the email.
-
-            Note: any malformed HTML content will be sent to users. Please double-check your HTML is valid.
-
-            '
-          type: string
-          writeOnly: true
-        email_from_name:
-          description: 'Channel: Email
-
-            The name the email is from. If not specified, will default to "from name" set in the OneSignal Dashboard Email Settings.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        email_from_address:
-          description: 'Channel: Email
-
-            The email address the email is from. If not specified, will default to "from email" set in the OneSignal Dashboard Email Settings.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        email_reply_to_address:
-          description: 'Channel: Email
-
-            The email address where replies should be sent. If not specified, replies will go to the from address.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        email_preheader:
-          description: 'Channel: Email
-
-            The preheader text of the email.
-
-            Preheader is the preview text displayed immediately after an email subject that provides additional context about the email content.
-
-            If not specified, will default to null.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        disable_email_click_tracking:
-          description: 'Channel: Email
-
-            Default is `false`. If set to `true`, the URLs sent within the email will not include link tracking and will be the same as originally set; otherwise, all the URLs in the email will be tracked.'
-          nullable: true
-          type: boolean
-          writeOnly: true
-        include_unsubscribed:
-          description: 'Channel: Email
-
-            Default is `false`. This field is used to send transactional notifications. If set to `true`, this notification will also be sent to unsubscribed emails. If a `template_id` is provided, the `include_unsubscribed` value from the template will be inherited. If you are using a third-party ESP, this field requires the ESP''s list of unsubscribed emails to be cleared.'
-          type: boolean
-          writeOnly: true
-        email_bcc:
-          description: 'Channel: Email
-
-            BCC recipients for the email. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
-
-            '
-          items:
-            type: string
-          maxItems: 5
-          nullable: true
-          type: array
-          writeOnly: true
-        sms_from:
-          description: 'Channel: SMS
-
-            Phone Number used to send SMS. Should be a registered Twilio phone number in E.164 format.
-
-            '
-          nullable: true
-          type: string
-          writeOnly: true
-        sms_media_urls:
-          description: 'Channel: SMS
-
-            URLs for the media files to be attached to the SMS content.
-
-            Limit: 10 media urls with a total max. size of 5MBs.
-
-            '
-          items:
-            type: string
-          nullable: true
-          type: array
-          writeOnly: true
-        filters:
-          items:
-            $ref: '#/components/schemas/FilterExpression'
-          nullable: true
-          type: array
-        custom_data:
-          description: 'Channel: All
-
-            JSON object that can be used as a source of message personalization data for fields that support tag variable substitution.
-
-            Push, SMS: Can accept up to 2048 bytes of valid JSON. Email: Can accept up to 10000 bytes of valid JSON.
-
-            Example: {"order_id": 123, "currency": "USD", "amount": 25}
-
-            '
-          nullable: true
-          type: object
-          writeOnly: true
-        huawei_badge_class:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Full path of the app entry activity class'
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_badge_add_num:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Accumulative badge number, which is an integer ranging from 1 to 99'
-          nullable: true
-          type: integer
-          writeOnly: true
-        huawei_badge_set_num:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Badge number, which is an integer ranging from 0 to 99'
-          nullable: true
-          type: integer
-          writeOnly: true
-        huawei_category:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            Category of the push notification for HMS classification.'
-          enum:
-          - IM
-          - VOIP
-          - SUBSCRIPTION
-          - TRAVEL
-          - HEALTH
-          - WORK
-          - ACCOUNT
-          - EXPRESS
-          - FINANCE
-          - DEVICE_REMINDER
-          - MAIL
-          - MARKETING
-          nullable: true
-          type: string
-          writeOnly: true
-        huawei_bi_tag:
-          description: 'Channel: Push Notifications
-
-            Platform: Huawei
-
-            A tag used for Huawei business intelligence and analytics.'
-          nullable: true
-          type: string
-          writeOnly: true
-      type: object
-    PlatformDeliveryData_email_allOf:
-      properties:
-        opened:
-          description: Number of times an email has been opened.
-          nullable: true
-          type: integer
-        unique_opens:
-          description: Number of unique recipients who have opened your email.
-          nullable: true
-          type: integer
-        clicks:
-          description: Number of clicked links from your email. This can include the recipient clicking email links multiple times.
-          nullable: true
-          type: integer
-        unique_clicks:
-          description: Number of unique clicks that your recipients have made on links from your email.
-          nullable: true
-          type: integer
-        bounced:
-          description: Number of recipients who registered as a hard or soft bounce and didn't receive your email.
-          nullable: true
-          type: integer
-        reported_spam:
-          description: Number of recipients who reported this email as spam.
-          nullable: true
-          type: integer
-        unsubscribed:
-          description: Number of recipients who opted out of your emails using the unsubscribe link in this email.
-          nullable: true
-          type: integer
     RateLimitError:
       properties:
         errors:
@@ -2250,29 +3023,6 @@ components:
           type: array
         limit:
           type: string
-      type: object
-    DeliveryData:
-      properties:
-        successful:
-          description: Number of messages delivered to push servers, mobile carriers, or email service providers.
-          nullable: true
-          type: integer
-        failed:
-          description: Number of messages sent to unsubscribed devices.
-          nullable: true
-          type: integer
-        errored:
-          description: Number of errors reported.
-          nullable: true
-          type: integer
-        converted:
-          description: Number of messages that were clicked.
-          nullable: true
-          type: integer
-        received:
-          description: Number of devices that received the message.
-          nullable: true
-          type: integer
       type: object
   requestBodies:
     get_notification_history_request_body:
@@ -2288,3 +3038,6 @@ components:
     organization_api_key:
       scheme: bearer
       type: http
+x-refined-from:
+- onesignal-api-openapi.json
+- onesignal-openapi.yml

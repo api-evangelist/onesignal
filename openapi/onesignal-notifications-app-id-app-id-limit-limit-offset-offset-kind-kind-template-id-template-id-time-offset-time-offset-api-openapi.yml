@@ -1,0 +1,274 @@
+openapi: 3.2.0
+info:
+  title: api.onesignal.com Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time Offset={time Offset} API
+  version: '11.6'
+servers:
+- url: https://api.onesignal.com
+security:
+- {}
+tags:
+- name: Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time Offset={time Offset}
+paths:
+  ? /notifications?app_id={app_id}&limit={limit}&offset={offset}&kind={kind}&template_id={template_id}&time_offset={time_offset}
+  : get:
+      summary: View messages
+      description: View the details for a collection of messages.
+      operationId: view-messages
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | The app ID that you want to view notifications from\nconst appId: string = \"YOUR_APP_ID\";\n// number | How many notifications to return.  Max is 50.  Default is 50. (optional)\nconst limit: number = 10;\n// number | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at. (optional)\nconst offset: number = 0;\n// 0 | 1 | 3 | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only  (optional)\nconst kind: 0 | 1 | 3 = 0;\n// string | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned. (optional)\nconst timeOffset: string = \"2025-01-01T00:00:00.000Z\";\n\ntry {\n  const response = await apiInstance.getNotifications(appId, limit, offset, kind, timeOffset);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"getNotifications failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    app_id = \"YOUR_APP_ID\" # The app ID that you want to view notifications from \n    limit = 10  # How many notifications to return.  Max is 50.  Default is 50. (optional) \n    offset = 0  # Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at. (optional) \n    kind = 0  # Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only  (optional) \n    time_offset = \"2025-01-01T00:00:00.000Z\"  # Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned. (optional) \n\n    try:\n        # View notifications\n        api_response = api_instance.get_notifications(app_id, limit=limit, offset=offset, kind=kind, time_offset=time_offset)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->get_notifications: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$app_id = 'YOUR_APP_ID'; // string | The app ID that you want to view notifications from\n$limit = 10; // int | How many notifications to return.  Max is 50.  Default is 50.\n$offset = 0; // int | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at.\n$kind = 0; // int | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only\n$time_offset = '2025-01-01T00:00:00.000Z'; // string | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned.\n\ntry {\n    $result = $apiInstance->getNotifications($app_id, $limit, $offset, $kind, $time_offset);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->getNotifications: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->getNotifications: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    appId := \"YOUR_APP_ID\" // string | The app ID that you want to view notifications from\n    limit := int32(10) // int32 | How many notifications to return.  Max is 50.  Default is 50. (optional)\n    offset := int32(0) // int32 | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at. (optional)\n    kind := int32(0) // int32 | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only  (optional)\n    timeOffset := \"2025-01-01T00:00:00.000Z\" // string | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned. (optional)\n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.GetNotifications(restAuth).AppId(appId).Limit(limit).Offset(offset).Kind(kind).TimeOffset(timeOffset).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.GetNotifications``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `GetNotifications`: NotificationSlice\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.GetNotifications`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\napp_id = 'YOUR_APP_ID' # String | The app ID that you want to view notifications from\nopts = {\n  limit: 10, # Integer | How many notifications to return.  Max is 50.  Default is 50.\n  offset: 0, # Integer | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at.\n  kind: 0, # Integer | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only \n  time_offset: '2025-01-01T00:00:00.000Z' # String | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned.\n}\n\nbegin\n  # View notifications\n  result = api_instance.get_notifications(app_id, opts)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->get_notifications: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String appId = \"YOUR_APP_ID\"; // String | The app ID that you want to view notifications from\n    Integer limit = 10; // Integer | How many notifications to return.  Max is 50.  Default is 50.\n    Integer offset = 0; // Integer | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at.\n    Integer kind = 0; // Integer | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only \n    String timeOffset = \"2025-01-01T00:00:00.000Z\"; // String | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned.\n    try {\n      NotificationSlice result = apiInstance.getNotifications(appId, limit, offset, kind, timeOffset);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#getNotifications\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class GetNotificationsExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var appId = \"YOUR_APP_ID\";  // string | The app ID that you want to view notifications from\n            var limit = 10;  // int? | How many notifications to return.  Max is 50.  Default is 50. (optional) \n            var offset = 0;  // int? | Page offset.  Default is 0.  Results are sorted by queued_at in descending order.  queued_at is a representation of the time that the notification was queued at. (optional) \n            var kind = 0;  // int? | Kind of notifications returned:   * unset - All notification types (default)   * `0` - Dashboard only   * `1` - API only   * `3` - Automated only  (optional) \n            var timeOffset = \"2025-01-01T00:00:00.000Z\";  // string | Time-offset pagination cursor for sequential pulls of all messages.  Accepts either an ISO 8601 formatted timestamp (e.g. `2025-01-01T00:00:00.000Z`) or the opaque Base64 cursor token returned as `next_time_offset` in a prior response.  When set, results are sorted ascending by send_after and the standard `offset` parameter cannot be used.  Repeat the request with each `next_time_offset` until an empty notifications array is returned. (optional) \n\n            try\n            {\n                // View notifications\n                NotificationSlice result = apiInstance.GetNotifications(appId, limit, offset, kind, timeOffset);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.GetNotifications: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let app_id: &str = \"YOUR_APP_ID\";\n    let limit: Option<i32> = None;\n    let offset: Option<i32> = None;\n    let kind: Option<i32> = None;\n    let time_offset: Option<&str> = None;\n\n    match default_api::get_notifications(&configuration, app_id, limit, offset, kind, time_offset).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"get_notifications failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"get_notifications failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      - name: limit
+        in: query
+        description: Specifies the maximum number of messages to return in a single query. The maximum and default is **50** messages per request.
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: Controls the starting point for the notifications being returned. Default is **0**. Results are returned and sorted in descending order by `queued_at`.
+        schema:
+          type: integer
+          format: int32
+      - name: kind
+        in: query
+        description: Specifies which push notifications to return based on how it was created. Use this to segment push by their creation method, allowing for targeted analysis or management of notification types. All push types are returned by default. `0` - Notifications created through the dashboard. `1` - Notifications sent via API calls. `3` - Notifications triggered through automated systems.
+        schema:
+          type: integer
+          format: int32
+      - name: template_id
+        in: query
+        description: The template ID in UUID v4 format set for the message if applicable. See [Templates](/docs/en/templates).
+        schema:
+          type: string
+      - name: time_offset
+        in: query
+        description: An ISO 8601 formatted timestamp or Base64 integer token (provided in the API response). See [`time_offset` Accepted Values](#time_offset-accepted-values).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Returns all message properties for up to 50 messages per request. See the [Push notifications](/reference/push-notification), [Email](/reference/email), and/or [SMS](/reference/sms) Message Create APIs for all properties. Most commonly used properties for this endpoint are listed.
+                properties:
+                  total_count:
+                    type: integer
+                    description: The total number of messages available in the dashboard irrespective of page
+                  time_offset:
+                    type: string
+                    description: The `time_offset` if specified in the request.
+                  next_time_offset:
+                    type: string
+                    description: A Base64-encoded cursor token representing the next group of messages to fetch if `time_offset` provided.
+                  offset:
+                    type: integer
+                    description: The offset specified. Defaults to `0` if not provided in the request.
+                  limit:
+                    type: integer
+                    description: The `limit` specified. Defaults to `50` if not provided in the request.
+                  notifications:
+                    type: array
+                    description: 'An array of message objects. `notifications: []` indicates no more messages to fetch. The data provided is generally the most desired from this request'
+                    items:
+                      type: object
+                      properties:
+                        app_id:
+                          description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+                          type: string
+                        big_picture:
+                          description: The URL of the image set in the push notification.
+                          type: string
+                        canceled:
+                          description: Whether the message was canceled.
+                          type: boolean
+                        chrome_web_icon:
+                          description: The URL of the icon set in the push notification.
+                          type: string
+                        chrome_web_image:
+                          description: The URL of the image set in the push notification.
+                          type: string
+                        name:
+                          description: An internal name you set to help organize and track messages. Not shown to recipients. Maximum 128 characters.
+                          type: string
+                        contents:
+                          description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages).
+                          type: object
+                          properties:
+                            en:
+                              type: string
+                              description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                        converted:
+                          type: integer
+                          description: The number of times the push was clicked.
+                        data:
+                          type: object
+                          description: The JSON data set in the push notification if applicable.
+                        delayed_option:
+                          type: string
+                          description: The per-user delay option set for the message.
+                        delivery_time_of_day:
+                          type: string
+                          description: The delivery time of day set for the message if `delayed_option` is `timezone`.
+                        remaining:
+                          type: integer
+                          description: The number of messages that have not been sent yet. If `null`, then the system is still processing the audience, try again later.
+                        errored:
+                          type: integer
+                          description: The number of times the message errored.
+                        excluded_segments:
+                          type: array
+                          description: The segments excluded from the message if applicable.
+                        failed:
+                          type: integer
+                          description: The number of subscriptions reported unsubscribed for the message.
+                        global_image:
+                          type: string
+                          description: The URL of the image set in the push notification.
+                        headings:
+                          type: object
+                          description: The title of the push notification.
+                        id:
+                          type: string
+                          description: The identifier of the message in UUID v4 format.
+                        included_segments:
+                          type: array
+                          description: The segments included in the message if applicable.
+                        ios_badgeCount:
+                          type: integer
+                          description: The badge count set for the message if applicable.
+                        ios_badgeType:
+                          type: string
+                          description: The badge type set for the message if applicable.
+                        queued_at:
+                          type: integer
+                          description: Unix timestamp of when the message was created.
+                        send_after:
+                          type: integer
+                          description: Unix timestamp of when the message delivery was scheduled to begin.
+                        completed_at:
+                          type: integer
+                          description: 'Unix timestamp of when the message delivery was completed. The delivery duration from start to finish can be calculated with `completed_at - send_after`. '
+                        successful:
+                          type: integer
+                          description: The number of messages successfully delivered to the push, email, or SMS servers.
+                        received:
+                          type: integer
+                          description: The number of messages that confirmed being received aka [Confirmed Deliveries](/docs/confirmed-delivery).
+                        filters:
+                          type: object
+                          description: The filters set for the message if applicable.
+                        template_id:
+                          type: string
+                          description: The template ID in UUID v4 format set for the message if applicable. See [Templates](/docs/en/templates).
+                        url:
+                          type: string
+                          description: The URL of the push notification.
+                        web_url:
+                          type: string
+                          description: The URL of the push notification for web push subscriptions.
+                        app_url:
+                          type: string
+                          description: The URL of the push notification for mobile subscriptions.
+                        platform_delivery_stats:
+                          type: object
+                          description: The successful, errored, failed, converted, received and frequency cap counts for each platform applicable.
+                        throttle_rate_per_minute:
+                          type: number
+                          description: The throttle rate of the push notification if applicable.
+                        fcap_status:
+                          type: string
+                          description: The frequency cap status of the push notification if applicable.
+                        outcomes:
+                          type: object
+                          description: The id, value, and aggregation type of the outcome set in the request.
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time Offset={time Offset}
+components:
+  schemas:
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.

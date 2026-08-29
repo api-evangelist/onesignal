@@ -1,18 +1,151 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  contact:
-    email: devrel@onesignal.com
-    name: OneSignal DevRel
-    url: https://onesignal.com
-  description: A powerful way to send personalized messages at scale and build effective customer engagement strategies. Learn more at onesignal.com
-  termsOfService: https://onesignal.com/tos
-  title: OneSignal Players API
-  version: 5.5.0
+  title: Onesignal Players API
+  version: '1.0'
+  description: 'Operations tagged Players across 2 of this provider''s published API definitions: onesignal-api-openapi.json, onesignal-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.onesignal.com
 tags:
 - name: Players
 paths:
+  /players/csv_export:
+    post:
+      summary: Export subscriptions CSV
+      description: Generate a GZip-compressed CSV export of your current subscription data using this API endpoint.
+      operationId: csv-export
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | The app ID that you want to export devices from\nconst appId: string = \"YOUR_APP_ID\";\n// ExportSubscriptionsRequestBody (optional)\nconst exportSubscriptionsRequestBody: Onesignal.ExportSubscriptionsRequestBody = {\n    extra_fields: [\n      \"extra_fields_example\",\n    ],\n    last_active_since: \"last_active_since_example\",\n    segment_name: \"segment_name_example\",\n  };\n\ntry {\n  const response = await apiInstance.exportSubscriptions(appId, exportSubscriptionsRequestBody);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"exportSubscriptions failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    app_id = \"YOUR_APP_ID\" # The app ID that you want to export devices from \n    export_subscriptions_request_body = ExportSubscriptionsRequestBody(\n        extra_fields=[\n            \"extra_fields_example\",\n        ],\n        last_active_since=\"last_active_since_example\",\n        segment_name=\"segment_name_example\",\n    ) \n\n    try:\n        # Export CSV of Subscriptions\n        api_response = api_instance.export_subscriptions(app_id, export_subscriptions_request_body=export_subscriptions_request_body)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->export_subscriptions: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$app_id = 'YOUR_APP_ID'; // string | The app ID that you want to export devices from\n$export_subscriptions_request_body = new \\onesignal\\client\\model\\ExportSubscriptionsRequestBody(); // \\onesignal\\client\\model\\ExportSubscriptionsRequestBody\n\ntry {\n    $result = $apiInstance->exportSubscriptions($app_id, $export_subscriptions_request_body);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->exportSubscriptions: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->exportSubscriptions: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    appId := \"YOUR_APP_ID\" // string | The app ID that you want to export devices from\n    exportSubscriptionsRequestBody := *onesignal.NewExportSubscriptionsRequestBody() // ExportSubscriptionsRequestBody |  (optional)\n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.ExportSubscriptions(restAuth, appId).ExportSubscriptionsRequestBody(exportSubscriptionsRequestBody).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.ExportSubscriptions``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `ExportSubscriptions`: ExportSubscriptionsSuccessResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.ExportSubscriptions`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\napp_id = 'YOUR_APP_ID' # String | The app ID that you want to export devices from\nopts = {\n  export_subscriptions_request_body: OneSignal::ExportSubscriptionsRequestBody.new # ExportSubscriptionsRequestBody | \n}\n\nbegin\n  # Export CSV of Subscriptions\n  result = api_instance.export_subscriptions(app_id, opts)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->export_subscriptions: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String appId = \"YOUR_APP_ID\"; // String | The app ID that you want to export devices from\n    ExportSubscriptionsRequestBody exportSubscriptionsRequestBody = new ExportSubscriptionsRequestBody(); // ExportSubscriptionsRequestBody | \n    try {\n      ExportSubscriptionsSuccessResponse result = apiInstance.exportSubscriptions(appId, exportSubscriptionsRequestBody);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#exportSubscriptions\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class ExportSubscriptionsExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var appId = \"YOUR_APP_ID\";  // string | The app ID that you want to export devices from\n            var exportSubscriptionsRequestBody = new ExportSubscriptionsRequestBody(); // ExportSubscriptionsRequestBody |  (optional) \n\n            try\n            {\n                // Export CSV of Subscriptions\n                ExportSubscriptionsSuccessResponse result = apiInstance.ExportSubscriptions(appId, exportSubscriptionsRequestBody);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.ExportSubscriptions: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\nuse onesignal_rust_api::models;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let app_id: &str = \"YOUR_APP_ID\";\n    let export_subscriptions_request_body: Option<models::ExportSubscriptionsRequestBody> = None;\n\n    match default_api::export_subscriptions(&configuration, app_id, export_subscriptions_request_body).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"export_subscriptions failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"export_subscriptions failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                extra_fields:
+                  type: array
+                  description: Additional properties that you can include in the CSV.
+                  default:
+                  - external_user_id
+                  - country
+                  - timezone_id
+                  items:
+                    type: string
+                    enum:
+                    - external_user_id
+                    - onesignal_id
+                    - location
+                    - country
+                    - rooted
+                    - ip
+                    - web_auth
+                    - web_p256
+                    - unsubscribed_at
+                    - notification_types
+                    - timezone_id
+                last_active_since:
+                  type: string
+                  description: 'A Unix timestamp (in seconds) used to filter Subscriptions based on recent activity. Only Subscriptions with a `last_session` timestamp after this value will be included in the export. Example: To export Subscriptions active since January 1st, 2024, use `1704067200`.'
+                segment_name:
+                  type: string
+                  description: The name of a specific segment to filter the export. Only subscriptions that belong to this segment will be included in the CSV. Omit this field to export all subscriptions in the app.
+                include_unsubscribed:
+                  type: boolean
+                  description: When used with `segment_name`, set to `true` to include unsubscribed subscriptions in the export. By default, segment-filtered exports only return subscribed subscriptions. This parameter has no effect when `segment_name` is not provided.
+                  default: false
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csv_file_url:
+                    type: string
+                    description: The URL to download the CSV file. The file is available for 3 days after generation.
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - 'Request is malformed: Failed to parse app_id from request'
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Players
+    servers:
+    - url: https://api.onesignal.com
   /players/csv_export?app_id={app_id}:
     post:
       description: "Generate a compressed CSV export of all of your current user data\nThis method can be used to generate a compressed CSV export of all of your current user data. It is a much faster alternative than retrieving this data using the /players API endpoint.\nThe file will be compressed using GZip.\nThe file may take several minutes to generate depending on the number of users in your app.\nThe URL generated will be available for 3 days and includes random v4 uuid as part of the resource name to be unguessable.\n&#x1F6A7;\n403 Error Responses          You can test if it is complete by making a GET request to the csv_file_url value. This file may take time to generate depending on how many device records are being pulled. If the file is not ready, a 403 error will be returned. Otherwise the file itself will be returned.\n&#x1F6A7;\nRequires Authentication Key\nRequires your OneSignal App's REST API Key, available in Keys & IDs.\n&#x1F6A7;\nConcurrent Exports\nOnly one concurrent export is allowed per OneSignal account. Please ensure you have successfully downloaded the .csv.gz file before exporting another app.\nCSV File Format:\n- Default Columns:\n  | Field | Details |\n  | --- | --- |\n  | id | OneSignal Player Id |\n  | identifier | Push Token |\n  | session_count | Number of times they visited the app or site\n  | language | Device language code |\n  | timezone | Number of seconds away from UTC. Example: -28800 |\n  | game_version | Version of your mobile app gathered from Android Studio versionCode in your App/build.gradle and iOS uses kCFBundleVersionKey in Xcode. |\n  | device_os | Device Operating System Version. Example: 80 = Chrome 80, 9 = Android 9 |\n  | device_type | Device Operating System Type |\n  | device_model | Device Hardware String Code. Example: Mobile Web Subscribers will have `Linux armv` |\n  | ad_id | Based on the Google Advertising Id for Android, identifierForVendor for iOS. OptedOut means user turned off Advertising tracking on the device. |\n  | tags | Current OneSignal Data Tags on the device. |\n  | last_active | Date and time the user last opened the mobile app or visited the site. |\n  | playtime | Total amount of time in seconds the user had the mobile app open. |\n  | amount_spent | \tMobile only - amount spent in USD on In-App Purchases. | \n  | created_at | Date and time the device record was created in OneSignal. Mobile - first time they opened the app with OneSignal SDK. Web - first time the user subscribed to the site. |\n  | invalid_identifier | t = unsubscribed, f = subscibed |\n  | badge_count | Current number of badges on the device |\n- Extra Columns:\n  | Field | Details |\n  | --- | --- |\n  | external_user_id | Your User Id set on the device |\n  | notification_types | Notification types |\n  | location | Location points (Latitude and Longitude) set on the device. |\n  | country | Country code |\n  | rooted | Android device rooted or not |\n  | ip | IP Address of the device if being tracked. See Handling Personal Data. |\n  | web_auth | Web Only authorization key. |\n  | web_p256 | Web Only p256 key. |\n"
@@ -69,15 +202,26 @@ paths:
       summary: Export CSV of Subscriptions
       tags:
       - Players
+    servers:
+    - url: https://api.onesignal.com
 components:
   schemas:
-    GenericError:
+    BasicErrorResponse:
+      type: object
       properties:
-        errors: {}
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
         success:
           type: boolean
-        reference: {}
-      type: object
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
     export_subscriptions_request_body:
       properties:
         extra_fields:
@@ -93,12 +237,12 @@ components:
           type: string
       title: export_subscriptions_request_body
       type: object
-    ExportSubscriptionsSuccessResponse:
-      example:
-        csv_file_url: csv_file_url
+    GenericError:
       properties:
-        csv_file_url:
-          type: string
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
       type: object
     RateLimitError:
       properties:
@@ -107,6 +251,13 @@ components:
             type: string
           type: array
         limit:
+          type: string
+      type: object
+    ExportSubscriptionsSuccessResponse:
+      example:
+        csv_file_url: csv_file_url
+      properties:
+        csv_file_url:
           type: string
       type: object
   requestBodies:
@@ -122,3 +273,6 @@ components:
     organization_api_key:
       scheme: bearer
       type: http
+x-refined-from:
+- onesignal-api-openapi.json
+- onesignal-openapi.yml

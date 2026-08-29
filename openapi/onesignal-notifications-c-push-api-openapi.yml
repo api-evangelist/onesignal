@@ -1,0 +1,640 @@
+openapi: 3.2.0
+info:
+  title: api.onesignal.com Notifications?c=push API
+  version: '11.6'
+servers:
+- url: https://api.onesignal.com
+security:
+- {}
+tags:
+- name: Notifications?c=push
+paths:
+  /notifications?c=push:
+    post:
+      summary: Push notification
+      description: Send a message using the push notification channel.
+      operationId: push-notification
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\nimport { randomUUID } from 'node:crypto';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\nconst notification = new Onesignal.Notification();\nnotification.app_id = 'YOUR_APP_ID';\nnotification.contents = { en: 'Hello from OneSignal!' };\nnotification.headings = { en: 'Push Notification' };\n// Target by External ID: alias keys must match the API (external_id, not externalId).\nnotification.include_aliases = { external_id: ['YOUR_USER_EXTERNAL_ID'] };\nnotification.target_channel = 'push';\n// Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n// If two requests arrive with the same key inside the 30-day window, only the first is sent\n// and the second returns the original response. `randomUUID` is imported from `node:crypto`\n// (available on Node 14.17+) — DO NOT reuse keys across logically distinct sends.\nnotification.idempotency_key = randomUUID();\n\ntry {\n  const response = await apiInstance.createNotification(notification);\n  // `response.id` discriminates the two HTTP 200 shapes. A falsy value (empty string,\n  // null, or undefined) means no notification was created (e.g. all targets were\n  // unreachable / not subscribed). `response.errors` is polymorphic: a `string[]` in the\n  // no-subscribers case, or an object keyed by recipient-identifier type\n  // (`invalid_player_ids`, `invalid_external_user_ids`, `invalid_aliases`, …) when the\n  // notification WAS created but some recipients were skipped.\n  if (!response.id) {\n    console.warn(\"Notification was not sent:\", response.errors);\n  } else if (response.errors) {\n    console.log(\"Notification created:\", response.id, \"(partial failures:\", response.errors, \")\");\n  } else {\n    console.log(\"Notification created:\", response.id);\n  }\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"createNotification failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import uuid\nimport onesignal\nfrom onesignal.api import default_api\nfrom onesignal.model.language_string_map import LanguageStringMap\nfrom onesignal.model.notification import Notification\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\nwith onesignal.ApiClient(configuration) as api_client:\n    api_instance = default_api.DefaultApi(api_client)\n    notification = Notification(\n        app_id='YOUR_APP_ID',\n        contents=LanguageStringMap(en='Hello from OneSignal!'),\n        headings=LanguageStringMap(en='Push Notification'),\n        include_aliases={'external_id': ['YOUR_USER_EXTERNAL_ID']},\n        target_channel='push',\n        # Idempotency key: a client-generated UUID that lets you safely retry on network\n        # failure. If two requests arrive with the same key inside the 30-day window, only\n        # the first is sent and the second returns the original response. Use uuid.uuid4()\n        # or a similar source of randomness — DO NOT reuse keys across logically distinct\n        # sends.\n        idempotency_key=str(uuid.uuid4()),\n    )\n    try:\n        api_response = api_instance.create_notification(notification)\n        # `api_response.id` discriminates the two HTTP 200 shapes. A falsy value means no\n        # notification was created (e.g. all targets were unreachable / not subscribed).\n        # `api_response.errors` is polymorphic: a `list[str]` in the no-subscribers case, or\n        # a dict keyed by recipient-identifier type (`invalid_player_ids`,\n        # `invalid_external_user_ids`, `invalid_aliases`, ...) when the notification WAS\n        # created but some recipients were skipped. Access via `.get('errors')` rather than\n        # attribute access — the legacy Python generator's `ModelNormal.__getattr__` raises\n        # `ApiAttributeError` for optional fields that the server omitted, so plain\n        # `api_response.errors` would crash on the pure-success path.\n        response_id = api_response.get('id')\n        response_errors = api_response.get('errors')\n        if not response_id:\n            print('Notification was not sent:', response_errors)\n        elif response_errors:\n            print('Notification created:', response_id, '(partial failures:', response_errors, ')')\n        else:\n            print('Notification created:', response_id)\n    except onesignal.ApiException as e:\n        print('Exception when calling DefaultApi->create_notification: %s\\n' % e)\n        print('Status Code: %s' % e.status)\n        # `e.error_messages` flattens any error-envelope shape to a list[str];\n        # the raw body remains on `e.body`.\n        print('Error Messages: %s' % e.error_messages)\n        print('Response Body: %s' % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    new GuzzleHttp\\Client(),\n    $config\n);\n\n$notification = new onesignal\\client\\Model\\Notification();\n$notification->setAppId('YOUR_APP_ID');\n$contents = new onesignal\\client\\Model\\LanguageStringMap();\n$contents->setEn('Hello from OneSignal!');\n$notification->setContents($contents);\n$headings = new onesignal\\client\\Model\\LanguageStringMap();\n$headings->setEn('Push Notification');\n$notification->setHeadings($headings);\n$notification->setIncludeAliases(['external_id' => ['YOUR_USER_EXTERNAL_ID']]);\n$notification->setTargetChannel('push');\n// Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n// If two requests arrive with the same key inside the 30-day window, only the first is sent\n// and the second returns the original response. Use a strong source of randomness — DO NOT\n// reuse keys across logically distinct sends. We use PHP 7+'s built-in random_bytes() here\n// so the snippet works against this SDK's declared composer.json deps (Guzzle + PSR-7) with\n// no extra install; projects that already pull in ramsey/uuid can swap in\n// `\\Ramsey\\Uuid\\Uuid::uuid4()->toString()` instead.\n$idempotencyKeyBytes = random_bytes(16);\n$idempotencyKeyBytes[6] = chr(ord($idempotencyKeyBytes[6]) & 0x0f | 0x40);\n$idempotencyKeyBytes[8] = chr(ord($idempotencyKeyBytes[8]) & 0x3f | 0x80);\n$idempotencyKey = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($idempotencyKeyBytes), 4));\n$notification->setIdempotencyKey($idempotencyKey);\n\ntry {\n    $result = $apiInstance->createNotification($notification);\n    // `$result->getId()` discriminates the two HTTP 200 shapes. A falsy value (empty\n    // string or null) means no notification was created (e.g. all targets were\n    // unreachable / not subscribed). `$result->getErrors()` is polymorphic: a `string[]`\n    // in the no-subscribers case, or an object keyed by recipient-identifier type\n    // (`invalid_player_ids`, `invalid_external_user_ids`, `invalid_aliases`, ...) when\n    // the notification WAS created but some recipients were skipped.\n    if (!$result->getId()) {\n        echo 'Notification was not sent: ', print_r($result->getErrors(), true), PHP_EOL;\n    } elseif ($result->getErrors()) {\n        echo 'Notification created: ', $result->getId(), ' (partial failures: ', print_r($result->getErrors(), true), ')', PHP_EOL;\n    } else {\n        echo 'Notification created: ', $result->getId(), PHP_EOL;\n    }\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->createNotification: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->createNotification: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/google/uuid\"\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\")\n\n    notification := onesignal.NewNotification(\"YOUR_APP_ID\")\n    contents := onesignal.NewLanguageStringMap()\n    contents.SetEn(\"Hello from OneSignal!\")\n    notification.SetContents(*contents)\n    headings := onesignal.NewLanguageStringMap()\n    headings.SetEn(\"Push Notification\")\n    notification.SetHeadings(*headings)\n    notification.SetIncludeAliases(map[string][]string{\"external_id\": {\"YOUR_USER_EXTERNAL_ID\"}})\n    notification.SetTargetChannel(\"push\")\n    // Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n    // If two requests arrive with the same key inside the 30-day window, only the first is\n    // sent and the second returns the original response. The `github.com/google/uuid` module\n    // is not a declared dep of this SDK; run `go get github.com/google/uuid` (or `go mod tidy`\n    // after importing it) before building. DO NOT reuse keys across logically distinct sends.\n    notification.SetIdempotencyKey(uuid.NewString())\n\n    resp, r, err := apiClient.DefaultApi.CreateNotification(restAuth).Notification(*notification).Execute()\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.CreateNotification``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n        return\n    }\n    // `resp.GetId()` discriminates the two HTTP 200 shapes. An empty string means no\n    // notification was created (e.g. all targets were unreachable / not subscribed).\n    // `resp.GetErrors()` is `interface{}` because the field is polymorphic: a `[]string` in\n    // the no-subscribers case, or a map keyed by recipient-identifier type\n    // (`invalid_player_ids`, `invalid_external_user_ids`, `invalid_aliases`, ...) when\n    // the notification WAS created but some recipients were skipped.\n    if resp.GetId() == \"\" {\n        fmt.Fprintf(os.Stderr, \"Notification was not sent: %v\\n\", resp.GetErrors())\n    } else if errors := resp.GetErrors(); errors != nil {\n        fmt.Fprintf(os.Stdout, \"Notification created: %s (partial failures: %v)\\n\", resp.GetId(), errors)\n    } else {\n        fmt.Fprintf(os.Stdout, \"Notification created: %s\\n\", resp.GetId())\n    }\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\nrequire 'securerandom'\n\nnotification = OneSignal::Notification.new\nnotification.app_id = 'YOUR_APP_ID'\nnotification.contents = OneSignal::LanguageStringMap.new({ en: 'Hello from OneSignal!' })\nnotification.headings = OneSignal::LanguageStringMap.new({ en: 'Push Notification' })\nnotification.include_aliases = { 'external_id' => ['YOUR_USER_EXTERNAL_ID'] }\nnotification.target_channel = 'push'\n# Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n# If two requests arrive with the same key inside the 30-day window, only the first is sent\n# and the second returns the original response. Use SecureRandom.uuid — DO NOT reuse keys\n# across logically distinct sends.\nnotification.idempotency_key = SecureRandom.uuid\n\nbegin\n  # Create notification\n  result = api_instance.create_notification(notification)\n  # `result.id` discriminates the two HTTP 200 shapes. An empty string means no\n  # notification was created (e.g. all targets were unreachable / not subscribed).\n  # `result.errors` is polymorphic: an `Array<String>` in the no-subscribers case, or\n  # a Hash keyed by recipient-identifier type (`invalid_player_ids`,\n  # `invalid_external_user_ids`, `invalid_aliases`, ...) when the notification WAS\n  # created but some recipients were skipped.\n  if result.id.to_s.empty?\n    puts \"Notification was not sent: #{result.errors}\"\n  elsif result.errors\n    puts \"Notification created: #{result.id} (partial failures: #{result.errors})\"\n  else\n    puts \"Notification created: #{result.id}\"\n  end\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->create_notification: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport java.util.Arrays;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.UUID;\n\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    Notification notification = new Notification();\n    notification.setAppId(\"YOUR_APP_ID\");\n    LanguageStringMap contents = new LanguageStringMap();\n    contents.setEn(\"Hello from OneSignal!\");\n    notification.setContents(contents);\n    LanguageStringMap headings = new LanguageStringMap();\n    headings.setEn(\"Push Notification\");\n    notification.setHeadings(headings);\n    Map<String, List<String>> aliases = new HashMap<>();\n    aliases.put(\"external_id\", Arrays.asList(\"YOUR_USER_EXTERNAL_ID\"));\n    notification.setIncludeAliases(aliases);\n    notification.setTargetChannel(Notification.TargetChannelEnum.PUSH);\n    // Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n    // If two requests arrive with the same key inside the 30-day window, only the first is\n    // sent and the second returns the original response. Use UUID.randomUUID() — DO NOT\n    // reuse keys across logically distinct sends.\n    notification.setIdempotencyKey(UUID.randomUUID().toString());\n\n    try {\n      CreateNotificationSuccessResponse result = apiInstance.createNotification(notification);\n      // `result.getId()` discriminates the two HTTP 200 shapes. An empty string means no\n      // notification was created (e.g. all targets were unreachable / not subscribed).\n      // `result.getErrors()` is polymorphic (declared as `Object`): a `List<String>` in the\n      // no-subscribers case, or a Map keyed by recipient-identifier type\n      // (`invalid_player_ids`, `invalid_external_user_ids`, `invalid_aliases`, ...) when\n      // the notification WAS created but some recipients were skipped.\n      if (result.getId() == null || result.getId().isEmpty()) {\n        System.out.println(\"Notification was not sent: \" + result.getErrors());\n      } else if (result.getErrors() != null) {\n        System.out.println(\"Notification created: \" + result.getId() + \" (partial failures: \" + result.getErrors() + \")\");\n      } else {\n        System.out.println(\"Notification created: \" + result.getId());\n      }\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#createNotification\");\n      System.err.println(\"Status code: \" + e.getCode());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class CreateNotificationExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n\n            var notification = new Notification\n            {\n                AppId = \"YOUR_APP_ID\",\n                Contents = new LanguageStringMap(en: \"Hello from OneSignal!\"),\n                Headings = new LanguageStringMap(en: \"Push Notification\"),\n                IncludeAliases = new Dictionary<string, List<string>>\n                {\n                    { \"external_id\", new List<string> { \"YOUR_USER_EXTERNAL_ID\" } }\n                },\n                TargetChannel = Notification.TargetChannelEnum.Push,\n                // Idempotency key: a client-generated UUID that lets you safely retry on\n                // network failure. If two requests arrive with the same key inside the\n                // 30-day window, only the first is sent and the second returns the original\n                // response. Use Guid.NewGuid() — DO NOT reuse keys across logically distinct\n                // sends.\n                IdempotencyKey = Guid.NewGuid().ToString()\n            };\n\n            try\n            {\n                CreateNotificationSuccessResponse result = apiInstance.CreateNotification(notification);\n                // `result.Id` discriminates the two HTTP 200 shapes. An empty string means\n                // no notification was created (e.g. all targets were unreachable / not\n                // subscribed). `result.Errors` is polymorphic: a `List<string>` in the\n                // no-subscribers case, or an object keyed by recipient-identifier type\n                // (`invalid_player_ids`, `invalid_external_user_ids`, `invalid_aliases`, ...)\n                // when the notification WAS created but some recipients were skipped.\n                if (string.IsNullOrEmpty(result.Id))\n                {\n                    Debug.WriteLine(\"Notification was not sent: \" + result.Errors);\n                }\n                else if (result.Errors != null)\n                {\n                    Debug.WriteLine(\"Notification created: \" + result.Id + \" (partial failures: \" + result.Errors + \")\");\n                }\n                else\n                {\n                    Debug.WriteLine(\"Notification created: \" + result.Id);\n                }\n            }\n            catch (ApiException e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.CreateNotification: \" + e.Message);\n                Debug.Print(\"Status Code: \" + e.ErrorCode);\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\nuse onesignal_rust_api::models::notification::TargetChannelType;\nuse onesignal_rust_api::models::{LanguageStringMap, Notification};\nuse uuid::Uuid;\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n    let mut notification = Notification::new(\"YOUR_APP_ID\".to_string());\n    notification.contents = Some(Box::new(LanguageStringMap {\n        en: Some(\"Hello from OneSignal!\".to_string()),\n        ..Default::default()\n    }));\n    notification.headings = Some(Box::new(LanguageStringMap {\n        en: Some(\"Push Notification\".to_string()),\n        ..Default::default()\n    }));\n    let mut aliases = std::collections::HashMap::new();\n    aliases.insert(\n        \"external_id\".to_string(),\n        vec![\"YOUR_USER_EXTERNAL_ID\".to_string()],\n    );\n    notification.include_aliases = Some(aliases);\n    notification.target_channel = Some(TargetChannelType::Push);\n    // Idempotency key: a client-generated UUID that lets you safely retry on network failure.\n    // If two requests arrive with the same key inside the 30-day window, only the first is\n    // sent and the second returns the original response. The `uuid` crate must be declared\n    // in your own Cargo.toml (Cargo doesn't expose transitive crates by name to downstream\n    // code) — add `uuid = { version = \"1\", features = [\"v4\"] }` to your `[dependencies]`.\n    // DO NOT reuse keys across logically distinct sends.\n    notification.idempotency_key = Some(Uuid::new_v4().to_string());\n\n    match default_api::create_notification(&configuration, notification).await {\n        Ok(resp) => {\n            // `resp.id` discriminates the two HTTP 200 shapes. An empty string or `None`\n            // means no notification was created (e.g. all targets were unreachable / not\n            // subscribed). `resp.errors` is polymorphic (typed as `Option<serde_json::Value>`):\n            // a `Vec<String>` in the no-subscribers case, or an object keyed by\n            // recipient-identifier type (`invalid_player_ids`, `invalid_external_user_ids`,\n            // `invalid_aliases`, ...) when the notification WAS created but some recipients\n            // were skipped.\n            match resp.id.as_deref() {\n                Some(\"\") | None => eprintln!(\"Notification was not sent: {:?}\", resp.errors),\n                Some(id) if resp.errors.is_some() => {\n                    println!(\"Notification created: {} (partial failures: {:?})\", id, resp.errors)\n                }\n                Some(id) => println!(\"Notification created: {}\", id),\n            }\n        }\n        Err(onesignal_rust_api::apis::Error::ResponseError(content)) => {\n            eprintln!(\"create_notification failed: HTTP {}\", content.status);\n            eprintln!(\"Response Body: {}\", content.content);\n        }\n        Err(e) => eprintln!(\"create_notification failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - app_id
+              - contents
+              properties:
+                app_id:
+                  type: string
+                  description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+                  default: YOUR_APP_ID
+                include_aliases:
+                  type: object
+                  description: Target up to 20,000 users by their `external_id`, `onesignal_id`, or your own custom alias. Use with `target_channel` to control the delivery channel. Not compatible with any other targeting parameters like `filters`, `include_subscription_ids`, `included_segments`, or `excluded_segments`. See [Sending messages with the OneSignal API](/reference/create-message#include-aliases).
+                  format: json
+                  properties:
+                    external_id:
+                      description: An array of external IDs which should be the same as the user ID in your app. This is the recommended method for targeting users. See [Users](/docs/users).
+                      type: array
+                      items:
+                        type: string
+                target_channel:
+                  type: string
+                  description: The targeted delivery channel. Required when using `include_aliases`. Accepts `push`, `email`, or `sms`.
+                  enum:
+                  - push
+                  - email
+                  - sms
+                  default: push
+                include_subscription_ids:
+                  type: array
+                  description: Target users' specific [subscriptions](/docs/subscriptions) by ID. Include up to 20,000 `subscription_id` per API call. Not compatible with any other targeting parameters like `filters`, `include_aliases`, `included_segments`, or `excluded_segments`. See [Sending messages with the OneSignal API](/reference/create-message).
+                  items:
+                    type: string
+                included_segments:
+                  type: array
+                  description: Target predefined [Segments](/docs/segmentation). Users that are in multiple segments will only be sent the message once. Can be combined with `excluded_segments`. Not compatible with any other targeting parameters like `filters`, `include_aliases`, or `include_subscription_ids`. See [Sending messages with the OneSignal API](/reference/create-message).
+                  items:
+                    type: string
+                excluded_segments:
+                  type: array
+                  description: Exclude users in predefined [Segments](/docs/segmentation). Overrides membership in any segment specified in the `included_segments`. Not compatible with any other targeting parameters like `filters`, `include_aliases`, or `include_subscription_ids`. See [Sending messages with the OneSignal API](/reference/create-message).
+                  items:
+                    type: string
+                filters:
+                  type: array
+                  description: Filters define the segment based on user properties like tags, activity, or location using flexible AND/OR logic. Limited to 200 total entries, including fields and `OR` operators. See [Sending messages with the OneSignal API](/reference/create-message#filters).
+                  items:
+                    oneOf:
+                    - title: Filter
+                      description: Required. The fitler object.
+                      required:
+                      - field
+                      - relation
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: The name of the filter to use.
+                          enum:
+                          - tag
+                          - last_session
+                          - first_session
+                          - session_count
+                          - session_time
+                          - language
+                          - app_version
+                          - location
+                          - country
+                        relation:
+                          type: string
+                          description: Used with most filters. See details on the specific filter.
+                          enum:
+                          - '='
+                          - '!='
+                          - '>'
+                          - <
+                          - exists
+                          - not_exists
+                          - in_array
+                          - not_in_array
+                          - time_elapsed_gt
+                          - time_elapsed_lt
+                        key:
+                          type: string
+                          description: Used with the `tag` filter. This is the tag `key`.
+                        value:
+                          type: string
+                          description: The value of the `field` or tag `key` in which you want to filter with.
+                    - title: Operator
+                      type: object
+                      properties:
+                        operator:
+                          type: string
+                          description: Chain filter conditions with implicit `AND` and `OR` logic. Never end your `filters` object with an `operator`. See [filters](/reference/create-message#filters) for more.
+                          enum:
+                          - AND
+                          - OR
+                          default: AND
+                  minItems: 1
+                  maxItems: 200
+                contents:
+                  type: object
+                  description: The main message body with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Supports [Message Personalization](/docs/message-personalization).
+                  required:
+                  - en
+                  properties:
+                    en:
+                      type: string
+                      description: The required message language type. See [Supported Languages](/docs/en/multi-language-messaging#supported-languages).
+                      default: Default message.
+                headings:
+                  type: object
+                  description: The message title with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Required for Huawei and Web Push. If not set for Web Push, it defaults to your 'Site Name'. Not required if using `template_id` or `content_available`. Supports [Message Personalization](/docs/message-personalization) and must include the same languages as `contents` to ensure localization consistency.
+                  properties:
+                    en:
+                      type: string
+                      description: The title in English. If used, must include the same languages as `contents`.
+                subtitle:
+                  type: object
+                  description: iOS only. The subtitle with [language-specific values](/docs/en/multi-language-messaging#supported-languages). Supports [Message Personalization](/docs/message-personalization) and must include the same languages as `contents` to ensure localization consistency.
+                  properties:
+                    en:
+                      type: string
+                      description: The subtitle for iOS push only. If used, must include the same languages as `contents`.
+                name:
+                  type: string
+                  description: An internal name you set to help organize and track messages. Not shown to recipients. Maximum 128 characters.
+                template_id:
+                  type: string
+                  description: The template ID in UUID v4 format set for the message if applicable. See [Templates](/docs/en/templates).
+                custom_data:
+                  type: object
+                  description: 'Include user or context-specific data (e.g., cart items, OTPs, links) in a message. Use with `template_id`. See [Message Personalization](/docs/message-personalization). Max size: 2KB (Push/SMS), 10KB (Email).'
+                ios_attachments:
+                  type: object
+                  description: The local name or URL of the media attachment to include in your notification. Users can expand the notification to view images, videos, or other supported attachments. See [Images & Rich Media](/docs/rich-media).
+                  properties:
+                    id:
+                      type: string
+                      description: 'The URL of the media to display in the notification. Example: `https://avatars.githubusercontent.com/u/11823027?s=200&v=4`'
+                big_picture:
+                  type: string
+                  description: The local name or URL of the image to include in your Google Android notification. Users can expand the notification to view the images. See [Images & Rich Media](/docs/rich-media).
+                huawei_big_picture:
+                  type: string
+                  description: The local name or URL of the image to include in your Huawei Android notification. Users can expand the notification to view the images. See [Images & Rich Media](/docs/rich-media).
+                adm_big_picture:
+                  type: string
+                  description: The local name or URL of the image to include in your Amazon Android notification. Users can expand the notification to view the images. See [Images & Rich Media](/docs/rich-media).
+                chrome_web_image:
+                  type: string
+                  description: The URL of the image to include in your Chrome notification. Users can expand the notification to view the images. Supported on Chrome for Windows and Android. macOS does not support this parameter and instead expands the `chrome_web_icon`. See [Images & Rich Media](/docs/rich-media).
+                small_icon:
+                  type: string
+                  description: The local name of the small icon to display in the Google Android notification. See [Notification icons](/docs/notification-icons).
+                huawei_small_icon:
+                  type: string
+                  description: The local name of the small icon to display in the Huawei Android notification. See [Notification icons](/docs/notification-icons).
+                adm_small_icon:
+                  type: string
+                  description: The local name of the small icon to display in the Amazon Android notification. See [Notification icons](/docs/notification-icons).
+                large_icon:
+                  type: string
+                  description: The local name or URL of the large icon to display in the Google Android notification. See [Notification icons](/docs/notification-icons).
+                huawei_large_icon:
+                  type: string
+                  description: The local name or URL of the large icon to display in the Huawei Android notification. See [Notification icons](/docs/notification-icons).
+                adm_large_icon:
+                  type: string
+                  description: The local name or URL of the large icon to display in the Amazon Android notification. See [Notification icons](/docs/notification-icons).
+                chrome_web_icon:
+                  type: string
+                  description: The URL of the icon to display in the Chrome web notification. Defaults to the resource set in the OneSignal dashboard. See [Notification icons](/docs/notification-icons).
+                firefox_icon:
+                  type: string
+                  description: The URL of the icon to display in the Firefox web notification. Defaults to the resource set in the OneSignal dashboard. See [Notification icons](/docs/notification-icons).
+                chrome_web_badge:
+                  type: string
+                  description: The URL of the icon to display in the Android notification tray for Chrome web notifications. Defaults to the Chrome icon. See [Push](/docs/push#badges).
+                android_channel_id:
+                  type: string
+                  description: The UUID of the [Android notification channel category](/docs/android-notification-categories) created within your OneSignal app.
+                existing_android_channel_id:
+                  type: string
+                  description: The UUID of the [Android notification channel category](/docs/android-notification-categories) created within your Android app.
+                huawei_channel_id:
+                  type: string
+                  description: The UUID of the [Android notification channel category](/docs/android-notification-categories) created within your OneSignal app.
+                huawei_existing_channel_id:
+                  type: string
+                  description: The UUID of the [Android notification channel category](/docs/android-notification-categories) created within your Huawei app.
+                huawei_category:
+                  type: string
+                  description: The category you set for notifications sent to Huawei devices. The category chosen must align with an approved [self-classification application](https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/message-classification-0000001149358835#section1653845862216). Subject to daily send limitations ranging from 2 to 5, depending on the specific [third-level classifications](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/message-restriction-description-0000001361648361#section199311418515) the message falls under.
+                  enum:
+                  - MARKETING
+                  - IM
+                  - VOIP
+                  - SUBSCRIPTION
+                  - TRAVEL
+                  - HEALTH
+                  - WORK
+                  - ACCOUNT
+                  - EXPRESS
+                  - FINANCE
+                  - DEVICE_REMINDER
+                  - MAIL
+                  default: MARKETING
+                huawei_msg_type:
+                  type: string
+                  description: 'Controls how OneSignal delivers the push to Huawei (HMS) devices. Both options can display a visible notification. Options: `message` - (default) HMS Core renders the notification server-side. Supports title and body only (no images, buttons, or other rich features). Displays even if the app is force quit, and if the device is offline it displays when the device reconnects within the `ttl` timeframe (usually 3 days). Does **not** support [Confirmed delivery](/docs/confirmed-delivery#huawei) — Huawei reports receipts only in their own dashboard. `data` - HMS Core delivers the payload to the device and the OneSignal SDK renders the notification client-side. This enables the full OneSignal feature set (large images, action buttons, etc.) and supports [Confirmed delivery](/docs/confirmed-delivery#huawei). Because the SDK must run to render it, the notification is **not** shown if the app has been force quit (HMS Core will not start the app). This is also the type to use for silent [data & background notifications](/docs/data-notifications) on Huawei. Note: `data` here refers to the HMS transport type, not a silent notification — a `data`-type push with visible content still shows a full notification.'
+                  enum:
+                  - message
+                  - data
+                  default: message
+                huawei_bi_tag:
+                  type: string
+                  description: Define a tag for associating messages in a batch delivery, facilitating precise monitoring and analysis of delivery stats. This tag is returned to your server when Huawei's Push Kit sends a message receipt. You can set this parameter to track your push campaigns' performance and optimize your messaging strategy.
+                huawei_badge_class:
+                  type: string
+                  description: Required for Huawei badge. The fully qualified class name of the app's entry Activity in the format `<package_name>.<ActivityName>` (e.g., `com.example.myapp.MainActivity`). Tells the Huawei system which app icon to apply the badge to. See [Badges](/docs/badges#huawei-badges).
+                huawei_badge_set_num:
+                  type: integer
+                  format: int32
+                  minimum: 0
+                  maximum: 99
+                  description: 'Sets the badge count to this exact number on Huawei devices. Range: 0–99. Set to `0` to clear the badge. If both `huawei_badge_set_num` and `huawei_badge_add_num` are provided, `huawei_badge_set_num` takes priority. Requires EMUI 10.0.0+ and Push SDK 10.1.0+. See [Badges](/docs/badges#huawei-badges).'
+                huawei_badge_add_num:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                  maximum: 99
+                  description: 'Increments the existing badge count by this number on Huawei devices. Range: 1–99. If omitted along with `huawei_badge_set_num`, defaults to incrementing by 1. See [Badges](/docs/badges#huawei-badges).'
+                priority:
+                  type: integer
+                  description: Set the priority based on the urgency of the message. `10` - High priority. `5` - Normal priority. Recommended and default value is `10`. APNs and FCM use this parameter to determine how quickly a notification is delivered and processed, particularly in power-saving modes. If sending data/background notifications, `5` (Normal priority) is recommended. For details, see [APNs `apns-priority`](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns) and [FCM `priority`](https://firebase.google.com/docs/cloud-messaging/android/message-priority).
+                  format: int32
+                  enum:
+                  - 10
+                  - 5
+                  default: 10
+                ios_interruption_level:
+                  type: string
+                  description: The priority and delivery timing of iOS notifications based on their importance and the urgency with which they should interrupt the user. See [iOS Focus modes and interruption levels](/docs/ios-focus-modes-and-interruption-levels).
+                  enum:
+                  - active
+                  - passive
+                  - time_sensitive
+                  - critical
+                  default: active
+                ios_sound:
+                  type: string
+                  description: The local name of the custom sound file to play when the notification is received instead of the default sound. See [Notification sounds](/docs/notification-sounds).
+                ios_badgeType:
+                  type: string
+                  description: Set or increment the badge count on iOS devices. Use with `ios_badgeCount`. See [Badges](/docs/badges).
+                  enum:
+                  - None
+                  - SetTo
+                  - Increase
+                  default: None
+                ios_badgeCount:
+                  type: integer
+                  description: Use with `ios_badgeType` to determine the numerical change to your app's badge count. See [Badges](/docs/badges).
+                  format: int32
+                android_accent_color:
+                  type: string
+                  description: The ARGB Hex formatted color of the Android small icon background. For Android 8+ use [Android notification channel category](/docs/android-notification-categories) and `android_channel_id`.
+                huawei_accent_color:
+                  type: string
+                  description: The ARGB Hex formatted color of the Huawei small icon background. For Android 8+ use [Android notification channel category](/docs/android-notification-categories) and `huawei_channel_id`.
+                url:
+                  type: string
+                  description: The `https`URL that opens in the browser when a user interacts with the notification. See [URLs, Links and Deep Links](/docs/links). Supports [Message Personalization](/docs/message-personalization).
+                app_url:
+                  type: string
+                  description: Similar to the `url` parameter but exclusively targets mobile platforms like iOS, Android. Accepts values other than `https` but must use `your-app-scheme://` protocol.
+                web_url:
+                  type: string
+                  description: Use with `app_url` if your app and website need different URLs. Accepts URLs with protocol `https://`
+                target_content_identifier:
+                  type: string
+                  description: Direct the notification to a specific user experience within your app, such as an App Clip, or target a particular window in applications that use multiple scenes. See [Apple's documentation](https://developer.apple.com/documentation/foundation/nsuseractivity/3238062-targetcontentidentifier).
+                buttons:
+                  type: array
+                  description: Add a maximum of 3 Action Buttons to Android and iOS push notifications. See [Action Buttons](/docs/action-buttons).
+                  maxItems: 3
+                  items:
+                    properties:
+                      id:
+                        type: string
+                        description: The ID to reference the button clicked event in your app.
+                      text:
+                        type: string
+                        description: The text to display on the button.
+                      icon:
+                        type: string
+                        description: The local name of the icon to display on the button.
+                    required:
+                    - id
+                    - text
+                    additionalProperties: false
+                web_buttons:
+                  type: array
+                  description: Add a maximum of 2 Action Buttons to Chrome web push notifications. See [Action Buttons](/docs/action-buttons).
+                  maxItems: 2
+                  items:
+                    properties:
+                      id:
+                        type: string
+                        description: The ID to reference the button clicked event in your app.
+                      text:
+                        type: string
+                        description: The text to display on the button.
+                      url:
+                        type: string
+                        description: The URL to open when the button is clicked.
+                    required:
+                    - id
+                    - text
+                    - url
+                    additionalProperties: false
+                thread_id:
+                  type: string
+                  description: An ID to group notifications on Apple devices. Notifications with the same identifier are organized together in the notification center.
+                ios_relevance_score:
+                  type: number
+                  description: A value between `0` and `1`, to sort the notifications from your app. The highest score gets featured in the notification summary. See [iOS Relevance Score](/docs/ios-relevance-score)
+                  format: double
+                android_group:
+                  type: string
+                  description: An ID to group notifications on Google Android devices. Notifications with the same identifier are organized together in the notification center.
+                adm_group:
+                  type: string
+                  description: An ID to group notifications on Amazon Android devices. Notifications with the same identifier are organized together in the notification center.
+                ttl:
+                  type: integer
+                  description: 'The duration in seconds for which a notification remains valid if the device is offline. Any number between `0` and `2419200` (28 days). Defaults to 3 days. See [Push: Time to Live](/docs/push#time-to-live).'
+                  format: int32
+                  default: 259200
+                collapse_id:
+                  type: string
+                  description: 'An ID that replaces older notifications with newer ones that have the same identifier. For mobile push only. See [Push: Collapse ID](/docs/push#collapse-id).'
+                web_push_topic:
+                  type: string
+                  description: 'An ID that prevents replacement of older notifications with newer ones that have different identifiers. For web push only. See [Push: Web Push Topic](/docs/push#web-push-topic).'
+                data:
+                  type: object
+                  description: 'Bundle a custom data map within your notification, which is then passed to your app. See [Push: Additional Data](/docs/push#additional-data).'
+                  format: json
+                content_available:
+                  type: boolean
+                  description: Allows for sending data/background notifications to the Android and iOS apps. Set to `true` and omit `contents`. Apple interprets this as `content-available=1`. See [Data & background notifications](/docs/data-notifications).
+                ios_category:
+                  type: string
+                  description: Enable users to respond directly to a notification without launching the app. The [Category](https://developer.apple.com/documentation/usernotifications/unnotificationcategory) will activate the corresponding [Notification Content Extension](https://developer.apple.com/documentation/usernotificationsui/unnotificationcontentextension/) in your app when the push is interacted with.
+                apns_push_type_override:
+                  type: string
+                  description: Use only for VoIP notifications. Corresponds to the [`apns-push-type`](https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns#Send-a-POST-request-to-APNs). OneSignal automatically sets this value to `alert` or `background` based on the notification content. Pass `voip` to initiate VoIP calls or alert the user to incoming VoIP calls.
+                isIos:
+                  type: boolean
+                  description: Specifies if the notification should target iOS mobile apps only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isAndroid:
+                  type: boolean
+                  description: Specifies if the notification should target Google Android mobile apps only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isHuawei:
+                  type: boolean
+                  description: Specifies if the notification should target Huawei mobile apps only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isAnyWeb:
+                  type: boolean
+                  description: Specifies if the notification should target web push only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isChromeWeb:
+                  type: boolean
+                  description: Specifies if the notification should target Chrome only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isFirefox:
+                  type: boolean
+                  description: Specifies if the notification should target Firefox only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled.
+                isSafari:
+                  type: boolean
+                  description: Specifies if the notification should target Safari only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled
+                isWP_WNS:
+                  type: boolean
+                  description: Specifies if the notification should target Windows apps only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled
+                isAdm:
+                  type: boolean
+                  description: Specifies if the notification should target Amazon devices only. Defaults to `true`. If set to `true`, all other platforms are disabled unless explicitly enabled
+                send_after:
+                  type: string
+                  description: 'Schedule delivery for a future date/time (in UTC). The format must be valid per the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard and compatible with [`JavaScript’s Date() parser`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#datestring). Example: `2025-09-24T14:00:00-07:00`'
+                delayed_option:
+                  type: string
+                  description: 'Controls how messages are delivered on a per-user basis: `''timezone''` — Sends at the same local time across time zones. `''last-active''` — Delivers based on each user’s most recent session. Not compatible with [Push Throttling](/docs/throttling). If enabled, set `throttle_rate_per_minute` to `0`.'
+                delivery_time_of_day:
+                  type: string
+                  description: 'Use with `delayed_option: ''timezone''` to set a consistent local delivery time. Accepted formats: `''9:00AM''` (12-hour), `''21:45''` (24-hour), `''09:45:30''` (HH:mm:ss).'
+                throttle_rate_per_minute:
+                  type: number
+                  description: Overrides the throttle limit set in the OneSignal dashboard settings. Must be enabled through the dashboard. Only available with push notifications. See [Push Throttling](/docs/throttling). If `throttle_rate_per_minute` is set to `0`, then the message will be sent immediately without any rate limiting.
+                enable_frequency_cap:
+                  type: boolean
+                  description: Overrides the frequency cap set in the OneSignal dashboard settings. Must be enabled through the dashboard first. Only available with push notifications. See [Frequency Capping](/docs/frequency-capping). Set to `false` to disable frequency capping.
+                idempotency_key:
+                  type: string
+                  description: A unique identifier used to prevent duplicate messages from repeat API calls. See [Idempotent notification requests](/reference/idempotent-notification-requests). Any RFC 9562 UUID supported. Valid for 30 days. Previously called `external_id`.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: Message Sent
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Notification ID in UUID v4 format. If `id` is an empty string, then the message was not sent.
+                      format: uuid
+                    external_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: The `idempotency_key` parameter from the request, echoed back. Null when no idempotency_key was provided. Used to detect duplicate-send attempts — see [Idempotent message requests](/reference/idempotent-notification-requests).
+                    errors:
+                      type: object
+                      description: Per-channel listings of invalid identifiers in the request. Only emitted when at least one identifier in the request failed validation. Each listed key is optional; the keys present depend on the channel and request.
+                      properties:
+                        invalid_aliases:
+                          type: object
+                          description: The alias label that was used in the `include_aliases` parameter.
+                          properties:
+                            external_id:
+                              type: array
+                              items:
+                                type: string
+                                description: The alias IDs associated with the unsubscribed Subscriptions. The Subscriptions associated with the listed aliases were unsubscribed before the message was sent. In this example, `user_id_1` has two unsubscribed Subscriptions while `user_id_2` has one unsubscribed Subscription.
+                                example: '["user_id_1", "user_id_1", "user_id_2"]'
+                            onesignal_id:
+                              type: array
+                              items:
+                                type: string
+                                description: The OneSignal ID associated with the unsubscribed Subscription. The Subscriptions associated with the listed OneSignal IDs were unsubscribed before the message was sent. In this example, the user with OneSignal ID `1589641e-bed1-4325-bce4-d2234e578884` has three unsubscribed Subscriptions.
+                                example: '["1589641e-bed1-4325-bce4-d2234e578884", "1589641e-bed1-4325-bce4-d2234e578884", "1589641e-bed1-4325-bce4-d2234e578884"]'
+                        invalid_player_ids:
+                          type: array
+                          items:
+                            type: string
+                            description: The Subscription ID exists in the OneSignal app but is unsubscribed from the message channel. If the Subscription ID did not exist, it will not be reported.
+                    warnings:
+                      oneOf:
+                      - type: object
+                        description: Object form.
+                        properties:
+                          invalid_external_user_ids:
+                            type: string
+                            description: external_ids whose subscriptions are unsubscribed.
+                        additionalProperties: true
+                      - type: array
+                        items:
+                          type: string
+                        description: Array form. Contains non-fatal warning messages.
+                      description: Non-fatal warnings emitted alongside a successful send.
+                  description: Notification was accepted and dispatched to one or more subscribers. `errors` (when present) reports per-channel invalid identifiers; `warnings` (when present) reports non-fatal issues such as unsubscribed external IDs. `external_id` echoes the request's `idempotency_key` (or null when not provided).
+                  required:
+                  - id
+                - title: Message Not Sent
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: If the message `id` is an empty string, then no message was sent. The request appears to be formatted correctly, but there are issues with the aliases, segments, or filters targeted.
+                      example: ''
+                      enum:
+                      - ''
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                      description: Reasons the message was not dispatched. The most common value is `"All included players are not subscribed"`, which means every subscription matched by the segments/aliases/filters was unsubscribed before send time. Per-channel sentinels (e.g., invalid identifiers) may also appear.
+                      example:
+                      - All included players are not subscribed
+                    warnings:
+                      oneOf:
+                      - type: object
+                        description: Object form.
+                        properties:
+                          invalid_external_user_ids:
+                            type: string
+                            description: external_ids whose subscriptions are unsubscribed.
+                        additionalProperties: true
+                      - type: array
+                        items:
+                          type: string
+                        description: Array form. Contains non-fatal warning messages.
+                      description: Non-fatal warnings emitted alongside a successful send.
+                  description: Validation passed but the targeting matched zero subscribers (and the notification is not lightspeed-eligible). HTTP status is 200 even though no message was dispatched. `id` is always the empty string in this branch — use it as the discriminator from the Message Sent variant.
+                  required:
+                  - id
+                  - errors
+                description: 'Two variants are possible with HTTP 200, distinguished by the `id` field: a UUID indicates the message was accepted and dispatched (Message Sent); an empty string indicates the request was valid but no subscribers matched (Message Not Sent). Inspect `errors` when `id` is empty.'
+          headers:
+            Idempotent-Replayed:
+              description: Present and set to `true` when this response is a replay of a previous successful request that used the same `idempotency_key`. Absent on fresh executions. Use this to distinguish "new send" from "deduplicated retry" without inspecting the body.
+              schema:
+                type: boolean
+                enum:
+                - true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    description: The reason for the bad request.
+                    items:
+                      properties:
+                        Message Notifications must have English language content:
+                          type: string
+                          description: Make sure the request or template has English language ('en')content. This is required but can be any language desired.
+                        'Incorrect subscription_id format in include_subscription_ids (not a valid UUID):':
+                          type: string
+                          description: The provided `subscription_id` is not a valid UUID.
+                        ? Platforms You may only send to one delivery channel at a time. Make sure you are only including one of push platforms, Email, or SMS.
+                        : type: string
+                          description: You are attempting to send a message to a Subscription for a different channel. Make sure you are only targeting one channel at a time.
+        '403':
+          description: Forbidden. The Authorization key cannot send notifications for this app, or the request targets a feature the app's plan does not enable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - This API is not available for applications on your plan.
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      tags:
+      - Notifications?c=push
+components:
+  schemas:
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.

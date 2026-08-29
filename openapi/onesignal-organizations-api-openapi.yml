@@ -1,0 +1,342 @@
+openapi: 3.2.0
+info:
+  title: api.onesignal.com Organizations API
+  version: '11.6'
+servers:
+- url: https://api.onesignal.com
+security:
+- {}
+tags:
+- name: Organizations
+paths:
+  /organizations/{organization_id}/audit_logs:
+    get:
+      summary: List audit logs
+      description: Retrieve a paginated, time-scoped list of audit log events for an organization. Requires an Enterprise plan with the audit logs entitlement enabled.
+      operationId: list-audit-logs
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    organizationApiKey: 'YOUR_ORGANIZATION_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\nconst organizationId: string = \"YOUR_ORG_ID\";\n// string | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days. (optional)\nconst startTime: string = \"start_time_example\";\n// string | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time. (optional)\nconst endTime: string = \"end_time_example\";\n// string | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored. (optional)\nconst cursor: string = \"cursor_example\";\n// number | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server. (optional)\nconst limit: number = 1;\n// Array<string> | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included. (optional)\nconst appIds: Onesignal.Array<string> = [\n    \"app_ids_example\",\n  ];\n// Array<string> | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values. (optional)\nconst actions: Onesignal.Array<string> = [\n    \"actions_example\",\n  ];\n// Array<string> | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values. (optional)\nconst actorIds: Onesignal.Array<string> = [\n    \"actor_ids_example\",\n  ];\n// Array<string> | Filter by actor email address. Accepts up to 10 values. (optional)\nconst actorEmails: Onesignal.Array<string> = [\n    \"actor_emails_example\",\n  ];\n// Array<string> | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values. (optional)\nconst targetTypes: Onesignal.Array<string> = [\n    \"target_types_example\",\n  ];\n// Array<string> | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values. (optional)\nconst targetIds: Onesignal.Array<string> = [\n    \"target_ids_example\",\n  ];\n// Array<string> | Filter by the IP address the action originated from. Accepts up to 10 values. (optional)\nconst ipAddresses: Onesignal.Array<string> = [\n    \"ip_addresses_example\",\n  ];\n\ntry {\n  const response = await apiInstance.listAuditLogs(organizationId, startTime, endTime, cursor, limit, appIds, actions, actorIds, actorEmails, targetTypes, targetIds, ipAddresses);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"listAuditLogs failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    organization_id = \"YOUR_ORG_ID\" # The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key. \n    start_time = \"start_time_example\"  # Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days. (optional) \n    end_time = \"end_time_example\"  # End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time. (optional) \n    cursor = \"cursor_example\"  # Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored. (optional) \n    limit = 1  # Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server. (optional) \n    app_ids = [\n        \"app_ids_example\",\n    ]  # Filter events by app UUID. Accepts up to 10 values. Org-level events are always included. (optional) \n    actions = [\n        \"actions_example\",\n    ]  # Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values. (optional) \n    actor_ids = [\n        \"actor_ids_example\",\n    ]  # Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values. (optional) \n    actor_emails = [\n        \"actor_emails_example\",\n    ]  # Filter by actor email address. Accepts up to 10 values. (optional) \n    target_types = [\n        \"target_types_example\",\n    ]  # Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values. (optional) \n    target_ids = [\n        \"target_ids_example\",\n    ]  # Filter by the UUID of the resource the action was performed on. Accepts up to 10 values. (optional) \n    ip_addresses = [\n        \"ip_addresses_example\",\n    ]  # Filter by the IP address the action originated from. Accepts up to 10 values. (optional) \n\n    try:\n        # List audit logs\n        api_response = api_instance.list_audit_logs(organization_id, start_time=start_time, end_time=end_time, cursor=cursor, limit=limit, app_ids=app_ids, actions=actions, actor_ids=actor_ids, actor_emails=actor_emails, target_types=target_types, target_ids=target_ids, ip_addresses=ip_addresses)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->list_audit_logs: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: organization_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$organization_id = 'YOUR_ORG_ID'; // string | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\n$start_time = 'start_time_example'; // string | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days.\n$end_time = 'end_time_example'; // string | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time.\n$cursor = 'cursor_example'; // string | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored.\n$limit = 56; // int | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server.\n$app_ids = array('app_ids_example'); // string[] | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included.\n$actions = array('actions_example'); // string[] | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values.\n$actor_ids = array('actor_ids_example'); // string[] | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values.\n$actor_emails = array('actor_emails_example'); // string[] | Filter by actor email address. Accepts up to 10 values.\n$target_types = array('target_types_example'); // string[] | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values.\n$target_ids = array('target_ids_example'); // string[] | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values.\n$ip_addresses = array('ip_addresses_example'); // string[] | Filter by the IP address the action originated from. Accepts up to 10 values.\n\ntry {\n    $result = $apiInstance->listAuditLogs($organization_id, $start_time, $end_time, $cursor, $limit, $app_ids, $actions, $actor_ids, $actor_emails, $target_types, $target_ids, $ip_addresses);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->listAuditLogs: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->listAuditLogs: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    organizationId := \"YOUR_ORG_ID\" // string | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\n    startTime := \"startTime_example\" // string | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days. (optional)\n    endTime := \"endTime_example\" // string | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time. (optional)\n    cursor := \"cursor_example\" // string | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored. (optional)\n    limit := int32(56) // int32 | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server. (optional)\n    appIds := []string{\"Inner_example\"} // []string | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included. (optional)\n    actions := []string{\"Inner_example\"} // []string | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values. (optional)\n    actorIds := []string{\"Inner_example\"} // []string | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values. (optional)\n    actorEmails := []string{\"Inner_example\"} // []string | Filter by actor email address. Accepts up to 10 values. (optional)\n    targetTypes := []string{\"Inner_example\"} // []string | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values. (optional)\n    targetIds := []string{\"Inner_example\"} // []string | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values. (optional)\n    ipAddresses := []string{\"Inner_example\"} // []string | Filter by the IP address the action originated from. Accepts up to 10 values. (optional)\n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    orgAuth := context.WithValue(context.Background(), onesignal.OrganizationApiKey, \"YOUR_ORGANIZATION_API_KEY\") // Organization API key is only required for creating new apps and other top-level endpoints\n\n    resp, r, err := apiClient.DefaultApi.ListAuditLogs(orgAuth, organizationId).StartTime(startTime).EndTime(endTime).Cursor(cursor).Limit(limit).AppIds(appIds).Actions(actions).ActorIds(actorIds).ActorEmails(actorEmails).TargetTypes(targetTypes).TargetIds(targetIds).IpAddresses(ipAddresses).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.ListAuditLogs``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `ListAuditLogs`: ListAuditLogsSuccessResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.ListAuditLogs`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: organization_api_key\n  config.organization_api_key = 'YOUR_ORGANIZATION_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\norganization_id = 'YOUR_ORG_ID' # String | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\nopts = {\n  start_time: 'start_time_example', # String | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days.\n  end_time: 'end_time_example', # String | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time.\n  cursor: 'cursor_example', # String | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored.\n  limit: 56, # Integer | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server.\n  app_ids: ['inner_example'], # Array<String> | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included.\n  actions: ['inner_example'], # Array<String> | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values.\n  actor_ids: ['inner_example'], # Array<String> | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values.\n  actor_emails: ['inner_example'], # Array<String> | Filter by actor email address. Accepts up to 10 values.\n  target_types: ['inner_example'], # Array<String> | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values.\n  target_ids: ['inner_example'], # Array<String> | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values.\n  ip_addresses: ['inner_example'] # Array<String> | Filter by the IP address the action originated from. Accepts up to 10 values.\n}\n\nbegin\n  # List audit logs\n  result = api_instance.list_audit_logs(organization_id, opts)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->list_audit_logs: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: organization_api_key\n    HttpBearerAuth organization_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"organization_api_key\");\n    organization_api_key.setBearerToken(\"YOUR_ORGANIZATION_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String organizationId = \"YOUR_ORG_ID\"; // String | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\n    String startTime = \"startTime_example\"; // String | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days.\n    String endTime = \"endTime_example\"; // String | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time.\n    String cursor = \"cursor_example\"; // String | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored.\n    Integer limit = 56; // Integer | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server.\n    List<String> appIds = Arrays.asList(); // List<String> | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included.\n    List<String> actions = Arrays.asList(); // List<String> | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values.\n    List<String> actorIds = Arrays.asList(); // List<String> | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values.\n    List<String> actorEmails = Arrays.asList(); // List<String> | Filter by actor email address. Accepts up to 10 values.\n    List<String> targetTypes = Arrays.asList(); // List<String> | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values.\n    List<String> targetIds = Arrays.asList(); // List<String> | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values.\n    List<String> ipAddresses = Arrays.asList(); // List<String> | Filter by the IP address the action originated from. Accepts up to 10 values.\n    try {\n      ListAuditLogsSuccessResponse result = apiInstance.listAuditLogs(organizationId, startTime, endTime, cursor, limit, appIds, actions, actorIds, actorEmails, targetTypes, targetIds, ipAddresses);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#listAuditLogs\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class ListAuditLogsExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: organization_api_key\n            config.AccessToken = \"YOUR_ORGANIZATION_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var organizationId = \"YOUR_ORG_ID\";  // string | The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.\n            var startTime = \"startTime_example\";  // string | Start of the time range in ISO 8601 format (e.g. 2026-02-01T00:00:00Z). Required unless cursor is provided. Must be within the last 90 days. (optional) \n            var endTime = \"endTime_example\";  // string | End of the time range in ISO 8601 format. Defaults to the current time. Must be after start_time. (optional) \n            var cursor = \"cursor_example\";  // string | Pagination cursor returned in a previous response as next_cursor. When provided, start_time and end_time are ignored. (optional) \n            var limit = 56;  // int? | Maximum number of events to return per page. Minimum 1, maximum 100. Values outside this range are clamped automatically by the server. (optional) \n            var appIds = new List<string>(); // List<string> | Filter events by app UUID. Accepts up to 10 values. Org-level events are always included. (optional) \n            var actions = new List<string>(); // List<string> | Filter by action type (e.g. notification.sent, segment.created). Accepts up to 20 values. (optional) \n            var actorIds = new List<string>(); // List<string> | Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values. (optional) \n            var actorEmails = new List<string>(); // List<string> | Filter by actor email address. Accepts up to 10 values. (optional) \n            var targetTypes = new List<string>(); // List<string> | Filter by the type of resource the action was performed on (e.g. notification, segment, journey). Accepts up to 10 values. (optional) \n            var targetIds = new List<string>(); // List<string> | Filter by the UUID of the resource the action was performed on. Accepts up to 10 values. (optional) \n            var ipAddresses = new List<string>(); // List<string> | Filter by the IP address the action originated from. Accepts up to 10 values. (optional) \n\n            try\n            {\n                // List audit logs\n                ListAuditLogsSuccessResponse result = apiInstance.ListAuditLogs(organizationId, startTime, endTime, cursor, limit, appIds, actions, actorIds, actorEmails, targetTypes, targetIds, ipAddresses);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.ListAuditLogs: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.organization_api_key_token = Some(\"YOUR_ORGANIZATION_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let organization_id: &str = \"YOUR_ORG_ID\";\n    let start_time: Option<&str> = None;\n    let end_time: Option<&str> = None;\n    let cursor: Option<&str> = None;\n    let limit: Option<i32> = None;\n    let app_ids: Option<Vec<String>> = None;\n    let actions: Option<Vec<String>> = None;\n    let actor_ids: Option<Vec<String>> = None;\n    let actor_emails: Option<Vec<String>> = None;\n    let target_types: Option<Vec<String>> = None;\n    let target_ids: Option<Vec<String>> = None;\n    let ip_addresses: Option<Vec<String>> = None;\n\n    match default_api::list_audit_logs(&configuration, organization_id, start_time, end_time, cursor, limit, app_ids, actions, actor_ids, actor_emails, target_types, target_ids, ip_addresses).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"list_audit_logs failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"list_audit_logs failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: organization_id
+        in: path
+        description: The UUID of the organization to retrieve audit logs for. Must match the authenticated Organization API Key.
+        required: true
+        schema:
+          type: string
+          default: YOUR_ORG_ID
+      - name: Authorization
+        in: header
+        description: Your Organization API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_ORGANIZATION_API_KEY
+      - name: start_time
+        in: query
+        description: Start of the time range in ISO 8601 format (e.g. `2026-02-01T00:00:00Z`). Required unless `cursor` is provided. Must be within the last 90 days and no earlier than `2026-02-18T00:00:00Z`.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: End of the time range in ISO 8601 format. Defaults to the current time. Must be after `start_time`.
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: Pagination cursor returned in a previous response as `next_cursor`. When provided, `start_time` and `end_time` are ignored.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of events to return per page. Minimum `1`, maximum `100`. Values outside this range are clamped automatically.
+        schema:
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 100
+      - name: app_ids
+        in: query
+        description: 'Filter events by app UUID. Accepts up to 10 values. Org-level events are always included. Repeat the parameter for multiple values: `app_ids=uuid1&app_ids=uuid2`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      - name: actions
+        in: query
+        description: 'Filter by action type (e.g. `notification.sent`, `segment.created`). Accepts up to 20 values. Repeat the parameter for multiple values: `actions=notification.sent&actions=segment.created`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 20
+      - name: actor_ids
+        in: query
+        description: 'Filter by actor UUID (the user or service that performed the action). Accepts up to 10 values. Repeat the parameter for multiple values: `actor_ids=uuid1&actor_ids=uuid2`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      - name: actor_emails
+        in: query
+        description: 'Filter by actor email address. Accepts up to 10 values. Repeat the parameter for multiple values: `actor_emails=a@example.com&actor_emails=b@example.com`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      - name: target_types
+        in: query
+        description: 'Filter by the type of resource the action was performed on (e.g. `notification`, `segment`, `journey`). Accepts up to 10 values. Repeat the parameter for multiple values: `target_types=notification&target_types=segment`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      - name: target_ids
+        in: query
+        description: 'Filter by the UUID of the resource the action was performed on. Accepts up to 10 values. Repeat the parameter for multiple values: `target_ids=uuid1&target_ids=uuid2`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      - name: ip_addresses
+        in: query
+        description: 'Filter by the IP address the action originated from. Accepts up to 10 values. Repeat the parameter for multiple values: `ip_addresses=203.0.113.1&ip_addresses=203.0.113.2`.'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  audit_logs:
+                    type: array
+                    description: Array of audit log events, ordered by `occurred_at` ascending.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: UUID of the audit log event.
+                        organization_id:
+                          type: string
+                          description: UUID of the organization the event belongs to.
+                        app_id:
+                          type: string
+                          description: UUID of the app the event is associated with. Absent for org-level events.
+                        action:
+                          type: string
+                          description: The action that was performed (e.g. `notification.sent`, `segment.created`, `member.invited`).
+                        occurred_at:
+                          type: string
+                          description: RFC 3339 timestamp of when the event occurred (e.g. `2026-02-18T12:34:56Z`).
+                        version:
+                          type: integer
+                          description: Schema version of the event payload.
+                        actor:
+                          type: object
+                          description: The user or service that performed the action. Absent if the actor is unknown.
+                          properties:
+                            type:
+                              type: string
+                              description: Actor type (e.g. `user`, `service`).
+                            id:
+                              type: string
+                              description: UUID of the actor.
+                            name:
+                              type: string
+                              description: Display name of the actor. Absent if unavailable.
+                            email:
+                              type: string
+                              description: Email address of the actor. Absent if unavailable.
+                            metadata:
+                              type: object
+                              description: Additional actor-specific data.
+                        targets:
+                          type: array
+                          description: The resources the action was performed on. May be empty for org-level events.
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                description: Resource type (e.g. `notification`, `segment`, `journey`, `app`).
+                              id:
+                                type: string
+                                description: UUID of the resource.
+                              name:
+                                type: string
+                                description: Display name of the resource. Absent if unavailable.
+                              metadata:
+                                type: object
+                                description: Additional resource-specific data.
+                        context:
+                          type: object
+                          description: Request context at the time of the event. Absent if context was not captured.
+                          properties:
+                            ip:
+                              type: string
+                              description: IP address the request originated from.
+                            user_agent:
+                              type: string
+                              description: User agent of the client that made the request.
+                            country:
+                              type: string
+                              description: Country code derived from the request IP.
+                            metadata:
+                              type: object
+                              description: Additional context-specific data.
+                        metadata:
+                          type: object
+                          description: Additional event-specific data that does not fit into the standard fields.
+                  has_more:
+                    type: boolean
+                    description: '`true` if additional events exist beyond this page. Use `next_cursor` to fetch the next page.'
+                  next_cursor:
+                    type: string
+                    description: Opaque cursor to pass as `cursor` in the next request. Only present when `has_more` is `true`.
+              examples:
+                Result:
+                  value:
+                    audit_logs:
+                    - id: a1b2c3d4-0000-0000-0000-000000000001
+                      organization_id: YOUR_ORG_ID
+                      app_id: YOUR_APP_ID
+                      action: segment.created
+                      occurred_at: '2026-02-18T10:22:01Z'
+                      version: 1
+                      actor:
+                        type: user
+                        id: u1b2c3d4-0000-0000-0000-000000000001
+                        name: Jane Smith
+                        email: jane@example.com
+                        metadata: {}
+                      targets:
+                      - type: segment
+                        id: s1b2c3d4-0000-0000-0000-000000000001
+                        name: High-value users
+                        metadata: {}
+                      context:
+                        ip: 203.0.113.42
+                        user_agent: Mozilla/5.0
+                        country: US
+                        metadata: {}
+                      metadata: {}
+                    has_more: true
+                    next_cursor: eyJv...
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Result:
+                  value: {}
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Result:
+                  value: {}
+        '429':
+          description: Rate limit exceeded. Wait the number of seconds in the `Retry-After` header before retrying.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - API rate limit exceeded
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      tags:
+      - Organizations
+components:
+  schemas:
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.

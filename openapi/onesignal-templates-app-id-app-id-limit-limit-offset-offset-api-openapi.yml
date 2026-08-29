@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: api.onesignal.com Templates?app Id={app Id}&limit={limit}&offset={offset} API
+  version: '11.6'
+servers:
+- url: https://api.onesignal.com
+security:
+- {}
+tags:
+- name: Templates?app Id={app Id}&limit={limit}&offset={offset}
+paths:
+  /templates?app_id={app_id}&limit={limit}&offset={offset}:
+    get:
+      summary: View templates
+      description: Retrieve a paginated list of message templates from your OneSignal app. This endpoint returns summary information for each template, including ID, name, creation, and update timestamps.
+      operationId: view-templates
+      x-codeSamples:
+      - lang: typescript
+        label: Node.js SDK
+        source: "import Onesignal from '@onesignal/node-onesignal';\n\nconst configuration = Onesignal.createConfiguration({\n    restApiKey: 'YOUR_REST_API_KEY',\n});\nconst apiInstance = new Onesignal.DefaultApi(configuration);\n\n// string | Your OneSignal App ID in UUID v4 format.\nconst appId: string = \"YOUR_APP_ID\";\n// number | Maximum number of templates. Default and max is 50. (optional)\nconst limit: number = 10;\n// number | Pagination offset. (optional)\nconst offset: number = 0;\n// 'push' | 'email' | 'sms' | Filter by delivery channel. (optional)\nconst channel: 'push' | 'email' | 'sms' = \"push\";\n\ntry {\n  const response = await apiInstance.viewTemplates(appId, limit, offset, channel);\n  console.log(response);\n} catch (e) {\n  if (e instanceof Onesignal.ApiException) {\n    // `e.errorMessages` flattens any error-envelope shape to a `string[]`;\n    // the raw parsed body remains on `e.body`.\n    console.error(\"viewTemplates failed: HTTP \" + e.code, e.errorMessages);\n  } else {\n    throw e;\n  }\n}"
+      - lang: python
+        label: Python SDK
+        source: "import onesignal\nfrom onesignal.api import default_api\nfrom onesignal.models import *\nfrom pprint import pprint\n\n# See configuration.py for a list of all supported configuration parameters.\n# Some of the OneSignal endpoints require ORGANIZATION_API_KEY token for authorization, while others require REST_API_KEY.\n# We recommend adding both of them in the configuration page so that you will not need to figure it out yourself.\nconfiguration = onesignal.Configuration(\n    rest_api_key = \"YOUR_REST_API_KEY\", # App REST API key required for most endpoints\n    organization_api_key = \"YOUR_ORGANIZATION_API_KEY\" # Organization key is only required for creating new apps and other top-level endpoints\n)\n\n\n# Enter a context with an instance of the API client\nwith onesignal.ApiClient(configuration) as api_client:\n    # Create an instance of the API class\n    api_instance = default_api.DefaultApi(api_client)\n    app_id = \"YOUR_APP_ID\" # Your OneSignal App ID in UUID v4 format. \n    limit = 10  # Maximum number of templates. Default and max is 50. (optional) \n    offset = 0  # Pagination offset. (optional) \n    channel = \"push\"  # Filter by delivery channel. (optional) \n\n    try:\n        # View templates\n        api_response = api_instance.view_templates(app_id, limit=limit, offset=offset, channel=channel)\n        pprint(api_response)\n    except onesignal.ApiException as e:\n        print(\"Exception when calling DefaultApi->view_templates: %s\\n\" % e)\n        print(\"Status Code: %s\" % e.status)\n        print(\"Response Body: %s\" % e.body)"
+      - lang: php
+        label: PHP SDK
+        source: "<?php\nrequire_once(__DIR__ . '/vendor/autoload.php');\n\n\n// Configure Bearer authorization: rest_api_key\n$config = onesignal\\client\\Configuration::getDefaultConfiguration()\n                                                ->setRestApiKeyToken('YOUR_REST_API_KEY')\n                                                ->setOrganizationApiKeyToken('YOUR_ORGANIZATION_API_KEY');\n\n\n\n$apiInstance = new onesignal\\client\\Api\\DefaultApi(\n    // If you want use custom http client, pass your client which implements `GuzzleHttp\\ClientInterface`.\n    // This is optional, `GuzzleHttp\\Client` will be used as default.\n    new GuzzleHttp\\Client(),\n    $config\n);\n$app_id = 'YOUR_APP_ID'; // string | Your OneSignal App ID in UUID v4 format.\n$limit = 10; // int | Maximum number of templates. Default and max is 50.\n$offset = 0; // int | Pagination offset.\n$channel = 'push'; // string | Filter by delivery channel.\n\ntry {\n    $result = $apiInstance->viewTemplates($app_id, $limit, $offset, $channel);\n    print_r($result);\n} catch (\\onesignal\\client\\ApiException $e) {\n    echo 'Exception when calling DefaultApi->viewTemplates: ', $e->getMessage(), PHP_EOL;\n    echo 'Status Code: ', $e->getCode(), PHP_EOL;\n    // getErrorMessages() flattens any error-envelope shape to a string[];\n    // the raw body remains on getResponseBody().\n    echo 'Error Messages: ', implode(', ', $e->getErrorMessages()), PHP_EOL;\n    echo 'Response Body: ', $e->getResponseBody(), PHP_EOL;\n} catch (\\Exception $e) {\n    echo 'Exception when calling DefaultApi->viewTemplates: ', $e->getMessage(), PHP_EOL;\n}"
+      - lang: go
+        label: Go SDK
+        source: "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"os\"\n\n    \"github.com/OneSignal/onesignal-go-api/v5\"\n)\n\nfunc main() {\n    appId := \"YOUR_APP_ID\" // string | Your OneSignal App ID in UUID v4 format.\n    limit := int32(10) // int32 | Maximum number of templates. Default and max is 50. (optional) (default to 50)\n    offset := int32(0) // int32 | Pagination offset. (optional) (default to 0)\n    channel := \"push\" // string | Filter by delivery channel. (optional)\n\n    configuration := onesignal.NewConfiguration()\n    apiClient := onesignal.NewAPIClient(configuration)\n\n    restAuth := context.WithValue(context.Background(), onesignal.RestApiKey, \"YOUR_REST_API_KEY\") // App REST API key required for most endpoints\n\n    resp, r, err := apiClient.DefaultApi.ViewTemplates(restAuth).AppId(appId).Limit(limit).Offset(offset).Channel(channel).Execute()\n\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error when calling `DefaultApi.ViewTemplates``: %v\\n\", err)\n        fmt.Fprintf(os.Stderr, \"Full HTTP response: %v\\n\", r)\n        if apiErr, ok := err.(*onesignal.GenericOpenAPIError); ok {\n            // ErrorMessages() flattens any error-envelope shape to a []string;\n            // the raw body remains on Body().\n            fmt.Fprintf(os.Stderr, \"Error Messages: %v\\n\", apiErr.ErrorMessages())\n            fmt.Fprintf(os.Stderr, \"Response Body: %s\\n\", apiErr.Body())\n        }\n    }\n    // response from `ViewTemplates`: TemplatesListResponse\n    fmt.Fprintf(os.Stdout, \"Response from `DefaultApi.ViewTemplates`: %v\\n\", resp)\n}"
+      - lang: ruby
+        label: Ruby SDK
+        source: "require 'onesignal'\n# setup authorization\nOneSignal.configure do |config|\n  # Configure Bearer authorization: rest_api_key\n  config.rest_api_key = 'YOUR_REST_API_KEY'\n\nend\n\napi_instance = OneSignal::DefaultApi.new\napp_id = 'YOUR_APP_ID' # String | Your OneSignal App ID in UUID v4 format.\nopts = {\n  limit: 10, # Integer | Maximum number of templates. Default and max is 50.\n  offset: 0, # Integer | Pagination offset.\n  channel: 'push' # String | Filter by delivery channel.\n}\n\nbegin\n  # View templates\n  result = api_instance.view_templates(app_id, opts)\n  p result\nrescue OneSignal::ApiError => e\n  puts \"Error when calling DefaultApi->view_templates: #{e}\"\n  puts \"Status Code: #{e.code}\"\n  # `e.error_messages` flattens any error-envelope shape to an Array<String>;\n  # the raw body remains on `e.response_body`.\n  puts \"Error Messages: #{e.error_messages}\"\n  puts \"Response Body: #{e.response_body}\"\nend"
+      - lang: java
+        label: Java SDK
+        source: "// Import classes:\nimport com.onesignal.client.ApiClient;\nimport com.onesignal.client.ApiException;\nimport com.onesignal.client.Configuration;\nimport com.onesignal.client.auth.*;\nimport com.onesignal.client.model.*;\nimport com.onesignal.client.api.DefaultApi;\n\npublic class Example {\n  public static void main(String[] args) {\n    ApiClient defaultClient = Configuration.getDefaultApiClient();\n    defaultClient.setBasePath(\"https://api.onesignal.com\");\n    \n    // Configure HTTP bearer authorization: rest_api_key\n    HttpBearerAuth rest_api_key = (HttpBearerAuth) defaultClient.getAuthentication(\"rest_api_key\");\n    rest_api_key.setBearerToken(\"YOUR_REST_API_KEY\");\n\n    DefaultApi apiInstance = new DefaultApi(defaultClient);\n    String appId = \"YOUR_APP_ID\"; // String | Your OneSignal App ID in UUID v4 format.\n    Integer limit = 10; // Integer | Maximum number of templates. Default and max is 50.\n    Integer offset = 0; // Integer | Pagination offset.\n    String channel = \"push\"; // String | Filter by delivery channel.\n    try {\n      TemplatesListResponse result = apiInstance.viewTemplates(appId, limit, offset, channel);\n      System.out.println(result);\n    } catch (ApiException e) {\n      System.err.println(\"Exception when calling DefaultApi#viewTemplates\");\n      System.err.println(\"Status code: \" + e.getCode());\n      // getErrorMessages() flattens any error-envelope shape to a List<String>;\n      // the raw body remains on getResponseBody().\n      System.err.println(\"Error messages: \" + e.getErrorMessages());\n      System.err.println(\"Reason: \" + e.getResponseBody());\n      System.err.println(\"Response headers: \" + e.getResponseHeaders());\n      e.printStackTrace();\n    }\n  }\n}"
+      - lang: csharp
+        label: C# SDK
+        source: "using System;\nusing System.Collections.Generic;\nusing System.Diagnostics;\nusing OneSignalApi.Api;\nusing OneSignalApi.Client;\nusing OneSignalApi.Model;\n\nnamespace Example\n{\n    public class ViewTemplatesExample\n    {\n        public static void Main()\n        {\n            Configuration config = new Configuration();\n            config.BasePath = \"https://api.onesignal.com\";\n            // Configure Bearer token for authorization: rest_api_key\n            config.AccessToken = \"YOUR_REST_API_KEY\";\n\n            var apiInstance = new DefaultApi(config);\n            var appId = \"YOUR_APP_ID\";  // string | Your OneSignal App ID in UUID v4 format.\n            var limit = 10;  // int? | Maximum number of templates. Default and max is 50. (optional)  (default to 50)\n            var offset = 0;  // int? | Pagination offset. (optional)  (default to 0)\n            var channel = \"push\";  // string | Filter by delivery channel. (optional) \n\n            try\n            {\n                // View templates\n                TemplatesListResponse result = apiInstance.ViewTemplates(appId, limit, offset, channel);\n                Debug.WriteLine(result);\n            }\n            catch (ApiException  e)\n            {\n                Debug.Print(\"Exception when calling DefaultApi.ViewTemplates: \" + e.Message );\n                Debug.Print(\"Status Code: \"+ e.ErrorCode);\n                // e.ErrorMessages flattens any error-envelope shape to an IReadOnlyList<string>;\n                // the raw body remains on e.ErrorContent.\n                Debug.Print(\"Error Messages: \" + string.Join(\", \", e.ErrorMessages));\n                Debug.Print(\"Response Body: \" + e.ErrorContent);\n                Debug.Print(e.StackTrace);\n            }\n        }\n    }\n}"
+      - lang: rust
+        label: Rust SDK
+        source: "use onesignal_rust_api::apis::configuration::Configuration;\nuse onesignal_rust_api::apis::default_api;\n\n\n#[tokio::main]\nasync fn main() {\n    let mut configuration = Configuration::new();\n    configuration.rest_api_key_token = Some(\"YOUR_REST_API_KEY\".to_string());\n\n\n    // Realistic values are pulled from the spec's `example:` fields where present.\n    let app_id: &str = \"YOUR_APP_ID\";\n    let limit: Option<i32> = None;\n    let offset: Option<i32> = None;\n    let channel: Option<&str> = None;\n\n    match default_api::view_templates(&configuration, app_id, limit, offset, channel).await {\n        Ok(resp) => println!(\"{:?}\", resp),\n        Err(e @ onesignal_rust_api::apis::Error::ResponseError(_)) => {\n            // `e.error_messages()` flattens any error-envelope shape to a Vec<String>;\n            // the raw response remains on the ResponseError variant.\n            eprintln!(\"view_templates failed: {:?}\", e.error_messages());\n        }\n        Err(e) => eprintln!(\"view_templates failed: {:?}\", e),\n    }\n}"
+      parameters:
+      - name: app_id
+        in: query
+        description: Your OneSignal App ID in UUID v4 format. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: YOUR_APP_ID
+      - name: limit
+        in: query
+        description: The maximum number of templates returned per request. The default (if omitted) and maximum is 50 templates per request.
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: offset
+        in: query
+        description: The pagination or "starting point" of the templates to be returned. Setting it to 0 with a limit of 50 will retrieve the first 50 templates. Increasing the offset by 50 will return the next set of templates, and so on.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: Authorization
+        in: header
+        description: Your App API key with prefix `Key `. See [Keys & IDs](/docs/en/keys-and-ids).
+        required: true
+        schema:
+          type: string
+          default: Key YOUR_APP_API_KEY
+      - name: Content-Type
+        in: header
+        required: true
+        schema:
+          type: string
+          default: application/json; charset=utf-8
+      - name: channel
+        in: query
+        description: 'Filter the fetched templates by the delivery channel. Available options are: `push`, `email`, and `SMS`.'
+        schema:
+          type: string
+          enum:
+          - push
+          - email
+          - sms
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    limit: 50
+                    offset: 0
+                    templates:
+                    - id: 9e778dd4-6453-40d7-888d-9d9f327b9b66
+                      name: 'OneSignal Push: New Feature Announcement (Template)'
+                      created_at: '2021-07-23T18:02:23.956Z'
+                      updated_at: '2021-07-23T18:02:23.956Z'
+                    - id: 806b4356-67af-4d33-8133-75e502f6d3b7
+                      name: 'OneSignal Push: User Action Notification (Template)'
+                      created_at: '2021-07-23T18:02:23.963Z'
+                      updated_at: '2021-07-23T18:02:23.963Z'
+                    - id: 172f55b5-df07-49ae-8a8d-67037679487f
+                      name: 'OneSignal Push: Rating (Template)'
+                      created_at: '2021-07-23T18:02:23.984Z'
+                      updated_at: '2021-07-23T18:02:23.984Z'
+                    total_count: 3
+              schema:
+                type: object
+                properties:
+                  limit:
+                    type: integer
+                    example: 50
+                    default: 0
+                  offset:
+                    type: integer
+                    example: 0
+                    default: 0
+                  templates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The ID of the template in UUID v4 format.
+                        name:
+                          type: string
+                          description: An internal name you set to help organize and track Templates. Maximum 128 characters.
+                        created_at:
+                          type: string
+                          description: The date and time the template was created in ISO 8601 format.
+                        updated_at:
+                          type: string
+                          description: The date and time the template was last updated in ISO 8601 format.
+                  total_count:
+                    type: integer
+                    example: 3
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Bad Request (Missing App ID):
+                  value:
+                    errors:
+                    - 'Request is malformed: Failed to parse app_id from request'
+                    - JSON body is None for app_id_location=body request
+                Bad Request (Invalid Limit):
+                  value:
+                    errors:
+                    - Invalid limit, must be within 1 to 50
+                Bad Request (Invalid Channel):
+                  value:
+                    errors:
+                    - Invalid channel
+              schema:
+                oneOf:
+                - title: Bad Request (Missing App ID)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: 'Request is malformed: Failed to parse app_id from request'
+                - title: Bad Request (Invalid Limit)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: Invalid limit, must be within 1 to 50
+                - title: Bad Request (Invalid Channel)
+                  type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: string
+                        example: Invalid channel
+        '429':
+          description: '429'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    errors:
+                    - code: Rate Limit Exceeded
+                      title: Example error title
+                      meta: {}
+              schema:
+                $ref: '#/components/schemas/StructuredErrorResponse'
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying the request. Always emitted on 429 responses.
+              schema:
+                type: integer
+                minimum: 0
+        '503':
+          description: Service temporarily unavailable. Retry after a short backoff. The body may be empty or non-JSON in some failure modes.
+          headers:
+            Retry-After:
+              description: Number of seconds to wait before retrying. Optional — may be absent when the response is generated upstream.
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicErrorResponse'
+              example:
+                errors:
+                - Service temporarily unavailable
+      deprecated: false
+      security: []
+      tags:
+      - Templates?app Id={app Id}&limit={limit}&offset={offset}
+components:
+  schemas:
+    StructuredErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredErrorItem'
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    StructuredErrorItem:
+      type: object
+      required:
+      - code
+      - title
+      properties:
+        code:
+          type: string
+          description: Stable error-code identifier. Use this for programmatic branching in your integration.
+        title:
+          type: string
+          description: Human-readable error message intended for logs and operator-facing surfaces.
+        meta:
+          type: object
+          additionalProperties: true
+          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
