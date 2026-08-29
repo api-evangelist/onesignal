@@ -235,6 +235,9 @@ apis:
   - type: OpenAPI
     url: openapi/onesignal-templates-app-id-app-id-limit-limit-offset-offset-api-openapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/onesignal-capability-edges.yml
+  name: OneSignal Business Capability Map
 - type: Authentication
   url: authentication/onesignal-authentication.yml
 - type: VulnerabilityDisclosure
