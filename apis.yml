@@ -218,6 +218,8 @@ apis:
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -229,7 +231,8 @@ apis:
     templates?app id={app id}&limit={limit}&offset={offset}.
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
-  tags:
+  tags: []
+  tags_raw:
   - Templates?app Id={app Id}&limit={limit}&offset={offset}
   properties:
   - type: OpenAPI
