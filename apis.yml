@@ -113,6 +113,8 @@ apis:
   humanURL: https://documentation.onesignal.com/reference
   baseURL: https://api.onesignal.com
   tags:
+  - Player
+  tags_raw:
   - Players
   properties:
   - type: OpenAPI
