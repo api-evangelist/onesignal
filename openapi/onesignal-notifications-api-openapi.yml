@@ -702,9 +702,7 @@ paths:
         **Do not confuse** the notification-level `external_id` field with External ID targeting: top-level `external_id` / `idempotency_key` are for idempotent notification requests only, not for selecting recipients.
 
 
-        **Targeting compatibility:** `include_aliases` must not be combined with other targeting modes (segments, filters, subscription IDs, legacy player IDs, etc.). Clients should send only one targeting strategy per request.
-
-        '
+        **Targeting compatibility:** `include_aliases` must not be combined with other targeting modes (segments, filters, subscription IDs, legacy player IDs, etc.). Clients should send only one targeting strategy per request.'
       operationId: create_notification
       requestBody:
         content:
@@ -852,7 +850,7 @@ paths:
     - url: https://api.onesignal.com
   /notifications/{notification_id}/history:
     post:
-      description: -> View the devices sent a message - OneSignal Paid Plan Required This method will return all devices that were sent the given notification_id of an Email or Push Notification if used within 7 days of the date sent. After 7 days of the sending date, the message history data will be unavailable. After a successful response is received, the destination url may be polled until the file becomes available. Most exports are done in ~1-3 minutes, so setting a poll interval of 10 seconds should be adequate. For use cases that are not meant to be consumed by a script, an email will be sent to the supplied email address. &#x1F6A7; Requirements A OneSignal Paid Plan. Turn on Send History via OneSignal API in Settings -> Analytics. Cannot get data before this was turned on. Must be called within 7 days after sending the message. Messages targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. Requires your OneSignal App's REST API Key, available in Keys & IDs.
+      description: -> View the devices sent a message - OneSignal Paid Plan Required This method will return all devices that were sent the given notification_id of an Email or Push Notification if used within 7 days of the date sent. After 7 days of the sending date, the message history data will be unavailable. After a successful response is received, the destination url may be polled until the file becomes available. Most exports are done in ~1-3 minutes, so setting a poll interval of 10 seconds should be adequate. For use cases that are not meant to be consumed by a script, an email will be sent to the supplied email address. 🚧 Requirements A OneSignal Paid Plan. Turn on Send History via OneSignal API in Settings -> Analytics. Cannot get data before this was turned on. Must be called within 7 days after sending the message. Messages targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. Requires your OneSignal App's REST API Key, available in Keys & IDs.
       operationId: get_notification_history
       parameters:
       - description: The "id" of the message found in the Notification object
@@ -990,6 +988,574 @@ components:
           items:
             type: string
           description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    NotificationHistorySuccessResponse:
+      example:
+        success: true
+        destination_url: destination_url
+      properties:
+        success:
+          type: boolean
+        destination_url:
+          type: string
+      type: object
+    LanguageStringMap:
+      example:
+        de: de
+        hi: hi
+        fi: fi
+        ru: ru
+        pt: pt
+        bg: bg
+        lt: lt
+        hr: hr
+        lv: lv
+        fr: fr
+        hu: hu
+        bs: bs
+        zh-Hans: zh-Hans
+        zh-Hant: zh-Hant
+        ka: ka
+        uk: uk
+        sk: sk
+        id: id
+        ca: ca
+        sr: sr
+        sv: sv
+        ko: ko
+        ms: ms
+        el: el
+        en: en
+        it: it
+        zh: zh
+        es: es
+        et: et
+        cs: cs
+        ar: ar
+        pa: pa
+        vi: vi
+        nb: nb
+        th: th
+        ja: ja
+        fa: fa
+        pl: pl
+        da: da
+        he: he
+        ro: ro
+        nl: nl
+        tr: tr
+      properties:
+        en:
+          description: Text in English.  Will be used as a fallback
+          type: string
+        ar:
+          description: Text in Arabic.
+          type: string
+        bs:
+          description: Text in Bosnian.
+          type: string
+        bg:
+          description: Text in Bulgarian.
+          type: string
+        ca:
+          description: Text in Catalan.
+          type: string
+        zh-Hans:
+          description: Text in Chinese (Simplified).
+          type: string
+        zh-Hant:
+          description: Text in Chinese (Traditional).
+          type: string
+        zh:
+          description: Alias for zh-Hans.
+          type: string
+        hr:
+          description: Text in Croatian.
+          type: string
+        cs:
+          description: Text in Czech.
+          type: string
+        da:
+          description: Text in Danish.
+          type: string
+        nl:
+          description: Text in Dutch.
+          type: string
+        et:
+          description: Text in Estonian.
+          type: string
+        fi:
+          description: Text in Finnish.
+          type: string
+        fr:
+          description: Text in French.
+          type: string
+        ka:
+          description: Text in Georgian.
+          type: string
+        de:
+          description: Text in German.
+          type: string
+        el:
+          description: Text in Greek.
+          type: string
+        hi:
+          description: Text in Hindi.
+          type: string
+        he:
+          description: Text in Hebrew.
+          type: string
+        hu:
+          description: Text in Hungarian.
+          type: string
+        id:
+          description: Text in Indonesian.
+          type: string
+        it:
+          description: Text in Italian.
+          type: string
+        ja:
+          description: Text in Japanese.
+          type: string
+        ko:
+          description: Text in Korean.
+          type: string
+        lv:
+          description: Text in Latvian.
+          type: string
+        lt:
+          description: Text in Lithuanian.
+          type: string
+        ms:
+          description: Text in Malay.
+          type: string
+        nb:
+          description: Text in Norwegian.
+          type: string
+        pl:
+          description: Text in Polish.
+          type: string
+        fa:
+          description: Text in Persian.
+          type: string
+        pt:
+          description: Text in Portugese.
+          type: string
+        pa:
+          description: Text in Punjabi.
+          type: string
+        ro:
+          description: Text in Romanian.
+          type: string
+        ru:
+          description: Text in Russian.
+          type: string
+        sr:
+          description: Text in Serbian.
+          type: string
+        sk:
+          description: Text in Slovak.
+          type: string
+        es:
+          description: Text in Spanish.
+          type: string
+        sv:
+          description: Text in Swedish.
+          type: string
+        th:
+          description: Text in Thai.
+          type: string
+        tr:
+          description: Text in Turkish.
+          type: string
+        uk:
+          description: Text in Ukrainian.
+          type: string
+        vi:
+          description: Text in Vietnamese.
+          type: string
+      type: object
+    SubscriptionNotificationTarget:
+      properties:
+        include_subscription_ids:
+          description: 'Specific subscription ids to send your notification to. _Does not require API Auth Key._
+
+            Not compatible with any other targeting parameters.
+
+            Example: ["1dd608f2-c6a1-11e3-851d-000c2940e62c"]
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        include_email_tokens:
+          description: 'Recommended for Sending Emails - Target specific email addresses.
+
+            If an email does not correspond to an existing user, a new user will be created.
+
+            Example: nick@catfac.ts
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_phone_numbers:
+          description: 'Recommended for Sending SMS - Target specific phone numbers. The phone number should be in the E.164 format. Phone number should be an existing subscriber on OneSignal. Refer our docs to learn how to add phone numbers to OneSignal.
+
+            Example phone number: +1999999999
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_ios_tokens:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using iOS device tokens.
+
+            Warning: Only works with Production tokens.
+
+            All non-alphanumeric characters must be removed from each token. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: ce777617da7f548fe7a9ab6febb56cf39fba6d38203...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_wp_wns_uris:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Windows URIs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: http://s.notify.live.net/u/1/bn1/HmQAAACPaLDr-...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_amazon_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Amazon ADM registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: amzn1.adm-registration.v1.XpvSSUk0Rc3hTVVV...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_chrome_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Chrome App registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_chrome_web_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Chrome Web Push registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_android_reg_ids:
+          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
+
+            Target using Android device registration IDs. If a token does not correspond to an existing user, a new user will be created.
+
+            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
+
+            Limit of 2,000 entries per REST API call
+
+            '
+          items:
+            type: string
+          type: array
+        include_aliases:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: 'Target specific users by aliases assigned via API. An alias can be an external_id, onesignal_id, or a custom alias.
+
+            Accepts an object where keys are alias labels and values are arrays of alias IDs to include
+
+            Example usage: { "external_id": ["exId1", "extId2"], "internal_label": ["id1", "id2"] }
+
+            Keys must match API spellings exactly (for example the label for External ID is the string `external_id`; arbitrary keys such as camelCase variants are not aliases and may yield no recipients).
+
+            Not compatible with any other targeting parameters.
+
+            REQUIRED: REST API Key Authentication
+
+            Limit of 2,000 entries per REST API call
+
+            Note: If targeting push, email, or sms subscribers with same ids, use with target_channel to indicate you are sending a push or email or sms.'
+          type:
+          - object
+          - 'null'
+        target_channel:
+          enum:
+          - push
+          - email
+          - sms
+          type: string
+      type: object
+    PlatformDeliveryData_sms_allOf:
+      properties:
+        provider_successful:
+          description: Number of messages reported as delivered successfully by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+        provider_failed:
+          description: Number of recipients who didn't receive your message as reported by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+        provider_errored:
+          description: Number of errors reported by the SMS service provider.
+          type:
+          - integer
+          - 'null'
+    BasicNotification_allOf_android_background_layout:
+      description: 'Channel: Push Notifications
+
+        Platform: Android
+
+        Allowing setting a background image for the notification. This is a JSON object containing the following keys. See our Background Image documentation for image sizes.
+
+        '
+      properties:
+        image:
+          description: Asset file, android resource name, or URL to remote image.
+          type: string
+        headings_color:
+          description: Title text color ARGB Hex format. Example(Blue) "FF0000FF".
+          type: string
+        contents_color:
+          description: Body text color ARGB Hex format. Example(Red) "FFFF0000".
+          type: string
+      type: object
+      writeOnly: true
+    PlatformDeliveryData:
+      description: Hash of delivery statistics broken out by target device platform.
+      properties:
+        edge_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        chrome_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        firefox_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        safari_web_push:
+          $ref: '#/components/schemas/DeliveryData'
+        android:
+          $ref: '#/components/schemas/DeliveryData'
+        ios:
+          $ref: '#/components/schemas/DeliveryData'
+        sms:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryData'
+          - $ref: '#/components/schemas/PlatformDeliveryData_sms_allOf'
+        email:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryData'
+          - $ref: '#/components/schemas/PlatformDeliveryData_email_allOf'
+      type: object
+    OutcomesData:
+      example:
+        outcomes:
+        - aggregation: sum
+          id: id
+          value: 0
+        - aggregation: sum
+          id: id
+          value: 0
+      properties:
+        outcomes:
+          items:
+            $ref: '#/components/schemas/OutcomeData'
+          type: array
+      type: object
+    ExportEventsSuccessResponse:
+      example:
+        csv_file_url: csv_file_url
+      properties:
+        csv_file_url:
+          type: string
+      type: object
+    NotificationTarget:
+      anyOf:
+      - $ref: '#/components/schemas/SegmentNotificationTarget'
+      - $ref: '#/components/schemas/SubscriptionNotificationTarget'
+    OutcomeData:
+      example:
+        aggregation: sum
+        id: id
+        value: 0
+      properties:
+        id:
+          type: string
+        value:
+          type: integer
+        aggregation:
+          enum:
+          - sum
+          - count
+          type: string
+      required:
+      - aggregation
+      - id
+      - value
+      type: object
+    Notification:
+      allOf:
+      - $ref: '#/components/schemas/BasicNotification'
+      - $ref: '#/components/schemas/Notification_allOf'
+    WebButton:
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        icon:
+          type: string
+        url:
+          type: string
+      required:
+      - id
+      type: object
+    DeliveryData:
+      properties:
+        successful:
+          description: Number of messages delivered to push servers, mobile carriers, or email service providers.
+          type:
+          - integer
+          - 'null'
+        failed:
+          description: Number of messages sent to unsubscribed devices.
+          type:
+          - integer
+          - 'null'
+        errored:
+          description: Number of errors reported.
+          type:
+          - integer
+          - 'null'
+        converted:
+          description: Number of messages that were clicked.
+          type:
+          - integer
+          - 'null'
+        received:
+          description: Number of devices that received the message.
+          type:
+          - integer
+          - 'null'
+      type: object
+    NotificationWithMeta:
+      allOf:
+      - $ref: '#/components/schemas/BasicNotification'
+      - $ref: '#/components/schemas/DeliveryData'
+      - $ref: '#/components/schemas/OutcomesData'
+      - $ref: '#/components/schemas/NotificationWithMeta_allOf'
+    NotificationWithMeta_allOf:
+      properties:
+        remaining:
+          description: Number of notifications that have not been sent out yet. This can mean either our system is still processing the notification or you have delayed options set.
+          type: integer
+        successful:
+          description: Number of notifications that were successfully delivered.
+          type: integer
+        failed:
+          description: Number of notifications that could not be delivered due to those devices being unsubscribed.
+          type: integer
+        errored:
+          description: Number of notifications that could not be delivered due to an error. You can find more information by viewing the notification in the dashboard.
+          type: integer
+        converted:
+          description: Number of users who have clicked / tapped on your notification.
+          type: integer
+        queued_at:
+          description: Unix timestamp indicating when the notification was created.
+          format: int64
+          type: integer
+        send_after:
+          description: Unix timestamp indicating when notification delivery should begin.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        completed_at:
+          description: Unix timestamp indicating when notification delivery completed. The delivery duration from start to finish can be calculated with completed_at - send_after.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        platform_delivery_stats:
+          $ref: '#/components/schemas/PlatformDeliveryData'
+        received:
+          description: Confirmed Deliveries number of devices that received the push notification. Paid Feature Only. Free accounts will see 0.
+          type:
+          - integer
+          - 'null'
+        throttle_rate_per_minute:
+          description: number of push notifications sent per minute. Paid Feature Only. If throttling is not enabled for the app or the notification, and for free accounts, null is returned. Refer to Throttling for more details.
+          type:
+          - integer
+          - 'null'
+        canceled:
+          description: Indicates whether the notification was canceled before it could be sent.
+          type: boolean
+        email_bcc:
+          description: BCC recipients that were set on this email notification.
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        bcc_sent:
+          description: Number of BCC copies successfully sent for this notification.
+          type:
+          - integer
+          - 'null'
+      type: object
+    FilterExpression:
+      oneOf:
+      - $ref: '#/components/schemas/Filter'
+      - $ref: '#/components/schemas/Operator'
+    BasicNotification:
+      allOf:
+      - $ref: '#/components/schemas/NotificationTarget'
+      - $ref: '#/components/schemas/BasicNotification_allOf'
+      - required:
+        - app_id
     CreateNotificationSuccessResponse:
       example:
         external_id: external_id
@@ -1006,6 +1572,34 @@ components:
           - 'null'
         errors:
           description: 'Polymorphic field: may be an array of human-readable strings and/or an object (for example with `invalid_aliases`, `invalid_external_user_ids`, or `invalid_player_ids`) depending on the API response; HTTP may still be 200 with partial success. Typed SDKs model this loosely so both shapes deserialize.'
+      type: object
+    Notification_allOf:
+      properties:
+        send_after:
+          description: 'Channel: All
+
+            Schedule notification for future delivery. API defaults to UTC -1100
+
+            Examples: All examples are the exact same date & time.
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
+
+            "September 24th 2015, 2:00:00 pm UTC-07:00"
+
+            "2015-09-24 14:00:00 GMT-0700"
+
+            "Sept 24 2015 14:00:00 GMT-0700"
+
+            "Thu Sep 24 2015 14:00:00 GMT-0700 (Pacific Daylight Time)"
+
+            Note: SMS currently only supports send_after parameter.
+
+            '
+          format: date-time
+          type:
+          - string
+          - 'null'
+          writeOnly: true
       type: object
     BasicNotification_allOf:
       properties:
@@ -2254,13 +2848,28 @@ components:
           - 'null'
           writeOnly: true
       type: object
-    BasicNotification:
-      allOf:
-      - $ref: '#/components/schemas/NotificationTarget'
-      - $ref: '#/components/schemas/BasicNotification_allOf'
-      - required:
-        - app_id
-    WebButton:
+    SegmentNotificationTarget:
+      properties:
+        included_segments:
+          description: 'The segment names you want to target. Users in these segments will receive a notification. This targeting parameter is only compatible with excluded_segments.
+
+            Example: ["Active Users", "Inactive Users"]
+
+            '
+          items:
+            type: string
+          type: array
+        excluded_segments:
+          description: 'Segment that will be excluded when sending. Users in these segments will not receive a notification, even if they were included in included_segments. This targeting parameter is only compatible with included_segments.
+
+            Example: ["Active Users", "Inactive Users"]
+
+            '
+          items:
+            type: string
+          type: array
+      type: object
+    Button:
       properties:
         id:
           type: string
@@ -2268,10 +2877,85 @@ components:
           type: string
         icon:
           type: string
-        url:
+      required:
+      - id
+      type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
+    PlatformDeliveryData_email_allOf:
+      properties:
+        opened:
+          description: Number of times an email has been opened.
+          type:
+          - integer
+          - 'null'
+        unique_opens:
+          description: Number of unique recipients who have opened your email.
+          type:
+          - integer
+          - 'null'
+        clicks:
+          description: Number of clicked links from your email. This can include the recipient clicking email links multiple times.
+          type:
+          - integer
+          - 'null'
+        unique_clicks:
+          description: Number of unique clicks that your recipients have made on links from your email.
+          type:
+          - integer
+          - 'null'
+        bounced:
+          description: Number of recipients who registered as a hard or soft bounce and didn't receive your email.
+          type:
+          - integer
+          - 'null'
+        reported_spam:
+          description: Number of recipients who reported this email as spam.
+          type:
+          - integer
+          - 'null'
+        unsubscribed:
+          description: Number of recipients who opted out of your emails using the unsubscribe link in this email.
+          type:
+          - integer
+          - 'null'
+    GenericSuccessBoolResponse:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+      type: object
+    get_notification_history_request_body:
+      properties:
+        events:
+          description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
+          enum:
+          - sent
+          - clicked
+          type: string
+        email:
+          description: The email address you would like the report sent.
+          type: string
+        app_id:
           type: string
       required:
       - id
+      title: get_notification_history_request_body
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
       type: object
     NotificationSlice:
       example:
@@ -2329,657 +3013,6 @@ components:
           - time_elapsed_lt
           type: string
       type: object
-    NotificationWithMeta:
-      allOf:
-      - $ref: '#/components/schemas/BasicNotification'
-      - $ref: '#/components/schemas/DeliveryData'
-      - $ref: '#/components/schemas/OutcomesData'
-      - $ref: '#/components/schemas/NotificationWithMeta_allOf'
-    GenericSuccessBoolResponse:
-      example:
-        success: true
-      properties:
-        success:
-          type: boolean
-      type: object
-    NotificationHistorySuccessResponse:
-      example:
-        success: true
-        destination_url: destination_url
-      properties:
-        success:
-          type: boolean
-        destination_url:
-          type: string
-      type: object
-    SubscriptionNotificationTarget:
-      properties:
-        include_subscription_ids:
-          description: 'Specific subscription ids to send your notification to. _Does not require API Auth Key._
-
-            Not compatible with any other targeting parameters.
-
-            Example: ["1dd608f2-c6a1-11e3-851d-000c2940e62c"]
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        include_email_tokens:
-          description: 'Recommended for Sending Emails - Target specific email addresses.
-
-            If an email does not correspond to an existing user, a new user will be created.
-
-            Example: nick@catfac.ts
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_phone_numbers:
-          description: 'Recommended for Sending SMS - Target specific phone numbers. The phone number should be in the E.164 format. Phone number should be an existing subscriber on OneSignal. Refer our docs to learn how to add phone numbers to OneSignal.
-
-            Example phone number: +1999999999
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_ios_tokens:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using iOS device tokens.
-
-            Warning: Only works with Production tokens.
-
-            All non-alphanumeric characters must be removed from each token. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: ce777617da7f548fe7a9ab6febb56cf39fba6d38203...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_wp_wns_uris:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using Windows URIs. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: http://s.notify.live.net/u/1/bn1/HmQAAACPaLDr-...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_amazon_reg_ids:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using Amazon ADM registration IDs. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: amzn1.adm-registration.v1.XpvSSUk0Rc3hTVVV...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_chrome_reg_ids:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using Chrome App registration IDs. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_chrome_web_reg_ids:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using Chrome Web Push registration IDs. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_android_reg_ids:
-          description: 'Not Recommended: Please consider using include_subscription_ids or include_aliases instead.
-
-            Target using Android device registration IDs. If a token does not correspond to an existing user, a new user will be created.
-
-            Example: APA91bEeiUeSukAAUdnw3O2RB45FWlSpgJ7Ji_...
-
-            Limit of 2,000 entries per REST API call
-
-            '
-          items:
-            type: string
-          type: array
-        include_aliases:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: 'Target specific users by aliases assigned via API. An alias can be an external_id, onesignal_id, or a custom alias.
-
-            Accepts an object where keys are alias labels and values are arrays of alias IDs to include
-
-            Example usage: { "external_id": ["exId1", "extId2"], "internal_label": ["id1", "id2"] }
-
-            Keys must match API spellings exactly (for example the label for External ID is the string `external_id`; arbitrary keys such as camelCase variants are not aliases and may yield no recipients).
-
-            Not compatible with any other targeting parameters.
-
-            REQUIRED: REST API Key Authentication
-
-            Limit of 2,000 entries per REST API call
-
-            Note: If targeting push, email, or sms subscribers with same ids, use with target_channel to indicate you are sending a push or email or sms.'
-          type:
-          - object
-          - 'null'
-        target_channel:
-          enum:
-          - push
-          - email
-          - sms
-          type: string
-      type: object
-    PlatformDeliveryData_email_allOf:
-      properties:
-        opened:
-          description: Number of times an email has been opened.
-          type:
-          - integer
-          - 'null'
-        unique_opens:
-          description: Number of unique recipients who have opened your email.
-          type:
-          - integer
-          - 'null'
-        clicks:
-          description: Number of clicked links from your email. This can include the recipient clicking email links multiple times.
-          type:
-          - integer
-          - 'null'
-        unique_clicks:
-          description: Number of unique clicks that your recipients have made on links from your email.
-          type:
-          - integer
-          - 'null'
-        bounced:
-          description: Number of recipients who registered as a hard or soft bounce and didn't receive your email.
-          type:
-          - integer
-          - 'null'
-        reported_spam:
-          description: Number of recipients who reported this email as spam.
-          type:
-          - integer
-          - 'null'
-        unsubscribed:
-          description: Number of recipients who opted out of your emails using the unsubscribe link in this email.
-          type:
-          - integer
-          - 'null'
-    PlatformDeliveryData:
-      description: Hash of delivery statistics broken out by target device platform.
-      properties:
-        edge_web_push:
-          $ref: '#/components/schemas/DeliveryData'
-        chrome_web_push:
-          $ref: '#/components/schemas/DeliveryData'
-        firefox_web_push:
-          $ref: '#/components/schemas/DeliveryData'
-        safari_web_push:
-          $ref: '#/components/schemas/DeliveryData'
-        android:
-          $ref: '#/components/schemas/DeliveryData'
-        ios:
-          $ref: '#/components/schemas/DeliveryData'
-        sms:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryData'
-          - $ref: '#/components/schemas/PlatformDeliveryData_sms_allOf'
-        email:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryData'
-          - $ref: '#/components/schemas/PlatformDeliveryData_email_allOf'
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
-      type: object
-    DeliveryData:
-      properties:
-        successful:
-          description: Number of messages delivered to push servers, mobile carriers, or email service providers.
-          type:
-          - integer
-          - 'null'
-        failed:
-          description: Number of messages sent to unsubscribed devices.
-          type:
-          - integer
-          - 'null'
-        errored:
-          description: Number of errors reported.
-          type:
-          - integer
-          - 'null'
-        converted:
-          description: Number of messages that were clicked.
-          type:
-          - integer
-          - 'null'
-        received:
-          description: Number of devices that received the message.
-          type:
-          - integer
-          - 'null'
-      type: object
-    LanguageStringMap:
-      example:
-        de: de
-        hi: hi
-        fi: fi
-        ru: ru
-        pt: pt
-        bg: bg
-        lt: lt
-        hr: hr
-        lv: lv
-        fr: fr
-        hu: hu
-        bs: bs
-        zh-Hans: zh-Hans
-        zh-Hant: zh-Hant
-        ka: ka
-        uk: uk
-        sk: sk
-        id: id
-        ca: ca
-        sr: sr
-        sv: sv
-        ko: ko
-        ms: ms
-        el: el
-        en: en
-        it: it
-        zh: zh
-        es: es
-        et: et
-        cs: cs
-        ar: ar
-        pa: pa
-        vi: vi
-        nb: nb
-        th: th
-        ja: ja
-        fa: fa
-        pl: pl
-        da: da
-        he: he
-        ro: ro
-        nl: nl
-        tr: tr
-      properties:
-        en:
-          description: Text in English.  Will be used as a fallback
-          type: string
-        ar:
-          description: Text in Arabic.
-          type: string
-        bs:
-          description: Text in Bosnian.
-          type: string
-        bg:
-          description: Text in Bulgarian.
-          type: string
-        ca:
-          description: Text in Catalan.
-          type: string
-        zh-Hans:
-          description: Text in Chinese (Simplified).
-          type: string
-        zh-Hant:
-          description: Text in Chinese (Traditional).
-          type: string
-        zh:
-          description: Alias for zh-Hans.
-          type: string
-        hr:
-          description: Text in Croatian.
-          type: string
-        cs:
-          description: Text in Czech.
-          type: string
-        da:
-          description: Text in Danish.
-          type: string
-        nl:
-          description: Text in Dutch.
-          type: string
-        et:
-          description: Text in Estonian.
-          type: string
-        fi:
-          description: Text in Finnish.
-          type: string
-        fr:
-          description: Text in French.
-          type: string
-        ka:
-          description: Text in Georgian.
-          type: string
-        de:
-          description: Text in German.
-          type: string
-        el:
-          description: Text in Greek.
-          type: string
-        hi:
-          description: Text in Hindi.
-          type: string
-        he:
-          description: Text in Hebrew.
-          type: string
-        hu:
-          description: Text in Hungarian.
-          type: string
-        id:
-          description: Text in Indonesian.
-          type: string
-        it:
-          description: Text in Italian.
-          type: string
-        ja:
-          description: Text in Japanese.
-          type: string
-        ko:
-          description: Text in Korean.
-          type: string
-        lv:
-          description: Text in Latvian.
-          type: string
-        lt:
-          description: Text in Lithuanian.
-          type: string
-        ms:
-          description: Text in Malay.
-          type: string
-        nb:
-          description: Text in Norwegian.
-          type: string
-        pl:
-          description: Text in Polish.
-          type: string
-        fa:
-          description: Text in Persian.
-          type: string
-        pt:
-          description: Text in Portugese.
-          type: string
-        pa:
-          description: Text in Punjabi.
-          type: string
-        ro:
-          description: Text in Romanian.
-          type: string
-        ru:
-          description: Text in Russian.
-          type: string
-        sr:
-          description: Text in Serbian.
-          type: string
-        sk:
-          description: Text in Slovak.
-          type: string
-        es:
-          description: Text in Spanish.
-          type: string
-        sv:
-          description: Text in Swedish.
-          type: string
-        th:
-          description: Text in Thai.
-          type: string
-        tr:
-          description: Text in Turkish.
-          type: string
-        uk:
-          description: Text in Ukrainian.
-          type: string
-        vi:
-          description: Text in Vietnamese.
-          type: string
-      type: object
-    SegmentNotificationTarget:
-      properties:
-        included_segments:
-          description: 'The segment names you want to target. Users in these segments will receive a notification. This targeting parameter is only compatible with excluded_segments.
-
-            Example: ["Active Users", "Inactive Users"]
-
-            '
-          items:
-            type: string
-          type: array
-        excluded_segments:
-          description: 'Segment that will be excluded when sending. Users in these segments will not receive a notification, even if they were included in included_segments. This targeting parameter is only compatible with included_segments.
-
-            Example: ["Active Users", "Inactive Users"]
-
-            '
-          items:
-            type: string
-          type: array
-      type: object
-    BasicNotification_allOf_android_background_layout:
-      description: 'Channel: Push Notifications
-
-        Platform: Android
-
-        Allowing setting a background image for the notification. This is a JSON object containing the following keys. See our Background Image documentation for image sizes.
-
-        '
-      properties:
-        image:
-          description: Asset file, android resource name, or URL to remote image.
-          type: string
-        headings_color:
-          description: Title text color ARGB Hex format. Example(Blue) "FF0000FF".
-          type: string
-        contents_color:
-          description: Body text color ARGB Hex format. Example(Red) "FFFF0000".
-          type: string
-      type: object
-      writeOnly: true
-    NotificationTarget:
-      anyOf:
-      - $ref: '#/components/schemas/SegmentNotificationTarget'
-      - $ref: '#/components/schemas/SubscriptionNotificationTarget'
-    PlatformDeliveryData_sms_allOf:
-      properties:
-        provider_successful:
-          description: Number of messages reported as delivered successfully by the SMS service provider.
-          type:
-          - integer
-          - 'null'
-        provider_failed:
-          description: Number of recipients who didn't receive your message as reported by the SMS service provider.
-          type:
-          - integer
-          - 'null'
-        provider_errored:
-          description: Number of errors reported by the SMS service provider.
-          type:
-          - integer
-          - 'null'
-    FilterExpression:
-      oneOf:
-      - $ref: '#/components/schemas/Filter'
-      - $ref: '#/components/schemas/Operator'
-    Notification:
-      allOf:
-      - $ref: '#/components/schemas/BasicNotification'
-      - $ref: '#/components/schemas/Notification_allOf'
-    Notification_allOf:
-      properties:
-        send_after:
-          description: 'Channel: All
-
-            Schedule notification for future delivery. API defaults to UTC -1100
-
-            Examples: All examples are the exact same date & time.
-
-            "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
-
-            "September 24th 2015, 2:00:00 pm UTC-07:00"
-
-            "2015-09-24 14:00:00 GMT-0700"
-
-            "Sept 24 2015 14:00:00 GMT-0700"
-
-            "Thu Sep 24 2015 14:00:00 GMT-0700 (Pacific Daylight Time)"
-
-            Note: SMS currently only supports send_after parameter.
-
-            '
-          format: date-time
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-      type: object
-    get_notification_history_request_body:
-      properties:
-        events:
-          description: -> "sent" - All the devices by player_id that were sent the specified notification_id.  Notifications targeting under 1000 recipients will not have "sent" events recorded, but will show "clicked" events. "clicked" - All the devices by `player_id` that clicked the specified notification_id.
-          enum:
-          - sent
-          - clicked
-          type: string
-        email:
-          description: The email address you would like the report sent.
-          type: string
-        app_id:
-          type: string
-      required:
-      - id
-      title: get_notification_history_request_body
-      type: object
-    OutcomeData:
-      example:
-        aggregation: sum
-        id: id
-        value: 0
-      properties:
-        id:
-          type: string
-        value:
-          type: integer
-        aggregation:
-          enum:
-          - sum
-          - count
-          type: string
-      required:
-      - aggregation
-      - id
-      - value
-      type: object
-    ExportEventsSuccessResponse:
-      example:
-        csv_file_url: csv_file_url
-      properties:
-        csv_file_url:
-          type: string
-      type: object
-    NotificationWithMeta_allOf:
-      properties:
-        remaining:
-          description: Number of notifications that have not been sent out yet. This can mean either our system is still processing the notification or you have delayed options set.
-          type: integer
-        successful:
-          description: Number of notifications that were successfully delivered.
-          type: integer
-        failed:
-          description: Number of notifications that could not be delivered due to those devices being unsubscribed.
-          type: integer
-        errored:
-          description: Number of notifications that could not be delivered due to an error. You can find more information by viewing the notification in the dashboard.
-          type: integer
-        converted:
-          description: Number of users who have clicked / tapped on your notification.
-          type: integer
-        queued_at:
-          description: Unix timestamp indicating when the notification was created.
-          format: int64
-          type: integer
-        send_after:
-          description: Unix timestamp indicating when notification delivery should begin.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        completed_at:
-          description: Unix timestamp indicating when notification delivery completed. The delivery duration from start to finish can be calculated with completed_at - send_after.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        platform_delivery_stats:
-          $ref: '#/components/schemas/PlatformDeliveryData'
-        received:
-          description: Confirmed Deliveries number of devices that received the push notification. Paid Feature Only. Free accounts will see 0.
-          type:
-          - integer
-          - 'null'
-        throttle_rate_per_minute:
-          description: number of push notifications sent per minute. Paid Feature Only. If throttling is not enabled for the app or the notification, and for free accounts, null is returned. Refer to Throttling for more details.
-          type:
-          - integer
-          - 'null'
-        canceled:
-          description: Indicates whether the notification was canceled before it could be sent.
-          type: boolean
-        email_bcc:
-          description: BCC recipients that were set on this email notification.
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        bcc_sent:
-          description: Number of BCC copies successfully sent for this notification.
-          type:
-          - integer
-          - 'null'
-      type: object
     Operator:
       properties:
         operator:
@@ -2987,41 +3020,6 @@ components:
           enum:
           - OR
           - AND
-          type: string
-      type: object
-    Button:
-      properties:
-        id:
-          type: string
-        text:
-          type: string
-        icon:
-          type: string
-      required:
-      - id
-      type: object
-    OutcomesData:
-      example:
-        outcomes:
-        - aggregation: sum
-          id: id
-          value: 0
-        - aggregation: sum
-          id: id
-          value: 0
-      properties:
-        outcomes:
-          items:
-            $ref: '#/components/schemas/OutcomeData'
-          type: array
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
           type: string
       type: object
   requestBodies:

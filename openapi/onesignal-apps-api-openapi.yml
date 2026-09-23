@@ -6819,20 +6819,18 @@ paths:
       description: 'View the details of all the outcomes associated with your app
 
 
-        &#x1F6A7;
+        🚧
 
         Requires Authentication Key
 
         Requires your OneSignal App''s REST API Key, available in Keys & IDs.
 
 
-        &#x1F6A7;
+        🚧
 
         Outcome Data Limitations
 
-        Outcomes are only accessible for around 30 days before deleted from our servers. You will need to export this data every month if you want to keep it.
-
-        '
+        Outcomes are only accessible for around 30 days before deleted from our servers. You will need to export this data every month if you want to keep it.'
       operationId: get_outcomes
       parameters:
       - description: The OneSignal App ID for your app.  Available in Keys & IDs.
@@ -7061,54 +7059,6 @@ paths:
     - url: https://api.onesignal.com
 components:
   schemas:
-    StructuredErrorItem:
-      type: object
-      required:
-      - code
-      - title
-      properties:
-        code:
-          type: string
-          description: Stable error-code identifier. Use this for programmatic branching in your integration.
-        title:
-          type: string
-          description: Human-readable error message intended for logs and operator-facing surfaces.
-        meta:
-          type: object
-          additionalProperties: true
-          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
-    CreateUserConflictResponse:
-      type: object
-      description: Returned at HTTP 409 by POST `/apps/{app_id}/users` when the request's claimed identity (`aliases` or `external_id`) collides with an existing user. The structured meta block lists each colliding alias label and the alias ID that already identifies a different user.
-      properties:
-        errors:
-          type: array
-          items:
-            type: object
-            required:
-            - code
-            - title
-            properties:
-              code:
-                type: string
-                description: 'Stable error code identifier. For this response: `Conflict`.'
-                example: Conflict
-              title:
-                type: string
-                description: Human-readable conflict description.
-                example: Conflicting aliases
-              meta:
-                type: object
-                description: Structured details about the conflict.
-                properties:
-                  conflicting_aliases:
-                    type: object
-                    description: Map of alias label to the alias ID that already identifies a different user. Use this to surface the specific conflict to the operator and decide whether to retry with a different alias.
-                    additionalProperties:
-                      type: string
-                    example:
-                      external_id: user-already-claimed-by-another-account
-                      amazon_id: amzn-id-already-bound
     StructuredErrorResponse:
       type: object
       properties:
@@ -7177,185 +7127,228 @@ components:
         formatted_token:
           type: string
           description: The actual Rich Authentication Token (REST API Key). Returned in plaintext ONLY by the create and rotate endpoints, and ONLY immediately after that call. OneSignal does not store the secret — if you lose it, you must rotate the key. See [Rotate API Key](/reference/rotate-api-key).
-    PropertiesObject:
-      example:
-        country: country
-        purchases:
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        ip: ip
-        timezone_id: timezone_id
-        language: language
-        first_active: 1
-        last_active: 5
-        lat: 0.8008281904610115
-        long: 6.027456183070403
-        tags:
-          key: ''
-        amount_spent: 5.637376656633329
+    CreateUserConflictResponse:
+      type: object
+      description: Returned at HTTP 409 by POST `/apps/{app_id}/users` when the request's claimed identity (`aliases` or `external_id`) collides with an existing user. The structured meta block lists each colliding alias label and the alias ID that already identifies a different user.
       properties:
-        tags:
-          additionalProperties: true
-          type: object
-        language:
-          type: string
-        timezone_id:
-          type: string
-        lat:
-          type: number
-        long:
-          type: number
-        country:
-          type: string
-        first_active:
-          type: integer
-        last_active:
-          type: integer
-        amount_spent:
-          type: number
-        purchases:
-          items:
-            $ref: '#/components/schemas/Purchase'
+        errors:
           type: array
-        ip:
-          type: string
+          items:
+            type: object
+            required:
+            - code
+            - title
+            properties:
+              code:
+                type: string
+                description: 'Stable error code identifier. For this response: `Conflict`.'
+                example: Conflict
+              title:
+                type: string
+                description: Human-readable conflict description.
+                example: Conflicting aliases
+              meta:
+                type: object
+                description: Structured details about the conflict.
+                properties:
+                  conflicting_aliases:
+                    type: object
+                    description: Map of alias label to the alias ID that already identifies a different user. Use this to surface the specific conflict to the operator and decide whether to retry with a different alias.
+                    additionalProperties:
+                      type: string
+                    example:
+                      external_id: user-already-claimed-by-another-account
+                      amazon_id: amzn-id-already-bound
+    StructuredErrorItem:
       type: object
-    Subscription:
+      required:
+      - code
+      - title
+      properties:
+        code:
+          type: string
+          description: Stable error-code identifier. Use this for programmatic branching in your integration.
+        title:
+          type: string
+          description: Human-readable error message intended for logs and operator-facing surfaces.
+        meta:
+          type: object
+          additionalProperties: true
+          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
+    LanguageStringMap:
       example:
-        notification_types: 7
-        device_model: device_model
-        app_version: app_version
-        web_p256: web_p256
-        net_type: 4
-        type: iOSPush
-        device_os: device_os
-        enabled: true
-        session_time: 9
-        test_type: 2
-        token: token
-        carrier: carrier
-        session_count: 3
-        web_auth: web_auth
-        rooted: true
+        de: de
+        hi: hi
+        fi: fi
+        ru: ru
+        pt: pt
+        bg: bg
+        lt: lt
+        hr: hr
+        lv: lv
+        fr: fr
+        hu: hu
+        bs: bs
+        zh-Hans: zh-Hans
+        zh-Hant: zh-Hant
+        ka: ka
+        uk: uk
+        sk: sk
         id: id
-        sdk: sdk
+        ca: ca
+        sr: sr
+        sv: sv
+        ko: ko
+        ms: ms
+        el: el
+        en: en
+        it: it
+        zh: zh
+        es: es
+        et: et
+        cs: cs
+        ar: ar
+        pa: pa
+        vi: vi
+        nb: nb
+        th: th
+        ja: ja
+        fa: fa
+        pl: pl
+        da: da
+        he: he
+        ro: ro
+        nl: nl
+        tr: tr
       properties:
+        en:
+          description: Text in English.  Will be used as a fallback
+          type: string
+        ar:
+          description: Text in Arabic.
+          type: string
+        bs:
+          description: Text in Bosnian.
+          type: string
+        bg:
+          description: Text in Bulgarian.
+          type: string
+        ca:
+          description: Text in Catalan.
+          type: string
+        zh-Hans:
+          description: Text in Chinese (Simplified).
+          type: string
+        zh-Hant:
+          description: Text in Chinese (Traditional).
+          type: string
+        zh:
+          description: Alias for zh-Hans.
+          type: string
+        hr:
+          description: Text in Croatian.
+          type: string
+        cs:
+          description: Text in Czech.
+          type: string
+        da:
+          description: Text in Danish.
+          type: string
+        nl:
+          description: Text in Dutch.
+          type: string
+        et:
+          description: Text in Estonian.
+          type: string
+        fi:
+          description: Text in Finnish.
+          type: string
+        fr:
+          description: Text in French.
+          type: string
+        ka:
+          description: Text in Georgian.
+          type: string
+        de:
+          description: Text in German.
+          type: string
+        el:
+          description: Text in Greek.
+          type: string
+        hi:
+          description: Text in Hindi.
+          type: string
+        he:
+          description: Text in Hebrew.
+          type: string
+        hu:
+          description: Text in Hungarian.
+          type: string
         id:
+          description: Text in Indonesian.
           type: string
-        type:
-          enum:
-          - iOSPush
-          - AndroidPush
-          - FireOSPush
-          - ChromeExtensionPush
-          - ChromePush
-          - WindowsPush
-          - SafariLegacyPush
-          - FirefoxPush
-          - macOSPush
-          - HuaweiPush
-          - SafariPush
-          - Email
-          - SMS
+        it:
+          description: Text in Italian.
           type: string
-        token:
+        ja:
+          description: Text in Japanese.
           type: string
-        enabled:
-          type: boolean
-        notification_types:
-          type: integer
-        session_time:
-          type: integer
-        session_count:
-          type: integer
-        sdk:
+        ko:
+          description: Text in Korean.
           type: string
-        device_model:
+        lv:
+          description: Text in Latvian.
           type: string
-        device_os:
+        lt:
+          description: Text in Lithuanian.
           type: string
-        rooted:
-          type: boolean
-        test_type:
-          type: integer
-        app_version:
+        ms:
+          description: Text in Malay.
           type: string
-        net_type:
-          type: integer
-        carrier:
+        nb:
+          description: Text in Norwegian.
           type: string
-        web_auth:
+        pl:
+          description: Text in Polish.
           type: string
-        web_p256:
+        fa:
+          description: Text in Persian.
           type: string
-      type: object
-    PropertiesBody:
-      example:
-        properties:
-          country: country
-          purchases:
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          ip: ip
-          timezone_id: timezone_id
-          language: language
-          first_active: 1
-          last_active: 5
-          lat: 0.8008281904610115
-          long: 6.027456183070403
-          tags:
-            key: ''
-          amount_spent: 5.637376656633329
-      properties:
-        properties:
-          $ref: '#/components/schemas/PropertiesObject'
-      type: object
-    Filter:
-      properties:
-        field:
-          description: Required. Name of the field to use as the first operand in the filter expression.
+        pt:
+          description: Text in Portugese.
           type: string
-        key:
-          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
+        pa:
+          description: Text in Punjabi.
           type: string
-        value:
-          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
+        ro:
+          description: Text in Romanian.
           type: string
-        hours_ago:
-          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
+        ru:
+          description: Text in Russian.
           type: string
-        radius:
-          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
-          type: number
-        lat:
-          description: If `field` is `location`, this is *required* to specify the user's latitude.
-          type: number
-        long:
-          description: If `field` is `location`, this is *required* to specify the user's longitude.
-          type: number
-        relation:
-          description: Required. Operator of a filter expression.
-          enum:
-          - '>'
-          - <
-          - '='
-          - '!='
-          - exists
-          - not_exists
-          - time_elapsed_gt
-          - time_elapsed_lt
+        sr:
+          description: Text in Serbian.
+          type: string
+        sk:
+          description: Text in Slovak.
+          type: string
+        es:
+          description: Text in Spanish.
+          type: string
+        sv:
+          description: Text in Swedish.
+          type: string
+        th:
+          description: Text in Thai.
+          type: string
+        tr:
+          description: Text in Turkish.
+          type: string
+        uk:
+          description: Text in Ukrainian.
+          type: string
+        vi:
+          description: Text in Vietnamese.
           type: string
       type: object
     StartLiveActivityRequest:
@@ -7570,6 +7563,484 @@ components:
       - headings
       - name
       type: object
+    ApiKeyToken_2:
+      example:
+        token_id: token_id
+        updated_at: updated_at
+        name: name
+        created_at: created_at
+        ip_allowlist_mode: disabled
+        ip_allowlist:
+        - ip_allowlist
+        - ip_allowlist
+      properties:
+        token_id:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+        name:
+          type: string
+        ip_allowlist_mode:
+          enum:
+          - disabled
+          - explicit
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateLiveActivitySuccessResponse:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    OutcomesData:
+      example:
+        outcomes:
+        - aggregation: sum
+          id: id
+          value: 0
+        - aggregation: sum
+          id: id
+          value: 0
+      properties:
+        outcomes:
+          items:
+            $ref: '#/components/schemas/OutcomeData'
+          type: array
+      type: object
+    CreateUserConflictResponse_2:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/CreateUserConflictResponse_errors_inner'
+          type: array
+      type: object
+    Segment:
+      example:
+        name: name
+        id: id
+        filters:
+        - null
+        - null
+      properties:
+        id:
+          description: UUID of the segment.  If left empty, it will be assigned automaticaly.
+          type: string
+        name:
+          description: Name of the segment.  You'll see this name on the Web UI.
+          type: string
+        filters:
+          description: Filter or operators the segment will have.  For a list of available filters with details, please see Send to Users Based on Filters.
+          items:
+            $ref: '#/components/schemas/FilterExpression'
+          type: array
+      required:
+      - filters
+      - name
+      type: object
+    Purchase:
+      example:
+        amount: amount
+        iso: iso
+        count: 2
+        sku: sku
+      properties:
+        sku:
+          description: The unique identifier of the purchased item.
+          type: string
+        amount:
+          description: The amount, in USD, spent purchasing the item.
+          type: string
+        iso:
+          description: The 3-letter ISO 4217 currency code. Required for correct storage and conversion of amount.
+          type: string
+        count:
+          type: integer
+      required:
+      - amount
+      - iso
+      - sku
+      type: object
+    Subscription:
+      example:
+        notification_types: 7
+        device_model: device_model
+        app_version: app_version
+        web_p256: web_p256
+        net_type: 4
+        type: iOSPush
+        device_os: device_os
+        enabled: true
+        session_time: 9
+        test_type: 2
+        token: token
+        carrier: carrier
+        session_count: 3
+        web_auth: web_auth
+        rooted: true
+        id: id
+        sdk: sdk
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - iOSPush
+          - AndroidPush
+          - FireOSPush
+          - ChromeExtensionPush
+          - ChromePush
+          - WindowsPush
+          - SafariLegacyPush
+          - FirefoxPush
+          - macOSPush
+          - HuaweiPush
+          - SafariPush
+          - Email
+          - SMS
+          type: string
+        token:
+          type: string
+        enabled:
+          type: boolean
+        notification_types:
+          type: integer
+        session_time:
+          type: integer
+        session_count:
+          type: integer
+        sdk:
+          type: string
+        device_model:
+          type: string
+        device_os:
+          type: string
+        rooted:
+          type: boolean
+        test_type:
+          type: integer
+        app_version:
+          type: string
+        net_type:
+          type: integer
+        carrier:
+          type: string
+        web_auth:
+          type: string
+        web_p256:
+          type: string
+      type: object
+    CustomEventsRequest:
+      example:
+        events:
+        - onesignal_id: onesignal_id
+          payload:
+            key: ''
+          name: name
+          external_id: external_id
+          timestamp: 2000-01-23 04:56:07+00:00
+        - onesignal_id: onesignal_id
+          payload:
+            key: ''
+          name: name
+          external_id: external_id
+          timestamp: 2000-01-23 04:56:07+00:00
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/CustomEvent'
+          type: array
+      required:
+      - events
+      type: object
+    OutcomeData:
+      example:
+        aggregation: sum
+        id: id
+        value: 0
+      properties:
+        id:
+          type: string
+        value:
+          type: integer
+        aggregation:
+          enum:
+          - sum
+          - count
+          type: string
+      required:
+      - aggregation
+      - id
+      - value
+      type: object
+    UpdateLiveActivityRequest:
+      example:
+        event_updates: '{}'
+        stale_date: 0
+        contents:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        sound: sound
+        name: name
+        headings:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        dismissal_date: 6
+        event: update
+        priority: 1
+      properties:
+        name:
+          description: An internal name to assist with your campaign organization. This does not get displayed in the message itself.
+          type: string
+        event:
+          enum:
+          - update
+          - end
+          type: string
+        event_updates:
+          description: This must match the ContentState interface you have defined within your Live Activity in your app.
+          type: object
+        contents:
+          $ref: '#/components/schemas/LanguageStringMap'
+        headings:
+          $ref: '#/components/schemas/LanguageStringMap'
+        sound:
+          description: Sound file that is included in your app to play instead of the default device notification sound. Omit to disable vibration and sound for the notification.
+          type: string
+        stale_date:
+          description: Accepts Unix timestamp in seconds. When time reaches the configured stale date, the system considers the Live Activity out of date, and the ActivityState of the Live Activity changes to ActivityState.stale.
+          type: integer
+        dismissal_date:
+          description: Accepts Unix timestamp in seconds; only allowed if event is "end"
+          type: integer
+        priority:
+          description: Delivery priority through the the push provider (APNs). Pass 10 for higher priority notifications, or 5 for lower priority notifications. Lower priority notifications are sent based on the power considerations of the end user's device. If not set, defaults to 10. Some providers (APNs) allow for a limited budget of high priority notifications per hour, and if that budget is exceeded, the provider may throttle notification delivery.
+          type: integer
+      required:
+      - event
+      - event_updates
+      - name
+      type: object
+    CreateApiKeyResponse:
+      example:
+        token_id: token_id
+        formatted_token: formatted_token
+      properties:
+        token_id:
+          type: string
+        formatted_token:
+          type: string
+      type: object
+    UserIdentityBody:
+      example:
+        identity:
+          key: identity
+      properties:
+        identity:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    SegmentData:
+      example:
+        is_active: true
+        updated_at: updated_at
+        read_only: true
+        name: name
+        created_at: created_at
+        id: id
+        app_id: app_id
+      properties:
+        id:
+          description: The segment ID
+          type: string
+        name:
+          description: The segment name
+          type: string
+        created_at:
+          description: Date segment created
+          type: string
+        updated_at:
+          description: Date segment last updated
+          type: string
+        app_id:
+          description: The app id
+          type: string
+        read_only:
+          description: Is the segment read only?
+          type: boolean
+        is_active:
+          description: Is the segment active?
+          type: boolean
+      type: object
+    FilterExpression:
+      oneOf:
+      - $ref: '#/components/schemas/Filter'
+      - $ref: '#/components/schemas/Operator'
+    CreateUserConflictResponse_errorsItems_meta:
+      properties:
+        conflicting_aliases:
+          type: object
+      type: object
+    SubscriptionBody:
+      example:
+        subscription:
+          notification_types: 7
+          device_model: device_model
+          app_version: app_version
+          web_p256: web_p256
+          net_type: 4
+          type: iOSPush
+          device_os: device_os
+          enabled: true
+          session_time: 9
+          test_type: 2
+          token: token
+          carrier: carrier
+          session_count: 3
+          web_auth: web_auth
+          rooted: true
+          id: id
+          sdk: sdk
+      properties:
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+      type: object
+    CreateSegmentConflictResponse:
+      properties:
+        success:
+          type: boolean
+        errors:
+          items:
+            type: string
+          type: array
+      type: object
+    Operator:
+      properties:
+        operator:
+          description: Strictly, this must be either `"OR"`, or `"AND"`.  It can be used to compose Filters as part of a Filters object.
+          enum:
+          - OR
+          - AND
+          type: string
+      type: object
+    UpdateApiKeyRequest:
+      example:
+        name: name
+        ip_allowlist_mode: disabled
+        ip_allowlist:
+        - ip_allowlist
+        - ip_allowlist
+      properties:
+        name:
+          type: string
+        ip_allowlist_mode:
+          enum:
+          - disabled
+          - explicit
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+      type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
     GenericSuccessBoolResponse:
       example:
         success: true
@@ -7577,57 +8048,6 @@ components:
         success:
           type: boolean
       type: object
-    CreateUserConflictResponse_errors_inner:
-      properties:
-        code:
-          type: string
-        title:
-          type: string
-        meta:
-          $ref: '#/components/schemas/CreateUserConflictResponse_errorsItems_meta'
-      type: object
-    CreateUserConflictResponse_errorsItems_meta:
-      properties:
-        conflicting_aliases:
-          type: object
-      type: object
-    CustomEvent:
-      example:
-        onesignal_id: onesignal_id
-        payload:
-          key: ''
-        name: name
-        external_id: external_id
-        timestamp: 2000-01-23 04:56:07+00:00
-      properties:
-        name:
-          description: The identifier or name of the event. Maximum 128 characters.
-          type: string
-        external_id:
-          description: The external ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
-          type:
-          - string
-          - 'null'
-        onesignal_id:
-          description: The OneSignal ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
-          type:
-          - string
-          - 'null'
-        timestamp:
-          description: Time the event occurred as an ISO8601 formatted string. Defaults to now if not included or past date provided.
-          format: date-time
-          type: string
-        payload:
-          additionalProperties: true
-          description: 'Properties or data related to the event, like {"geography": "USA"}'
-          type: object
-      required:
-      - name
-      type: object
-    Apps:
-      items:
-        $ref: '#/components/schemas/App'
-      type: array
     UpdateUserRequest:
       example:
         refresh_device_metadata: false
@@ -7673,262 +8093,6 @@ components:
         deltas:
           $ref: '#/components/schemas/PropertiesDeltas'
       type: object
-    SegmentData:
-      example:
-        is_active: true
-        updated_at: updated_at
-        read_only: true
-        name: name
-        created_at: created_at
-        id: id
-        app_id: app_id
-      properties:
-        id:
-          description: The segment ID
-          type: string
-        name:
-          description: The segment name
-          type: string
-        created_at:
-          description: Date segment created
-          type: string
-        updated_at:
-          description: Date segment last updated
-          type: string
-        app_id:
-          description: The app id
-          type: string
-        read_only:
-          description: Is the segment read only?
-          type: boolean
-        is_active:
-          description: Is the segment active?
-          type: boolean
-      type: object
-    ApiKeyTokensListResponse:
-      example:
-        tokens:
-        - token_id: token_id
-          updated_at: updated_at
-          name: name
-          created_at: created_at
-          ip_allowlist_mode: disabled
-          ip_allowlist:
-          - ip_allowlist
-          - ip_allowlist
-        - token_id: token_id
-          updated_at: updated_at
-          name: name
-          created_at: created_at
-          ip_allowlist_mode: disabled
-          ip_allowlist:
-          - ip_allowlist
-          - ip_allowlist
-      properties:
-        tokens:
-          items:
-            $ref: '#/components/schemas/ApiKeyToken_2'
-          type: array
-      type: object
-    UpdateLiveActivitySuccessResponse:
-      example:
-        id: id
-      properties:
-        id:
-          type: string
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
-      type: object
-    LanguageStringMap:
-      example:
-        de: de
-        hi: hi
-        fi: fi
-        ru: ru
-        pt: pt
-        bg: bg
-        lt: lt
-        hr: hr
-        lv: lv
-        fr: fr
-        hu: hu
-        bs: bs
-        zh-Hans: zh-Hans
-        zh-Hant: zh-Hant
-        ka: ka
-        uk: uk
-        sk: sk
-        id: id
-        ca: ca
-        sr: sr
-        sv: sv
-        ko: ko
-        ms: ms
-        el: el
-        en: en
-        it: it
-        zh: zh
-        es: es
-        et: et
-        cs: cs
-        ar: ar
-        pa: pa
-        vi: vi
-        nb: nb
-        th: th
-        ja: ja
-        fa: fa
-        pl: pl
-        da: da
-        he: he
-        ro: ro
-        nl: nl
-        tr: tr
-      properties:
-        en:
-          description: Text in English.  Will be used as a fallback
-          type: string
-        ar:
-          description: Text in Arabic.
-          type: string
-        bs:
-          description: Text in Bosnian.
-          type: string
-        bg:
-          description: Text in Bulgarian.
-          type: string
-        ca:
-          description: Text in Catalan.
-          type: string
-        zh-Hans:
-          description: Text in Chinese (Simplified).
-          type: string
-        zh-Hant:
-          description: Text in Chinese (Traditional).
-          type: string
-        zh:
-          description: Alias for zh-Hans.
-          type: string
-        hr:
-          description: Text in Croatian.
-          type: string
-        cs:
-          description: Text in Czech.
-          type: string
-        da:
-          description: Text in Danish.
-          type: string
-        nl:
-          description: Text in Dutch.
-          type: string
-        et:
-          description: Text in Estonian.
-          type: string
-        fi:
-          description: Text in Finnish.
-          type: string
-        fr:
-          description: Text in French.
-          type: string
-        ka:
-          description: Text in Georgian.
-          type: string
-        de:
-          description: Text in German.
-          type: string
-        el:
-          description: Text in Greek.
-          type: string
-        hi:
-          description: Text in Hindi.
-          type: string
-        he:
-          description: Text in Hebrew.
-          type: string
-        hu:
-          description: Text in Hungarian.
-          type: string
-        id:
-          description: Text in Indonesian.
-          type: string
-        it:
-          description: Text in Italian.
-          type: string
-        ja:
-          description: Text in Japanese.
-          type: string
-        ko:
-          description: Text in Korean.
-          type: string
-        lv:
-          description: Text in Latvian.
-          type: string
-        lt:
-          description: Text in Lithuanian.
-          type: string
-        ms:
-          description: Text in Malay.
-          type: string
-        nb:
-          description: Text in Norwegian.
-          type: string
-        pl:
-          description: Text in Polish.
-          type: string
-        fa:
-          description: Text in Persian.
-          type: string
-        pt:
-          description: Text in Portugese.
-          type: string
-        pa:
-          description: Text in Punjabi.
-          type: string
-        ro:
-          description: Text in Romanian.
-          type: string
-        ru:
-          description: Text in Russian.
-          type: string
-        sr:
-          description: Text in Serbian.
-          type: string
-        sk:
-          description: Text in Slovak.
-          type: string
-        es:
-          description: Text in Spanish.
-          type: string
-        sv:
-          description: Text in Swedish.
-          type: string
-        th:
-          description: Text in Thai.
-          type: string
-        tr:
-          description: Text in Turkish.
-          type: string
-        uk:
-          description: Text in Ukrainian.
-          type: string
-        vi:
-          description: Text in Vietnamese.
-          type: string
-      type: object
-    CreateSegmentConflictResponse:
-      properties:
-        success:
-          type: boolean
-        errors:
-          items:
-            type: string
-          type: array
-      type: object
     PropertiesDeltas:
       example:
         purchases:
@@ -7952,29 +8116,59 @@ components:
             $ref: '#/components/schemas/Purchase'
           type: array
       type: object
-    SubscriptionBody:
+    StartLiveActivitySuccessResponse:
       example:
-        subscription:
-          notification_types: 7
-          device_model: device_model
-          app_version: app_version
-          web_p256: web_p256
-          net_type: 4
-          type: iOSPush
-          device_os: device_os
-          enabled: true
-          session_time: 9
-          test_type: 2
-          token: token
-          carrier: carrier
-          session_count: 3
-          web_auth: web_auth
-          rooted: true
-          id: id
-          sdk: sdk
+        notification_id: notification_id
       properties:
-        subscription:
-          $ref: '#/components/schemas/Subscription'
+        notification_id:
+          type: string
+      type: object
+    CreateSegmentSuccessResponse:
+      example:
+        success: true
+        id: id
+      properties:
+        success:
+          type: boolean
+        id:
+          description: UUID of created segment
+          type: string
+      type: object
+    CreateApiKeyRequest:
+      example:
+        name: name
+        ip_allowlist_mode: disabled
+        ip_allowlist:
+        - ip_allowlist
+        - ip_allowlist
+      properties:
+        name:
+          type: string
+        ip_allowlist_mode:
+          enum:
+          - disabled
+          - explicit
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    CreateUserConflictResponse_errors_inner:
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        meta:
+          $ref: '#/components/schemas/CreateUserConflictResponse_errorsItems_meta'
       type: object
     TransferSubscriptionRequestBody:
       example:
@@ -7988,38 +8182,53 @@ components:
           minProperties: 1
           type: object
       type: object
-    Purchase:
+    PropertiesObject:
       example:
-        amount: amount
-        iso: iso
-        count: 2
-        sku: sku
+        country: country
+        purchases:
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        ip: ip
+        timezone_id: timezone_id
+        language: language
+        first_active: 1
+        last_active: 5
+        lat: 0.8008281904610115
+        long: 6.027456183070403
+        tags:
+          key: ''
+        amount_spent: 5.637376656633329
       properties:
-        sku:
-          description: The unique identifier of the purchased item.
+        tags:
+          additionalProperties: true
+          type: object
+        language:
           type: string
-        amount:
-          description: The amount, in USD, spent purchasing the item.
+        timezone_id:
           type: string
-        iso:
-          description: The 3-letter ISO 4217 currency code. Required for correct storage and conversion of amount.
+        lat:
+          type: number
+        long:
+          type: number
+        country:
           type: string
-        count:
+        first_active:
           type: integer
-      required:
-      - amount
-      - iso
-      - sku
-      type: object
-    CreateSegmentSuccessResponse:
-      example:
-        success: true
-        id: id
-      properties:
-        success:
-          type: boolean
-        id:
-          description: UUID of created segment
+        last_active:
+          type: integer
+        amount_spent:
+          type: number
+        purchases:
+          items:
+            $ref: '#/components/schemas/Purchase'
+          type: array
+        ip:
           type: string
       type: object
     User:
@@ -8094,10 +8303,167 @@ components:
             $ref: '#/components/schemas/Subscription'
           type: array
       type: object
-    FilterExpression:
-      oneOf:
-      - $ref: '#/components/schemas/Filter'
-      - $ref: '#/components/schemas/Operator'
+    GetSegmentsSuccessResponse:
+      example:
+        offset: 6
+        total_count: 0
+        limit: 1
+        segments:
+        - is_active: true
+          updated_at: updated_at
+          read_only: true
+          name: name
+          created_at: created_at
+          id: id
+          app_id: app_id
+        - is_active: true
+          updated_at: updated_at
+          read_only: true
+          name: name
+          created_at: created_at
+          id: id
+          app_id: app_id
+      properties:
+        total_count:
+          description: The number of Segments in the response.
+          type: integer
+        offset:
+          description: Set with the offset query parameter. Default 0.
+          type: integer
+        limit:
+          description: Maximum number of Segments returned. Default 300.
+          type: integer
+        segments:
+          description: An array containing the Segment information.
+          items:
+            $ref: '#/components/schemas/SegmentData'
+          type: array
+      type: object
+    Apps:
+      items:
+        $ref: '#/components/schemas/App'
+      type: array
+    PropertiesBody:
+      example:
+        properties:
+          country: country
+          purchases:
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          ip: ip
+          timezone_id: timezone_id
+          language: language
+          first_active: 1
+          last_active: 5
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+          tags:
+            key: ''
+          amount_spent: 5.637376656633329
+      properties:
+        properties:
+          $ref: '#/components/schemas/PropertiesObject'
+      type: object
+    CustomEvent:
+      example:
+        onesignal_id: onesignal_id
+        payload:
+          key: ''
+        name: name
+        external_id: external_id
+        timestamp: 2000-01-23 04:56:07+00:00
+      properties:
+        name:
+          description: The identifier or name of the event. Maximum 128 characters.
+          type: string
+        external_id:
+          description: The external ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
+          type:
+          - string
+          - 'null'
+        onesignal_id:
+          description: The OneSignal ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
+          type:
+          - string
+          - 'null'
+        timestamp:
+          description: Time the event occurred as an ISO8601 formatted string. Defaults to now if not included or past date provided.
+          format: date-time
+          type: string
+        payload:
+          additionalProperties: true
+          description: 'Properties or data related to the event, like {"geography": "USA"}'
+          type: object
+      required:
+      - name
+      type: object
+    Filter:
+      properties:
+        field:
+          description: Required. Name of the field to use as the first operand in the filter expression.
+          type: string
+        key:
+          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
+          type: string
+        value:
+          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
+          type: string
+        hours_ago:
+          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
+          type: string
+        radius:
+          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
+          type: number
+        lat:
+          description: If `field` is `location`, this is *required* to specify the user's latitude.
+          type: number
+        long:
+          description: If `field` is `location`, this is *required* to specify the user's longitude.
+          type: number
+        relation:
+          description: Required. Operator of a filter expression.
+          enum:
+          - '>'
+          - <
+          - '='
+          - '!='
+          - exists
+          - not_exists
+          - time_elapsed_gt
+          - time_elapsed_lt
+          type: string
+      type: object
+    ApiKeyTokensListResponse:
+      example:
+        tokens:
+        - token_id: token_id
+          updated_at: updated_at
+          name: name
+          created_at: created_at
+          ip_allowlist_mode: disabled
+          ip_allowlist:
+          - ip_allowlist
+          - ip_allowlist
+        - token_id: token_id
+          updated_at: updated_at
+          name: name
+          created_at: created_at
+          ip_allowlist_mode: disabled
+          ip_allowlist:
+          - ip_allowlist
+          - ip_allowlist
+      properties:
+        tokens:
+          items:
+            $ref: '#/components/schemas/ApiKeyToken_2'
+          type: array
+      type: object
     App:
       example:
         apns_key_id: apns_key_id
@@ -8280,375 +8646,7 @@ components:
           type: boolean
           writeOnly: true
       type: object
-    ApiKeyToken_2:
-      example:
-        token_id: token_id
-        updated_at: updated_at
-        name: name
-        created_at: created_at
-        ip_allowlist_mode: disabled
-        ip_allowlist:
-        - ip_allowlist
-        - ip_allowlist
-      properties:
-        token_id:
-          type: string
-        updated_at:
-          type: string
-        created_at:
-          type: string
-        name:
-          type: string
-        ip_allowlist_mode:
-          enum:
-          - disabled
-          - explicit
-          type: string
-        ip_allowlist:
-          items:
-            type: string
-          type: array
-      type: object
-    Segment:
-      example:
-        name: name
-        id: id
-        filters:
-        - null
-        - null
-      properties:
-        id:
-          description: UUID of the segment.  If left empty, it will be assigned automaticaly.
-          type: string
-        name:
-          description: Name of the segment.  You'll see this name on the Web UI.
-          type: string
-        filters:
-          description: Filter or operators the segment will have.  For a list of available filters with details, please see Send to Users Based on Filters.
-          items:
-            $ref: '#/components/schemas/FilterExpression'
-          type: array
-      required:
-      - filters
-      - name
-      type: object
-    UpdateApiKeyRequest:
-      example:
-        name: name
-        ip_allowlist_mode: disabled
-        ip_allowlist:
-        - ip_allowlist
-        - ip_allowlist
-      properties:
-        name:
-          type: string
-        ip_allowlist_mode:
-          enum:
-          - disabled
-          - explicit
-          type: string
-        ip_allowlist:
-          items:
-            type: string
-          type: array
-      type: object
-    UserIdentityBody:
-      example:
-        identity:
-          key: identity
-      properties:
-        identity:
-          additionalProperties:
-            type: string
-          type: object
-      type: object
-    OutcomeData:
-      example:
-        aggregation: sum
-        id: id
-        value: 0
-      properties:
-        id:
-          type: string
-        value:
-          type: integer
-        aggregation:
-          enum:
-          - sum
-          - count
-          type: string
-      required:
-      - aggregation
-      - id
-      - value
-      type: object
-    CustomEventsRequest:
-      example:
-        events:
-        - onesignal_id: onesignal_id
-          payload:
-            key: ''
-          name: name
-          external_id: external_id
-          timestamp: 2000-01-23 04:56:07+00:00
-        - onesignal_id: onesignal_id
-          payload:
-            key: ''
-          name: name
-          external_id: external_id
-          timestamp: 2000-01-23 04:56:07+00:00
-      properties:
-        events:
-          items:
-            $ref: '#/components/schemas/CustomEvent'
-          type: array
-      required:
-      - events
-      type: object
-    UpdateLiveActivityRequest:
-      example:
-        event_updates: '{}'
-        stale_date: 0
-        contents:
-          de: de
-          hi: hi
-          fi: fi
-          ru: ru
-          pt: pt
-          bg: bg
-          lt: lt
-          hr: hr
-          lv: lv
-          fr: fr
-          hu: hu
-          bs: bs
-          zh-Hans: zh-Hans
-          zh-Hant: zh-Hant
-          ka: ka
-          uk: uk
-          sk: sk
-          id: id
-          ca: ca
-          sr: sr
-          sv: sv
-          ko: ko
-          ms: ms
-          el: el
-          en: en
-          it: it
-          zh: zh
-          es: es
-          et: et
-          cs: cs
-          ar: ar
-          pa: pa
-          vi: vi
-          nb: nb
-          th: th
-          ja: ja
-          fa: fa
-          pl: pl
-          da: da
-          he: he
-          ro: ro
-          nl: nl
-          tr: tr
-        sound: sound
-        name: name
-        headings:
-          de: de
-          hi: hi
-          fi: fi
-          ru: ru
-          pt: pt
-          bg: bg
-          lt: lt
-          hr: hr
-          lv: lv
-          fr: fr
-          hu: hu
-          bs: bs
-          zh-Hans: zh-Hans
-          zh-Hant: zh-Hant
-          ka: ka
-          uk: uk
-          sk: sk
-          id: id
-          ca: ca
-          sr: sr
-          sv: sv
-          ko: ko
-          ms: ms
-          el: el
-          en: en
-          it: it
-          zh: zh
-          es: es
-          et: et
-          cs: cs
-          ar: ar
-          pa: pa
-          vi: vi
-          nb: nb
-          th: th
-          ja: ja
-          fa: fa
-          pl: pl
-          da: da
-          he: he
-          ro: ro
-          nl: nl
-          tr: tr
-        dismissal_date: 6
-        event: update
-        priority: 1
-      properties:
-        name:
-          description: An internal name to assist with your campaign organization. This does not get displayed in the message itself.
-          type: string
-        event:
-          enum:
-          - update
-          - end
-          type: string
-        event_updates:
-          description: This must match the ContentState interface you have defined within your Live Activity in your app.
-          type: object
-        contents:
-          $ref: '#/components/schemas/LanguageStringMap'
-        headings:
-          $ref: '#/components/schemas/LanguageStringMap'
-        sound:
-          description: Sound file that is included in your app to play instead of the default device notification sound. Omit to disable vibration and sound for the notification.
-          type: string
-        stale_date:
-          description: Accepts Unix timestamp in seconds. When time reaches the configured stale date, the system considers the Live Activity out of date, and the ActivityState of the Live Activity changes to ActivityState.stale.
-          type: integer
-        dismissal_date:
-          description: Accepts Unix timestamp in seconds; only allowed if event is "end"
-          type: integer
-        priority:
-          description: Delivery priority through the the push provider (APNs). Pass 10 for higher priority notifications, or 5 for lower priority notifications. Lower priority notifications are sent based on the power considerations of the end user's device. If not set, defaults to 10. Some providers (APNs) allow for a limited budget of high priority notifications per hour, and if that budget is exceeded, the provider may throttle notification delivery.
-          type: integer
-      required:
-      - event
-      - event_updates
-      - name
-      type: object
-    Operator:
-      properties:
-        operator:
-          description: Strictly, this must be either `"OR"`, or `"AND"`.  It can be used to compose Filters as part of a Filters object.
-          enum:
-          - OR
-          - AND
-          type: string
-      type: object
-    GetSegmentsSuccessResponse:
-      example:
-        offset: 6
-        total_count: 0
-        limit: 1
-        segments:
-        - is_active: true
-          updated_at: updated_at
-          read_only: true
-          name: name
-          created_at: created_at
-          id: id
-          app_id: app_id
-        - is_active: true
-          updated_at: updated_at
-          read_only: true
-          name: name
-          created_at: created_at
-          id: id
-          app_id: app_id
-      properties:
-        total_count:
-          description: The number of Segments in the response.
-          type: integer
-        offset:
-          description: Set with the offset query parameter. Default 0.
-          type: integer
-        limit:
-          description: Maximum number of Segments returned. Default 300.
-          type: integer
-        segments:
-          description: An array containing the Segment information.
-          items:
-            $ref: '#/components/schemas/SegmentData'
-          type: array
-      type: object
-    CreateUserConflictResponse_2:
-      properties:
-        errors:
-          items:
-            $ref: '#/components/schemas/CreateUserConflictResponse_errors_inner'
-          type: array
-      type: object
     CustomEventsResponse:
-      type: object
-    OutcomesData:
-      example:
-        outcomes:
-        - aggregation: sum
-          id: id
-          value: 0
-        - aggregation: sum
-          id: id
-          value: 0
-      properties:
-        outcomes:
-          items:
-            $ref: '#/components/schemas/OutcomeData'
-          type: array
-      type: object
-    CreateApiKeyRequest:
-      example:
-        name: name
-        ip_allowlist_mode: disabled
-        ip_allowlist:
-        - ip_allowlist
-        - ip_allowlist
-      properties:
-        name:
-          type: string
-        ip_allowlist_mode:
-          enum:
-          - disabled
-          - explicit
-          type: string
-        ip_allowlist:
-          items:
-            type: string
-          type: array
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
-          type: string
-      type: object
-    StartLiveActivitySuccessResponse:
-      example:
-        notification_id: notification_id
-      properties:
-        notification_id:
-          type: string
-      type: object
-    CreateApiKeyResponse:
-      example:
-        token_id: token_id
-        formatted_token: formatted_token
-      properties:
-        token_id:
-          type: string
-        formatted_token:
-          type: string
       type: object
   securitySchemes:
     rest_api_key:

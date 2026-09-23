@@ -139,12 +139,19 @@
     "tag 'Apps' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
     "tag 'Notifications' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
     "tag 'Players' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
-    "tag 'Templates' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied"
+    "tag 'Templates' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "onesignal-apps-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "onesignal-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-notifications-app-id-app-id-limit-limit-offset-offset-kind-kind-template-id-template-id-time-offset-time-offset-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-notifications-c-email-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-notifications-c-push-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-notifications-c-sms-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "onesignal-players-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "onesignal-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "onesignal-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "onesignal-templates-app-id-app-id-limit-limit-offset-offset-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

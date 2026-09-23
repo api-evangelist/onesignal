@@ -1184,6 +1184,29 @@ paths:
     - url: https://api.onesignal.com
 components:
   schemas:
+    StructuredErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredErrorItem'
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
     StructuredErrorItem:
       type: object
       required:
@@ -1364,29 +1387,6 @@ components:
           - integer
           - 'null'
           description: Absolute value to set the Huawei badge counter to.
-    StructuredErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredErrorItem'
-    BasicErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-          description: One or more human-readable error messages.
-        success:
-          type: boolean
-          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
-        reference:
-          type: array
-          items:
-            type: string
-          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
     TemplateResource:
       type: object
       required:
@@ -1417,191 +1417,35 @@ components:
           description: ISO-8601 timestamp when the template was last updated.
         content:
           $ref: '#/components/schemas/TemplateResourceContent'
-    UpdateTemplateRequest:
+    TemplatesListResponse:
       example:
-        isSMS: true
-        email_body: email_body
-        contents:
-          de: de
-          hi: hi
-          fi: fi
-          ru: ru
-          pt: pt
-          bg: bg
-          lt: lt
-          hr: hr
-          lv: lv
-          fr: fr
-          hu: hu
-          bs: bs
-          zh-Hans: zh-Hans
-          zh-Hant: zh-Hant
-          ka: ka
-          uk: uk
-          sk: sk
+        templates:
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
           id: id
-          ca: ca
-          sr: sr
-          sv: sv
-          ko: ko
-          ms: ms
-          el: el
-          en: en
-          it: it
-          zh: zh
-          es: es
-          et: et
-          cs: cs
-          ar: ar
-          pa: pa
-          vi: vi
-          nb: nb
-          th: th
-          ja: ja
-          fa: fa
-          pl: pl
-          da: da
-          he: he
-          ro: ro
-          nl: nl
-          tr: tr
-        subtitle:
-          de: de
-          hi: hi
-          fi: fi
-          ru: ru
-          pt: pt
-          bg: bg
-          lt: lt
-          hr: hr
-          lv: lv
-          fr: fr
-          hu: hu
-          bs: bs
-          zh-Hans: zh-Hans
-          zh-Hant: zh-Hant
-          ka: ka
-          uk: uk
-          sk: sk
+          content:
+            key: ''
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
           id: id
-          ca: ca
-          sr: sr
-          sv: sv
-          ko: ko
-          ms: ms
-          el: el
-          en: en
-          it: it
-          zh: zh
-          es: es
-          et: et
-          cs: cs
-          ar: ar
-          pa: pa
-          vi: vi
-          nb: nb
-          th: th
-          ja: ja
-          fa: fa
-          pl: pl
-          da: da
-          he: he
-          ro: ro
-          nl: nl
-          tr: tr
-        name: name
-        isEmail: true
-        email_bcc:
-        - email_bcc
-        - email_bcc
-        - email_bcc
-        - email_bcc
-        - email_bcc
-        headings:
-          de: de
-          hi: hi
-          fi: fi
-          ru: ru
-          pt: pt
-          bg: bg
-          lt: lt
-          hr: hr
-          lv: lv
-          fr: fr
-          hu: hu
-          bs: bs
-          zh-Hans: zh-Hans
-          zh-Hant: zh-Hant
-          ka: ka
-          uk: uk
-          sk: sk
-          id: id
-          ca: ca
-          sr: sr
-          sv: sv
-          ko: ko
-          ms: ms
-          el: el
-          en: en
-          it: it
-          zh: zh
-          es: es
-          et: et
-          cs: cs
-          ar: ar
-          pa: pa
-          vi: vi
-          nb: nb
-          th: th
-          ja: ja
-          fa: fa
-          pl: pl
-          da: da
-          he: he
-          ro: ro
-          nl: nl
-          tr: tr
-        dynamic_content: dynamic_content
-        email_subject: email_subject
+          content:
+            key: ''
       properties:
-        name:
-          description: Updated name of the template.
-          type: string
-        contents:
-          $ref: '#/components/schemas/LanguageStringMap'
-        headings:
-          $ref: '#/components/schemas/LanguageStringMap'
-        subtitle:
-          $ref: '#/components/schemas/LanguageStringMap'
-        isEmail:
-          description: Set true for an Email template.
-          type: boolean
-        email_subject:
-          description: Subject of the email.
-          type:
-          - string
-          - 'null'
-        email_body:
-          description: Body of the email (HTML supported).
-          type:
-          - string
-          - 'null'
-        email_bcc:
-          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
+        templates:
           items:
-            type: string
-          maxItems: 5
-          type:
-          - array
-          - 'null'
-        isSMS:
-          description: Set true for an SMS template.
+            $ref: '#/components/schemas/TemplateResource_2'
+          type: array
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
           type: boolean
-        dynamic_content:
-          description: JSON string for dynamic content personalization.
-          type:
-          - string
-          - 'null'
+        reference: {}
       type: object
     CreateTemplateRequest:
       example:
@@ -1796,53 +1640,6 @@ components:
       - app_id
       - contents
       - name
-      type: object
-    GenericSuccessBoolResponse:
-      example:
-        success: true
-      properties:
-        success:
-          type: boolean
-      type: object
-    TemplateResource_2:
-      example:
-        updated_at: 2000-01-23 04:56:07+00:00
-        name: name
-        channel: push
-        created_at: 2000-01-23 04:56:07+00:00
-        id: id
-        content:
-          key: ''
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-        channel:
-          enum:
-          - push
-          - email
-          - sms
-          type:
-          - string
-          - 'null'
-        content:
-          additionalProperties: true
-          description: Rendered content and channel/platform flags for the template.
-          type: object
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
       type: object
     CopyTemplateRequest:
       example:
@@ -2039,28 +1836,231 @@ components:
         limit:
           type: string
       type: object
-    TemplatesListResponse:
+    GenericSuccessBoolResponse:
       example:
-        templates:
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
+        success: true
       properties:
-        templates:
+        success:
+          type: boolean
+      type: object
+    TemplateResource_2:
+      example:
+        updated_at: 2000-01-23 04:56:07+00:00
+        name: name
+        channel: push
+        created_at: 2000-01-23 04:56:07+00:00
+        id: id
+        content:
+          key: ''
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        channel:
+          enum:
+          - push
+          - email
+          - sms
+          type:
+          - string
+          - 'null'
+        content:
+          additionalProperties: true
+          description: Rendered content and channel/platform flags for the template.
+          type: object
+      type: object
+    UpdateTemplateRequest:
+      example:
+        isSMS: true
+        email_body: email_body
+        contents:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        subtitle:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        name: name
+        isEmail: true
+        email_bcc:
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        - email_bcc
+        headings:
+          de: de
+          hi: hi
+          fi: fi
+          ru: ru
+          pt: pt
+          bg: bg
+          lt: lt
+          hr: hr
+          lv: lv
+          fr: fr
+          hu: hu
+          bs: bs
+          zh-Hans: zh-Hans
+          zh-Hant: zh-Hant
+          ka: ka
+          uk: uk
+          sk: sk
+          id: id
+          ca: ca
+          sr: sr
+          sv: sv
+          ko: ko
+          ms: ms
+          el: el
+          en: en
+          it: it
+          zh: zh
+          es: es
+          et: et
+          cs: cs
+          ar: ar
+          pa: pa
+          vi: vi
+          nb: nb
+          th: th
+          ja: ja
+          fa: fa
+          pl: pl
+          da: da
+          he: he
+          ro: ro
+          nl: nl
+          tr: tr
+        dynamic_content: dynamic_content
+        email_subject: email_subject
+      properties:
+        name:
+          description: Updated name of the template.
+          type: string
+        contents:
+          $ref: '#/components/schemas/LanguageStringMap'
+        headings:
+          $ref: '#/components/schemas/LanguageStringMap'
+        subtitle:
+          $ref: '#/components/schemas/LanguageStringMap'
+        isEmail:
+          description: Set true for an Email template.
+          type: boolean
+        email_subject:
+          description: Subject of the email.
+          type:
+          - string
+          - 'null'
+        email_body:
+          description: Body of the email (HTML supported).
+          type:
+          - string
+          - 'null'
+        email_bcc:
+          description: BCC recipients for the email template. Maximum 5 addresses. Only supported when the email service provider is OneSignal Email.
           items:
-            $ref: '#/components/schemas/TemplateResource_2'
-          type: array
+            type: string
+          maxItems: 5
+          type:
+          - array
+          - 'null'
+        isSMS:
+          description: Set true for an SMS template.
+          type: boolean
+        dynamic_content:
+          description: JSON string for dynamic content personalization.
+          type:
+          - string
+          - 'null'
       type: object
   securitySchemes:
     rest_api_key:

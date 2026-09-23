@@ -1,0 +1,26 @@
+# Front Door AI Index — onesignal — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: onesignal
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: onesignal.com
+  final_host: onesignal.com
+  ownership: own
+  owner: onesignal
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 33
+  host_score: 33
+  density: 28.13
+  words: 1173
+  tiers:
+    agentic: 21
+    core: 12
+    model: 0
+  ambiguous: 0
+  top_terms:
+    prompts: 21
+    AI: 12

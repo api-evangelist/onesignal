@@ -4,11 +4,7 @@ source: https://documentation.onesignal.com/.well-known/agent-card.json
 provider: OneSignal
 providerId: onesignal
 name: OneSignal A2A Agent Card
-description: >-
-  OneSignal serves an A2A agent card from its documentation host. The card is a
-  documentation-surface card: its url, provider.url and documentationUrl all
-  point at documentation.onesignal.com, and its single skill resolves to a
-  markdown Agent Skill rather than to the REST API or the MCP endpoint.
+description: 'OneSignal serves an A2A agent card from its documentation host. The card is a documentation-surface card: its url, provider.url and documentationUrl all point at documentation.onesignal.com, and its single skill resolves to a markdown Agent Skill rather than to the REST API or the MCP endpoint.'
 card_file: onesignal-agent-card.json
 discovery:
   path: /.well-known/agent-card.json
@@ -39,28 +35,18 @@ card:
     name: Onesignal
     url: https://documentation.onesignal.com/.well-known/agent-skills/onesignal/skill.md
     saved_as: ../skills/onesignal-platform.md
-grade: conformant
-grade_basis: >-
-  Graded against A2A 1.0.0. Hard checks all pass: capabilities is an OBJECT,
-  protocolVersion is present, skills is an ARRAY. The optional fields that most
-  published cards omit — preferredTransport, defaultInputModes,
-  defaultOutputModes — are all present.
+  file: a2a/onesignal-agent-card.json
+grade_basis: 'Graded against A2A 1.0.0. Hard checks all pass: capabilities is an OBJECT, protocolVersion is present, skills is an ARRAY. The optional fields that most published cards omit — preferredTransport, defaultInputModes, defaultOutputModes — are all present.'
 deviations:
 - id: protocol-version-0-3
   severity: informational
-  detail: protocolVersion is "0.3", the pre-1.0 A2A revision. The card is structurally
-    valid against 1.0.0 but declares an older protocol.
+  detail: protocolVersion is "0.3", the pre-1.0 A2A revision. The card is structurally valid against 1.0.0 but declares an older protocol.
 - id: skills-tags-empty
   severity: informational
-  detail: skills[0].tags is an empty array, so the card carries no tag vocabulary for
-    skill matching.
+  detail: skills[0].tags is an empty array, so the card carries no tag vocabulary for skill matching.
 - id: documentation-scoped-card
   severity: informational
-  detail: >-
-    Every URL in the card resolves to documentation.onesignal.com. The card
-    advertises a documentation/knowledge surface, not the api.onesignal.com REST
-    API or the api.onesignal.com/mcp/oauth product MCP server. An agent reading
-    only this card would not find OneSignal's callable messaging API.
+  detail: Every URL in the card resolves to documentation.onesignal.com. The card advertises a documentation/knowledge surface, not the api.onesignal.com REST API or the api.onesignal.com/mcp/oauth product MCP server. An agent reading only this card would not find OneSignal's callable messaging API.
 other_hosts_probed:
 - url: https://onesignal.com/.well-known/agent-card.json
   status: 404
@@ -71,3 +57,5 @@ other_hosts_probed:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+conformance:
+  grade: conformant

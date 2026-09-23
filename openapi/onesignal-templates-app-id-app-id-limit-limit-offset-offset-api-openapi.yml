@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: api.onesignal.com Templates?app Id={app Id}&limit={limit}&offset={offset} API
+  title: api.onesignal.com Templates?app Id={app…
   version: '11.6'
 servers:
 - url: https://api.onesignal.com
