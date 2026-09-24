@@ -50,6 +50,7 @@ tags:
 - Lifecycle Marketing
 - MCP
 - Agent Ready
+- A2A
 tags_raw:
 - Notifications
 - Push
@@ -67,6 +68,7 @@ tags_raw:
 - Lifecycle Marketing
 - MCP
 - Agent Ready
+- A2A
 created: '2026-05-08'
 modified: '2026-08-13'
 specificationVersion: '0.23'
@@ -85,8 +87,6 @@ apis:
     url: openapi/onesignal-apps-api-openapi.yml
   - type: Documentation
     url: https://documentation.onesignal.com/reference
-  - type: GraphQL
-    url: graphql/onesignal-graphql.md
   - type: Overlay
     url: overlays/onesignal-apps-overlay.yaml
 - aid: onesignal:onesignal-notifications-api
@@ -103,8 +103,6 @@ apis:
     url: openapi/onesignal-notifications-api-openapi.yml
   - type: Documentation
     url: https://documentation.onesignal.com/reference
-  - type: GraphQL
-    url: graphql/onesignal-graphql.md
   - type: Overlay
     url: overlays/onesignal-notifications-overlay.yaml
 - aid: onesignal:onesignal-players-api
@@ -121,8 +119,6 @@ apis:
     url: openapi/onesignal-players-api-openapi.yml
   - type: Documentation
     url: https://documentation.onesignal.com/reference
-  - type: GraphQL
-    url: graphql/onesignal-graphql.md
   - type: Overlay
     url: overlays/onesignal-players-overlay.yaml
 - aid: onesignal:onesignal-templates-api
@@ -137,8 +133,6 @@ apis:
     url: openapi/onesignal-templates-api-openapi.yml
   - type: Documentation
     url: https://documentation.onesignal.com/reference
-  - type: GraphQL
-    url: graphql/onesignal-graphql.md
   - type: Overlay
     url: overlays/onesignal-templates-overlay.yaml
 - aid: onesignal:onesignal-mcp
