@@ -7,16 +7,13 @@
   "outputs": [
     "onesignal-apps-api-openapi.yml",
     "onesignal-notifications-api-openapi.yml",
-    "onesignal-notifications-app-id-app-id-limit-limit-offset-offset-kind-kind-template-id-template-id-time-offset-time-offset-api-openapi.yml",
-    "onesignal-notifications-c-email-api-openapi.yml",
-    "onesignal-notifications-c-push-api-openapi.yml",
-    "onesignal-notifications-c-sms-api-openapi.yml",
     "onesignal-organizations-api-openapi.yml",
     "onesignal-players-api-openapi.yml",
-    "onesignal-templates-api-openapi.yml",
-    "onesignal-templates-app-id-app-id-limit-limit-offset-offset-api-openapi.yml"
+    "onesignal-templates-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 5 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -52,14 +49,14 @@
     "onesignal-api-openapi.json: tagged paths GET /templates/{template_id}?app_id={app_id} -> Templates",
     "onesignal-api-openapi.json: tagged paths DELETE /templates/{template_id}?app_id={app_id} -> Templates",
     "onesignal-api-openapi.json: tagged paths PATCH /templates/{template_id}?app_id={app_id} -> Templates",
-    "onesignal-api-openapi.json: tagged paths GET /templates?app_id={app_id}&limit={limit}&offset={offset} -> Templates?app Id={app Id}&limit={limit}&offset={offset}",
+    "onesignal-api-openapi.json: tagged paths GET /templates?app_id={app_id}&limit={limit}&offset={offset} -> Templates",
     "onesignal-api-openapi.json: tagged paths POST /templates -> Templates",
     "onesignal-api-openapi.json: tagged paths POST /apps/{app_id}/notifications/{notification_id}/unsubscribe?token={token} -> Apps",
-    "onesignal-api-openapi.json: tagged paths POST /notifications?c=email -> Notifications?c=email",
-    "onesignal-api-openapi.json: tagged paths POST /notifications?c=push -> Notifications?c=push",
-    "onesignal-api-openapi.json: tagged paths POST /notifications?c=sms -> Notifications?c=sms",
+    "onesignal-api-openapi.json: tagged paths POST /notifications?c=email -> Notifications",
+    "onesignal-api-openapi.json: tagged paths POST /notifications?c=push -> Notifications",
+    "onesignal-api-openapi.json: tagged paths POST /notifications?c=sms -> Notifications",
     "onesignal-api-openapi.json: tagged paths POST /apps/{app_id}/live_activities/{activity_id}/notifications -> Apps",
-    "onesignal-api-openapi.json: tagged paths GET /notifications?app_id={app_id}&limit={limit}&offset={offset}&kind={kind}&template_id={template_id}&time_offset={time_offset} -> Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time Offset={time Offset}",
+    "onesignal-api-openapi.json: tagged paths GET /notifications?app_id={app_id}&limit={limit}&offset={offset}&kind={kind}&template_id={template_id}&time_offset={time_offset} -> Notifications",
     "onesignal-api-openapi.json: tagged paths GET /notifications/{message_id}?app_id={app_id} -> Notifications",
     "onesignal-api-openapi.json: tagged paths DELETE /notifications/{message_id}?app_id={app_id} -> Notifications",
     "onesignal-api-openapi.json: tagged paths POST /apps/{app_id}/activities/activity/{activity_type} -> Apps",
@@ -79,14 +76,9 @@
     "onesignal-api-openapi.json: tagged paths GET /organizations/{organization_id}/audit_logs -> Organizations",
     "onesignal-api-openapi.json: declared missing tag: Apps",
     "onesignal-api-openapi.json: declared missing tag: Notifications",
-    "onesignal-api-openapi.json: declared missing tag: Notifications?app Id={app Id}&limit={limit}&offset={offset}&kind={kind}&template Id={template Id}&time Offset={time Offset}",
-    "onesignal-api-openapi.json: declared missing tag: Notifications?c=email",
-    "onesignal-api-openapi.json: declared missing tag: Notifications?c=push",
-    "onesignal-api-openapi.json: declared missing tag: Notifications?c=sms",
     "onesignal-api-openapi.json: declared missing tag: Organizations",
     "onesignal-api-openapi.json: declared missing tag: Players",
     "onesignal-api-openapi.json: declared missing tag: Templates",
-    "onesignal-api-openapi.json: declared missing tag: Templates?app Id={app Id}&limit={limit}&offset={offset}",
     "onesignal-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "onesignal-openapi.yml: tagged paths GET /notifications -> Notifications",
     "onesignal-openapi.yml: tagged paths POST /notifications -> Notifications",
@@ -140,7 +132,8 @@
     "tag 'Notifications' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
     "tag 'Players' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
     "tag 'Templates' spans 2 source specs (onesignal-api-openapi.json, onesignal-openapi.yml): per-path servers applied",
-    "apis.yml register: already-registered"
+    "superseded outputs removed: onesignal-notifications-app-id-app-id-limit-limit-offset-offset-kind-kind-template-id-template-id-time-offset-time-offset-api-openapi.yml, onesignal-notifications-c-email-api-openapi.yml, onesignal-notifications-c-push-api-openapi.yml, onesignal-notifications-c-sms-api-openapi.yml, onesignal-templates-app-id-app-id-limit-limit-offset-offset-api-openapi.yml",
+    "apis.yml register: written (+0 apis, 6 total)"
   ],
   "skipped": [
     "onesignal-apps-api-openapi.yml: previously refined output, superseded by openapi/_original/",

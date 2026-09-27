@@ -310,6 +310,15 @@ components:
           items:
             type: string
           description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
     GenericError:
       properties:
         errors: {}
@@ -338,15 +347,6 @@ components:
           description: Export all devices belonging to the segment.
           type: string
       title: export_subscriptions_request_body
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
-          type: string
       type: object
   requestBodies:
     export_subscriptions_request_body:

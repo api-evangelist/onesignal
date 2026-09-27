@@ -7059,13 +7059,6 @@ paths:
     - url: https://api.onesignal.com
 components:
   schemas:
-    StructuredErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredErrorItem'
     BasicErrorResponse:
       type: object
       properties:
@@ -7082,51 +7075,13 @@ components:
           items:
             type: string
           description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
-    ApiKeyToken:
+    StructuredErrorResponse:
       type: object
-      description: 'An API Key Token record (Rich Authentication Token). Different operations return different subsets of these fields:
-
-
-        - **GET tokens** lists every field except `formatted_token`.
-
-        - **POST tokens** (create) returns `token_id` and `formatted_token`.
-
-        - **POST tokens/{id}/rotate** returns `formatted_token` only.
-
-        - **PATCH tokens/{id}** updates the record; the response body is currently empty (consumers should re-fetch via GET).
-
-
-        `formatted_token` is the actual REST API Key and is shown ONCE — OneSignal does not store it. Keep it secret.'
       properties:
-        token_id:
-          type: string
-          format: uuid
-          description: OneSignal-generated identifier for this API key. NOT the API key itself — use this to manage the key in subsequent calls.
-        name:
-          type: string
-          description: Internal name set when the key was created or last updated. Maximum 128 characters.
-        ip_allowlist_mode:
-          type: string
-          enum:
-          - disabled
-          - explicit
-          description: When `explicit`, only requests from IP addresses matching `ip_allowlist` may use this key. Defaults to `disabled`.
-        ip_allowlist:
+        errors:
           type: array
           items:
-            type: string
-          description: Allowed CIDR ranges. Only enforced when `ip_allowlist_mode` is `explicit`.
-        created_at:
-          type: string
-          format: date-time
-          description: ISO-8601 timestamp when the key was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: ISO-8601 timestamp when the key was last updated.
-        formatted_token:
-          type: string
-          description: The actual Rich Authentication Token (REST API Key). Returned in plaintext ONLY by the create and rotate endpoints, and ONLY immediately after that call. OneSignal does not store the secret — if you lose it, you must rotate the key. See [Rotate API Key](/reference/rotate-api-key).
+            $ref: '#/components/schemas/StructuredErrorItem'
     CreateUserConflictResponse:
       type: object
       description: Returned at HTTP 409 by POST `/apps/{app_id}/users` when the request's claimed identity (`aliases` or `external_id`) collides with an existing user. The structured meta block lists each colliding alias label and the alias ID that already identifies a different user.
@@ -7175,6 +7130,829 @@ components:
           type: object
           additionalProperties: true
           description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
+    ApiKeyToken:
+      type: object
+      description: 'An API Key Token record (Rich Authentication Token). Different operations return different subsets of these fields:
+
+
+        - **GET tokens** lists every field except `formatted_token`.
+
+        - **POST tokens** (create) returns `token_id` and `formatted_token`.
+
+        - **POST tokens/{id}/rotate** returns `formatted_token` only.
+
+        - **PATCH tokens/{id}** updates the record; the response body is currently empty (consumers should re-fetch via GET).
+
+
+        `formatted_token` is the actual REST API Key and is shown ONCE — OneSignal does not store it. Keep it secret.'
+      properties:
+        token_id:
+          type: string
+          format: uuid
+          description: OneSignal-generated identifier for this API key. NOT the API key itself — use this to manage the key in subsequent calls.
+        name:
+          type: string
+          description: Internal name set when the key was created or last updated. Maximum 128 characters.
+        ip_allowlist_mode:
+          type: string
+          enum:
+          - disabled
+          - explicit
+          description: When `explicit`, only requests from IP addresses matching `ip_allowlist` may use this key. Defaults to `disabled`.
+        ip_allowlist:
+          type: array
+          items:
+            type: string
+          description: Allowed CIDR ranges. Only enforced when `ip_allowlist_mode` is `explicit`.
+        created_at:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp when the key was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp when the key was last updated.
+        formatted_token:
+          type: string
+          description: The actual Rich Authentication Token (REST API Key). Returned in plaintext ONLY by the create and rotate endpoints, and ONLY immediately after that call. OneSignal does not store the secret — if you lose it, you must rotate the key. See [Rotate API Key](/reference/rotate-api-key).
+    Filter:
+      properties:
+        field:
+          description: Required. Name of the field to use as the first operand in the filter expression.
+          type: string
+        key:
+          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
+          type: string
+        value:
+          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
+          type: string
+        hours_ago:
+          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
+          type: string
+        radius:
+          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
+          type: number
+        lat:
+          description: If `field` is `location`, this is *required* to specify the user's latitude.
+          type: number
+        long:
+          description: If `field` is `location`, this is *required* to specify the user's longitude.
+          type: number
+        relation:
+          description: Required. Operator of a filter expression.
+          enum:
+          - '>'
+          - <
+          - '='
+          - '!='
+          - exists
+          - not_exists
+          - time_elapsed_gt
+          - time_elapsed_lt
+          type: string
+      type: object
+    SubscriptionBody:
+      example:
+        subscription:
+          notification_types: 7
+          device_model: device_model
+          app_version: app_version
+          web_p256: web_p256
+          net_type: 4
+          type: iOSPush
+          device_os: device_os
+          enabled: true
+          session_time: 9
+          test_type: 2
+          token: token
+          carrier: carrier
+          session_count: 3
+          web_auth: web_auth
+          rooted: true
+          id: id
+          sdk: sdk
+      properties:
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+      type: object
+    User:
+      example:
+        subscriptions:
+        - notification_types: 7
+          device_model: device_model
+          app_version: app_version
+          web_p256: web_p256
+          net_type: 4
+          type: iOSPush
+          device_os: device_os
+          enabled: true
+          session_time: 9
+          test_type: 2
+          token: token
+          carrier: carrier
+          session_count: 3
+          web_auth: web_auth
+          rooted: true
+          id: id
+          sdk: sdk
+        - notification_types: 7
+          device_model: device_model
+          app_version: app_version
+          web_p256: web_p256
+          net_type: 4
+          type: iOSPush
+          device_os: device_os
+          enabled: true
+          session_time: 9
+          test_type: 2
+          token: token
+          carrier: carrier
+          session_count: 3
+          web_auth: web_auth
+          rooted: true
+          id: id
+          sdk: sdk
+        identity:
+          key: identity
+        properties:
+          country: country
+          purchases:
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          ip: ip
+          timezone_id: timezone_id
+          language: language
+          first_active: 1
+          last_active: 5
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+          tags:
+            key: ''
+          amount_spent: 5.637376656633329
+      properties:
+        properties:
+          $ref: '#/components/schemas/PropertiesObject'
+        identity:
+          additionalProperties:
+            type: string
+          type: object
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/Subscription'
+          type: array
+      type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
+      type: object
+    SegmentData:
+      example:
+        is_active: true
+        updated_at: updated_at
+        read_only: true
+        name: name
+        created_at: created_at
+        id: id
+        app_id: app_id
+      properties:
+        id:
+          description: The segment ID
+          type: string
+        name:
+          description: The segment name
+          type: string
+        created_at:
+          description: Date segment created
+          type: string
+        updated_at:
+          description: Date segment last updated
+          type: string
+        app_id:
+          description: The app id
+          type: string
+        read_only:
+          description: Is the segment read only?
+          type: boolean
+        is_active:
+          description: Is the segment active?
+          type: boolean
+      type: object
+    UserIdentityBody:
+      example:
+        identity:
+          key: identity
+      properties:
+        identity:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    UpdateUserRequest:
+      example:
+        refresh_device_metadata: false
+        deltas:
+          purchases:
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          session_count: 6
+          session_time: 0
+        properties:
+          country: country
+          purchases:
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          ip: ip
+          timezone_id: timezone_id
+          language: language
+          first_active: 1
+          last_active: 5
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+          tags:
+            key: ''
+          amount_spent: 5.637376656633329
+      properties:
+        properties:
+          $ref: '#/components/schemas/PropertiesObject'
+        refresh_device_metadata:
+          default: false
+          type: boolean
+        deltas:
+          $ref: '#/components/schemas/PropertiesDeltas'
+      type: object
+    CreateUserConflictResponse_2:
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/CreateUserConflictResponse_errors_inner'
+          type: array
+      type: object
+    GenericSuccessBoolResponse:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+      type: object
+    App:
+      example:
+        apns_key_id: apns_key_id
+        apns_team_id: apns_team_id
+        apns_p12: apns_p12
+        safari_site_origin: safari_site_origin
+        apns_p12_password: apns_p12_password
+        created_at: 2000-01-23 04:56:07+00:00
+        safari_icon_64_64: safari_icon_64_64
+        chrome_web_sub_domain: chrome_web_sub_domain
+        gcm_key: gcm_key
+        apns_bundle_id: apns_bundle_id
+        chrome_key: chrome_key
+        safari_push_id: safari_push_id
+        updated_at: 2000-01-23 04:56:07+00:00
+        apns_certificates: apns_certificates
+        safari_apns_p12: safari_apns_p12
+        safari_icon_128_128: safari_icon_128_128
+        id: id
+        android_gcm_sender_id: android_gcm_sender_id
+        safari_icon_32_32: safari_icon_32_32
+        additional_data_is_root_payload: true
+        apns_env: sandbox
+        players: 0
+        messageable_players: 6
+        apns_p8: apns_p8
+        chrome_web_origin: chrome_web_origin
+        basic_auth_key: basic_auth_key
+        site_name: site_name
+        safari_icon_16_16: safari_icon_16_16
+        chrome_web_default_notification_icon: chrome_web_default_notification_icon
+        organization_id: organization_id
+        name: name
+        safari_apns_certificates: safari_apns_certificates
+        safari_apns_p12_password: safari_apns_p12_password
+        safari_icon_256_256: safari_icon_256_256
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          description: The name of your app, as displayed on your apps list on the dashboard.  This can be renamed.
+          type: string
+        players:
+          readOnly: true
+          type: integer
+        messageable_players:
+          readOnly: true
+          type: integer
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        android_gcm_sender_id:
+          description: 'Android: Your Google Project number.  Also known as Sender ID.'
+          type: string
+          writeOnly: true
+        gcm_key:
+          description: 'Android: Your Google Push Messaging Auth Key'
+          type:
+          - string
+          - 'null'
+        chrome_web_origin:
+          description: 'Chrome (All Browsers except Safari) (Recommended): The URL to your website.  This field is required if you wish to enable web push and specify other web push parameters.'
+          type:
+          - string
+          - 'null'
+        chrome_key:
+          description: Not for web push.  Your Google Push Messaging Auth Key if you use Chrome Apps / Extensions.
+          type:
+          - string
+          - 'null'
+        chrome_web_default_notification_icon:
+          description: 'Chrome (All Browsers except Safari): Your default notification icon. Should be 256x256 pixels, min 80x80.'
+          type:
+          - string
+          - 'null'
+        chrome_web_sub_domain:
+          description: 'Chrome (All Browsers except Safari): A subdomain of your choice in order to support Web Push on non-HTTPS websites. This field must be set in order for the chrome_web_gcm_sender_id property to be processed.'
+          type:
+          - string
+          - 'null'
+        apns_env:
+          description: 'iOS: Either sandbox or production'
+          enum:
+          - sandbox
+          - production
+          type:
+          - string
+          - 'null'
+        apns_p12:
+          description: 'iOS: Your apple push notification p12 certificate file, converted to a string and Base64 encoded.'
+          type: string
+          writeOnly: true
+        apns_p12_password:
+          description: 'iOS: Required if using p12 certificate.  Password for the apns_p12 file.'
+          type: string
+          writeOnly: true
+        apns_certificates:
+          readOnly: true
+          type:
+          - string
+          - 'null'
+        safari_apns_certificates:
+          readOnly: true
+          type: string
+        safari_apns_p12:
+          description: 'Safari: Your apple push notification p12 certificate file for Safari Push Notifications, converted to a string and Base64 encoded.'
+          type: string
+          writeOnly: true
+        safari_apns_p12_password:
+          description: 'Safari: Password for safari_apns_p12 file'
+          type: string
+          writeOnly: true
+        apns_key_id:
+          description: 'iOS: Required if using p8. Unique identifier for the p8 authentication key.'
+          type:
+          - string
+          - 'null'
+        apns_team_id:
+          description: 'iOS: Required if using p8. Team ID generated by Apple for your developer account.'
+          type:
+          - string
+          - 'null'
+        apns_bundle_id:
+          description: 'iOS: Required if using p8. Bundle ID for your app in the Apple ecosystem.'
+          type:
+          - string
+          - 'null'
+        apns_p8:
+          description: 'iOS: Required if using p8. Base64 encoded p8 key'
+          type:
+          - string
+          - 'null'
+        safari_site_origin:
+          description: 'Safari (Recommended): The hostname to your website including http(s)://'
+          type:
+          - string
+          - 'null'
+        safari_push_id:
+          readOnly: true
+          type:
+          - string
+          - 'null'
+        safari_icon_16_16:
+          readOnly: true
+          type: string
+        safari_icon_32_32:
+          readOnly: true
+          type: string
+        safari_icon_64_64:
+          readOnly: true
+          type: string
+        safari_icon_128_128:
+          readOnly: true
+          type: string
+        safari_icon_256_256:
+          description: 'Safari: A url for a 256x256 png notification icon. This is the only Safari icon URL you need to provide.'
+          type: string
+        site_name:
+          description: 'All Browsers (Recommended): The Site Name. Requires both chrome_web_origin and safari_site_origin to be set to add or update it.'
+          type:
+          - string
+          - 'null'
+        basic_auth_key:
+          readOnly: true
+          type:
+          - string
+          - 'null'
+        organization_id:
+          description: The Id of the Organization you would like to add this app to.
+          type: string
+          writeOnly: true
+        additional_data_is_root_payload:
+          description: 'iOS: Notification data (additional data) values will be added to the root of the apns payload when sent to the device.  Ignore if you''re not using any other plugins, or not using OneSignal SDK methods to read the payload.'
+          type: boolean
+          writeOnly: true
+      type: object
+    Subscription:
+      example:
+        notification_types: 7
+        device_model: device_model
+        app_version: app_version
+        web_p256: web_p256
+        net_type: 4
+        type: iOSPush
+        device_os: device_os
+        enabled: true
+        session_time: 9
+        test_type: 2
+        token: token
+        carrier: carrier
+        session_count: 3
+        web_auth: web_auth
+        rooted: true
+        id: id
+        sdk: sdk
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - iOSPush
+          - AndroidPush
+          - FireOSPush
+          - ChromeExtensionPush
+          - ChromePush
+          - WindowsPush
+          - SafariLegacyPush
+          - FirefoxPush
+          - macOSPush
+          - HuaweiPush
+          - SafariPush
+          - Email
+          - SMS
+          type: string
+        token:
+          type: string
+        enabled:
+          type: boolean
+        notification_types:
+          type: integer
+        session_time:
+          type: integer
+        session_count:
+          type: integer
+        sdk:
+          type: string
+        device_model:
+          type: string
+        device_os:
+          type: string
+        rooted:
+          type: boolean
+        test_type:
+          type: integer
+        app_version:
+          type: string
+        net_type:
+          type: integer
+        carrier:
+          type: string
+        web_auth:
+          type: string
+        web_p256:
+          type: string
+      type: object
+    CustomEvent:
+      example:
+        onesignal_id: onesignal_id
+        payload:
+          key: ''
+        name: name
+        external_id: external_id
+        timestamp: 2000-01-23 04:56:07+00:00
+      properties:
+        name:
+          description: The identifier or name of the event. Maximum 128 characters.
+          type: string
+        external_id:
+          description: The external ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
+          type:
+          - string
+          - 'null'
+        onesignal_id:
+          description: The OneSignal ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
+          type:
+          - string
+          - 'null'
+        timestamp:
+          description: Time the event occurred as an ISO8601 formatted string. Defaults to now if not included or past date provided.
+          format: date-time
+          type: string
+        payload:
+          additionalProperties: true
+          description: 'Properties or data related to the event, like {"geography": "USA"}'
+          type: object
+      required:
+      - name
+      type: object
+    PropertiesObject:
+      example:
+        country: country
+        purchases:
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        ip: ip
+        timezone_id: timezone_id
+        language: language
+        first_active: 1
+        last_active: 5
+        lat: 0.8008281904610115
+        long: 6.027456183070403
+        tags:
+          key: ''
+        amount_spent: 5.637376656633329
+      properties:
+        tags:
+          additionalProperties: true
+          type: object
+        language:
+          type: string
+        timezone_id:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
+        country:
+          type: string
+        first_active:
+          type: integer
+        last_active:
+          type: integer
+        amount_spent:
+          type: number
+        purchases:
+          items:
+            $ref: '#/components/schemas/Purchase'
+          type: array
+        ip:
+          type: string
+      type: object
+    Apps:
+      items:
+        $ref: '#/components/schemas/App'
+      type: array
+    PropertiesDeltas:
+      example:
+        purchases:
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        - amount: amount
+          iso: iso
+          count: 2
+          sku: sku
+        session_count: 6
+        session_time: 0
+      properties:
+        session_time:
+          type: integer
+        session_count:
+          type: integer
+        purchases:
+          items:
+            $ref: '#/components/schemas/Purchase'
+          type: array
+      type: object
+    OutcomesData:
+      example:
+        outcomes:
+        - aggregation: sum
+          id: id
+          value: 0
+        - aggregation: sum
+          id: id
+          value: 0
+      properties:
+        outcomes:
+          items:
+            $ref: '#/components/schemas/OutcomeData'
+          type: array
+      type: object
+    Purchase:
+      example:
+        amount: amount
+        iso: iso
+        count: 2
+        sku: sku
+      properties:
+        sku:
+          description: The unique identifier of the purchased item.
+          type: string
+        amount:
+          description: The amount, in USD, spent purchasing the item.
+          type: string
+        iso:
+          description: The 3-letter ISO 4217 currency code. Required for correct storage and conversion of amount.
+          type: string
+        count:
+          type: integer
+      required:
+      - amount
+      - iso
+      - sku
+      type: object
+    FilterExpression:
+      oneOf:
+      - $ref: '#/components/schemas/Filter'
+      - $ref: '#/components/schemas/Operator'
+    CreateApiKeyRequest:
+      example:
+        name: name
+        ip_allowlist_mode: disabled
+        ip_allowlist:
+        - ip_allowlist
+        - ip_allowlist
+      properties:
+        name:
+          type: string
+        ip_allowlist_mode:
+          enum:
+          - disabled
+          - explicit
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+      type: object
+    GetSegmentsSuccessResponse:
+      example:
+        offset: 6
+        total_count: 0
+        limit: 1
+        segments:
+        - is_active: true
+          updated_at: updated_at
+          read_only: true
+          name: name
+          created_at: created_at
+          id: id
+          app_id: app_id
+        - is_active: true
+          updated_at: updated_at
+          read_only: true
+          name: name
+          created_at: created_at
+          id: id
+          app_id: app_id
+      properties:
+        total_count:
+          description: The number of Segments in the response.
+          type: integer
+        offset:
+          description: Set with the offset query parameter. Default 0.
+          type: integer
+        limit:
+          description: Maximum number of Segments returned. Default 300.
+          type: integer
+        segments:
+          description: An array containing the Segment information.
+          items:
+            $ref: '#/components/schemas/SegmentData'
+          type: array
+      type: object
+    CreateSegmentConflictResponse:
+      properties:
+        success:
+          type: boolean
+        errors:
+          items:
+            type: string
+          type: array
+      type: object
+    StartLiveActivitySuccessResponse:
+      example:
+        notification_id: notification_id
+      properties:
+        notification_id:
+          type: string
+      type: object
+    ApiKeyToken_2:
+      example:
+        token_id: token_id
+        updated_at: updated_at
+        name: name
+        created_at: created_at
+        ip_allowlist_mode: disabled
+        ip_allowlist:
+        - ip_allowlist
+        - ip_allowlist
+      properties:
+        token_id:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+        name:
+          type: string
+        ip_allowlist_mode:
+          enum:
+          - disabled
+          - explicit
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+      type: object
+    CreateApiKeyResponse:
+      example:
+        token_id: token_id
+        formatted_token: formatted_token
+      properties:
+        token_id:
+          type: string
+        formatted_token:
+          type: string
+      type: object
+    Segment:
+      example:
+        name: name
+        id: id
+        filters:
+        - null
+        - null
+      properties:
+        id:
+          description: UUID of the segment.  If left empty, it will be assigned automaticaly.
+          type: string
+        name:
+          description: Name of the segment.  You'll see this name on the Web UI.
+          type: string
+        filters:
+          description: Filter or operators the segment will have.  For a list of available filters with details, please see Send to Users Based on Filters.
+          items:
+            $ref: '#/components/schemas/FilterExpression'
+          type: array
+      required:
+      - filters
+      - name
+      type: object
     LanguageStringMap:
       example:
         de: de
@@ -7349,6 +8127,19 @@ components:
           type: string
         vi:
           description: Text in Vietnamese.
+          type: string
+      type: object
+    CustomEventsResponse:
+      type: object
+    CreateSegmentSuccessResponse:
+      example:
+        success: true
+        id: id
+      properties:
+        success:
+          type: boolean
+        id:
+          description: UUID of created segment
           type: string
       type: object
     StartLiveActivityRequest:
@@ -7563,178 +8354,44 @@ components:
       - headings
       - name
       type: object
-    ApiKeyToken_2:
+    TransferSubscriptionRequestBody:
       example:
-        token_id: token_id
-        updated_at: updated_at
-        name: name
-        created_at: created_at
-        ip_allowlist_mode: disabled
-        ip_allowlist:
-        - ip_allowlist
-        - ip_allowlist
+        identity:
+          key: identity
       properties:
-        token_id:
-          type: string
-        updated_at:
-          type: string
-        created_at:
-          type: string
-        name:
-          type: string
-        ip_allowlist_mode:
-          enum:
-          - disabled
-          - explicit
-          type: string
-        ip_allowlist:
-          items:
+        identity:
+          additionalProperties:
             type: string
-          type: array
+          maxProperties: 1
+          minProperties: 1
+          type: object
       type: object
-    UpdateLiveActivitySuccessResponse:
+    PropertiesBody:
       example:
-        id: id
+        properties:
+          country: country
+          purchases:
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          - amount: amount
+            iso: iso
+            count: 2
+            sku: sku
+          ip: ip
+          timezone_id: timezone_id
+          language: language
+          first_active: 1
+          last_active: 5
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+          tags:
+            key: ''
+          amount_spent: 5.637376656633329
       properties:
-        id:
-          type: string
-      type: object
-    OutcomesData:
-      example:
-        outcomes:
-        - aggregation: sum
-          id: id
-          value: 0
-        - aggregation: sum
-          id: id
-          value: 0
-      properties:
-        outcomes:
-          items:
-            $ref: '#/components/schemas/OutcomeData'
-          type: array
-      type: object
-    CreateUserConflictResponse_2:
-      properties:
-        errors:
-          items:
-            $ref: '#/components/schemas/CreateUserConflictResponse_errors_inner'
-          type: array
-      type: object
-    Segment:
-      example:
-        name: name
-        id: id
-        filters:
-        - null
-        - null
-      properties:
-        id:
-          description: UUID of the segment.  If left empty, it will be assigned automaticaly.
-          type: string
-        name:
-          description: Name of the segment.  You'll see this name on the Web UI.
-          type: string
-        filters:
-          description: Filter or operators the segment will have.  For a list of available filters with details, please see Send to Users Based on Filters.
-          items:
-            $ref: '#/components/schemas/FilterExpression'
-          type: array
-      required:
-      - filters
-      - name
-      type: object
-    Purchase:
-      example:
-        amount: amount
-        iso: iso
-        count: 2
-        sku: sku
-      properties:
-        sku:
-          description: The unique identifier of the purchased item.
-          type: string
-        amount:
-          description: The amount, in USD, spent purchasing the item.
-          type: string
-        iso:
-          description: The 3-letter ISO 4217 currency code. Required for correct storage and conversion of amount.
-          type: string
-        count:
-          type: integer
-      required:
-      - amount
-      - iso
-      - sku
-      type: object
-    Subscription:
-      example:
-        notification_types: 7
-        device_model: device_model
-        app_version: app_version
-        web_p256: web_p256
-        net_type: 4
-        type: iOSPush
-        device_os: device_os
-        enabled: true
-        session_time: 9
-        test_type: 2
-        token: token
-        carrier: carrier
-        session_count: 3
-        web_auth: web_auth
-        rooted: true
-        id: id
-        sdk: sdk
-      properties:
-        id:
-          type: string
-        type:
-          enum:
-          - iOSPush
-          - AndroidPush
-          - FireOSPush
-          - ChromeExtensionPush
-          - ChromePush
-          - WindowsPush
-          - SafariLegacyPush
-          - FirefoxPush
-          - macOSPush
-          - HuaweiPush
-          - SafariPush
-          - Email
-          - SMS
-          type: string
-        token:
-          type: string
-        enabled:
-          type: boolean
-        notification_types:
-          type: integer
-        session_time:
-          type: integer
-        session_count:
-          type: integer
-        sdk:
-          type: string
-        device_model:
-          type: string
-        device_os:
-          type: string
-        rooted:
-          type: boolean
-        test_type:
-          type: integer
-        app_version:
-          type: string
-        net_type:
-          type: integer
-        carrier:
-          type: string
-        web_auth:
-          type: string
-        web_p256:
-          type: string
+        properties:
+          $ref: '#/components/schemas/PropertiesObject'
       type: object
     CustomEventsRequest:
       example:
@@ -7759,6 +8416,11 @@ components:
       required:
       - events
       type: object
+    CreateUserConflictResponse_errorsItems_meta:
+      properties:
+        conflicting_aliases:
+          type: object
+      type: object
     OutcomeData:
       example:
         aggregation: sum
@@ -7778,6 +8440,22 @@ components:
       - aggregation
       - id
       - value
+      type: object
+    CreateUserConflictResponse_errors_inner:
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        meta:
+          $ref: '#/components/schemas/CreateUserConflictResponse_errorsItems_meta'
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
       type: object
     UpdateLiveActivityRequest:
       example:
@@ -7909,98 +8587,36 @@ components:
       - event_updates
       - name
       type: object
-    CreateApiKeyResponse:
+    UpdateLiveActivitySuccessResponse:
       example:
-        token_id: token_id
-        formatted_token: formatted_token
-      properties:
-        token_id:
-          type: string
-        formatted_token:
-          type: string
-      type: object
-    UserIdentityBody:
-      example:
-        identity:
-          key: identity
-      properties:
-        identity:
-          additionalProperties:
-            type: string
-          type: object
-      type: object
-    SegmentData:
-      example:
-        is_active: true
-        updated_at: updated_at
-        read_only: true
-        name: name
-        created_at: created_at
         id: id
-        app_id: app_id
       properties:
         id:
-          description: The segment ID
           type: string
-        name:
-          description: The segment name
-          type: string
-        created_at:
-          description: Date segment created
-          type: string
-        updated_at:
-          description: Date segment last updated
-          type: string
-        app_id:
-          description: The app id
-          type: string
-        read_only:
-          description: Is the segment read only?
-          type: boolean
-        is_active:
-          description: Is the segment active?
-          type: boolean
       type: object
-    FilterExpression:
-      oneOf:
-      - $ref: '#/components/schemas/Filter'
-      - $ref: '#/components/schemas/Operator'
-    CreateUserConflictResponse_errorsItems_meta:
-      properties:
-        conflicting_aliases:
-          type: object
-      type: object
-    SubscriptionBody:
+    ApiKeyTokensListResponse:
       example:
-        subscription:
-          notification_types: 7
-          device_model: device_model
-          app_version: app_version
-          web_p256: web_p256
-          net_type: 4
-          type: iOSPush
-          device_os: device_os
-          enabled: true
-          session_time: 9
-          test_type: 2
-          token: token
-          carrier: carrier
-          session_count: 3
-          web_auth: web_auth
-          rooted: true
-          id: id
-          sdk: sdk
+        tokens:
+        - token_id: token_id
+          updated_at: updated_at
+          name: name
+          created_at: created_at
+          ip_allowlist_mode: disabled
+          ip_allowlist:
+          - ip_allowlist
+          - ip_allowlist
+        - token_id: token_id
+          updated_at: updated_at
+          name: name
+          created_at: created_at
+          ip_allowlist_mode: disabled
+          ip_allowlist:
+          - ip_allowlist
+          - ip_allowlist
       properties:
-        subscription:
-          $ref: '#/components/schemas/Subscription'
-      type: object
-    CreateSegmentConflictResponse:
-      properties:
-        success:
-          type: boolean
-        errors:
+        tokens:
           items:
-            type: string
+            $ref: '#/components/schemas/ApiKeyToken_2'
           type: array
       type: object
     Operator:
@@ -8031,622 +8647,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
-          type: string
-      type: object
-    GenericSuccessBoolResponse:
-      example:
-        success: true
-      properties:
-        success:
-          type: boolean
-      type: object
-    UpdateUserRequest:
-      example:
-        refresh_device_metadata: false
-        deltas:
-          purchases:
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          session_count: 6
-          session_time: 0
-        properties:
-          country: country
-          purchases:
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          ip: ip
-          timezone_id: timezone_id
-          language: language
-          first_active: 1
-          last_active: 5
-          lat: 0.8008281904610115
-          long: 6.027456183070403
-          tags:
-            key: ''
-          amount_spent: 5.637376656633329
-      properties:
-        properties:
-          $ref: '#/components/schemas/PropertiesObject'
-        refresh_device_metadata:
-          default: false
-          type: boolean
-        deltas:
-          $ref: '#/components/schemas/PropertiesDeltas'
-      type: object
-    PropertiesDeltas:
-      example:
-        purchases:
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        session_count: 6
-        session_time: 0
-      properties:
-        session_time:
-          type: integer
-        session_count:
-          type: integer
-        purchases:
-          items:
-            $ref: '#/components/schemas/Purchase'
-          type: array
-      type: object
-    StartLiveActivitySuccessResponse:
-      example:
-        notification_id: notification_id
-      properties:
-        notification_id:
-          type: string
-      type: object
-    CreateSegmentSuccessResponse:
-      example:
-        success: true
-        id: id
-      properties:
-        success:
-          type: boolean
-        id:
-          description: UUID of created segment
-          type: string
-      type: object
-    CreateApiKeyRequest:
-      example:
-        name: name
-        ip_allowlist_mode: disabled
-        ip_allowlist:
-        - ip_allowlist
-        - ip_allowlist
-      properties:
-        name:
-          type: string
-        ip_allowlist_mode:
-          enum:
-          - disabled
-          - explicit
-          type: string
-        ip_allowlist:
-          items:
-            type: string
-          type: array
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
-      type: object
-    CreateUserConflictResponse_errors_inner:
-      properties:
-        code:
-          type: string
-        title:
-          type: string
-        meta:
-          $ref: '#/components/schemas/CreateUserConflictResponse_errorsItems_meta'
-      type: object
-    TransferSubscriptionRequestBody:
-      example:
-        identity:
-          key: identity
-      properties:
-        identity:
-          additionalProperties:
-            type: string
-          maxProperties: 1
-          minProperties: 1
-          type: object
-      type: object
-    PropertiesObject:
-      example:
-        country: country
-        purchases:
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        - amount: amount
-          iso: iso
-          count: 2
-          sku: sku
-        ip: ip
-        timezone_id: timezone_id
-        language: language
-        first_active: 1
-        last_active: 5
-        lat: 0.8008281904610115
-        long: 6.027456183070403
-        tags:
-          key: ''
-        amount_spent: 5.637376656633329
-      properties:
-        tags:
-          additionalProperties: true
-          type: object
-        language:
-          type: string
-        timezone_id:
-          type: string
-        lat:
-          type: number
-        long:
-          type: number
-        country:
-          type: string
-        first_active:
-          type: integer
-        last_active:
-          type: integer
-        amount_spent:
-          type: number
-        purchases:
-          items:
-            $ref: '#/components/schemas/Purchase'
-          type: array
-        ip:
-          type: string
-      type: object
-    User:
-      example:
-        subscriptions:
-        - notification_types: 7
-          device_model: device_model
-          app_version: app_version
-          web_p256: web_p256
-          net_type: 4
-          type: iOSPush
-          device_os: device_os
-          enabled: true
-          session_time: 9
-          test_type: 2
-          token: token
-          carrier: carrier
-          session_count: 3
-          web_auth: web_auth
-          rooted: true
-          id: id
-          sdk: sdk
-        - notification_types: 7
-          device_model: device_model
-          app_version: app_version
-          web_p256: web_p256
-          net_type: 4
-          type: iOSPush
-          device_os: device_os
-          enabled: true
-          session_time: 9
-          test_type: 2
-          token: token
-          carrier: carrier
-          session_count: 3
-          web_auth: web_auth
-          rooted: true
-          id: id
-          sdk: sdk
-        identity:
-          key: identity
-        properties:
-          country: country
-          purchases:
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          ip: ip
-          timezone_id: timezone_id
-          language: language
-          first_active: 1
-          last_active: 5
-          lat: 0.8008281904610115
-          long: 6.027456183070403
-          tags:
-            key: ''
-          amount_spent: 5.637376656633329
-      properties:
-        properties:
-          $ref: '#/components/schemas/PropertiesObject'
-        identity:
-          additionalProperties:
-            type: string
-          type: object
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/Subscription'
-          type: array
-      type: object
-    GetSegmentsSuccessResponse:
-      example:
-        offset: 6
-        total_count: 0
-        limit: 1
-        segments:
-        - is_active: true
-          updated_at: updated_at
-          read_only: true
-          name: name
-          created_at: created_at
-          id: id
-          app_id: app_id
-        - is_active: true
-          updated_at: updated_at
-          read_only: true
-          name: name
-          created_at: created_at
-          id: id
-          app_id: app_id
-      properties:
-        total_count:
-          description: The number of Segments in the response.
-          type: integer
-        offset:
-          description: Set with the offset query parameter. Default 0.
-          type: integer
-        limit:
-          description: Maximum number of Segments returned. Default 300.
-          type: integer
-        segments:
-          description: An array containing the Segment information.
-          items:
-            $ref: '#/components/schemas/SegmentData'
-          type: array
-      type: object
-    Apps:
-      items:
-        $ref: '#/components/schemas/App'
-      type: array
-    PropertiesBody:
-      example:
-        properties:
-          country: country
-          purchases:
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          - amount: amount
-            iso: iso
-            count: 2
-            sku: sku
-          ip: ip
-          timezone_id: timezone_id
-          language: language
-          first_active: 1
-          last_active: 5
-          lat: 0.8008281904610115
-          long: 6.027456183070403
-          tags:
-            key: ''
-          amount_spent: 5.637376656633329
-      properties:
-        properties:
-          $ref: '#/components/schemas/PropertiesObject'
-      type: object
-    CustomEvent:
-      example:
-        onesignal_id: onesignal_id
-        payload:
-          key: ''
-        name: name
-        external_id: external_id
-        timestamp: 2000-01-23 04:56:07+00:00
-      properties:
-        name:
-          description: The identifier or name of the event. Maximum 128 characters.
-          type: string
-        external_id:
-          description: The external ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
-          type:
-          - string
-          - 'null'
-        onesignal_id:
-          description: The OneSignal ID of the user targeted for the event. Either the user's External ID or OneSignal ID is required.
-          type:
-          - string
-          - 'null'
-        timestamp:
-          description: Time the event occurred as an ISO8601 formatted string. Defaults to now if not included or past date provided.
-          format: date-time
-          type: string
-        payload:
-          additionalProperties: true
-          description: 'Properties or data related to the event, like {"geography": "USA"}'
-          type: object
-      required:
-      - name
-      type: object
-    Filter:
-      properties:
-        field:
-          description: Required. Name of the field to use as the first operand in the filter expression.
-          type: string
-        key:
-          description: If `field` is `tag`, this field is *required* to specify `key` inside the tags.
-          type: string
-        value:
-          description: Constant value to use as the second operand in the filter expression. This value is *required* when the relation operator is a binary operator.
-          type: string
-        hours_ago:
-          description: If `field` is session-related, this is *required* to specify the number of hours before or after the user's session.
-          type: string
-        radius:
-          description: If `field` is `location`, this will specify the radius in meters from a provided location point. Use with `lat` and `long`.
-          type: number
-        lat:
-          description: If `field` is `location`, this is *required* to specify the user's latitude.
-          type: number
-        long:
-          description: If `field` is `location`, this is *required* to specify the user's longitude.
-          type: number
-        relation:
-          description: Required. Operator of a filter expression.
-          enum:
-          - '>'
-          - <
-          - '='
-          - '!='
-          - exists
-          - not_exists
-          - time_elapsed_gt
-          - time_elapsed_lt
-          type: string
-      type: object
-    ApiKeyTokensListResponse:
-      example:
-        tokens:
-        - token_id: token_id
-          updated_at: updated_at
-          name: name
-          created_at: created_at
-          ip_allowlist_mode: disabled
-          ip_allowlist:
-          - ip_allowlist
-          - ip_allowlist
-        - token_id: token_id
-          updated_at: updated_at
-          name: name
-          created_at: created_at
-          ip_allowlist_mode: disabled
-          ip_allowlist:
-          - ip_allowlist
-          - ip_allowlist
-      properties:
-        tokens:
-          items:
-            $ref: '#/components/schemas/ApiKeyToken_2'
-          type: array
-      type: object
-    App:
-      example:
-        apns_key_id: apns_key_id
-        apns_team_id: apns_team_id
-        apns_p12: apns_p12
-        safari_site_origin: safari_site_origin
-        apns_p12_password: apns_p12_password
-        created_at: 2000-01-23 04:56:07+00:00
-        safari_icon_64_64: safari_icon_64_64
-        chrome_web_sub_domain: chrome_web_sub_domain
-        gcm_key: gcm_key
-        apns_bundle_id: apns_bundle_id
-        chrome_key: chrome_key
-        safari_push_id: safari_push_id
-        updated_at: 2000-01-23 04:56:07+00:00
-        apns_certificates: apns_certificates
-        safari_apns_p12: safari_apns_p12
-        safari_icon_128_128: safari_icon_128_128
-        id: id
-        android_gcm_sender_id: android_gcm_sender_id
-        safari_icon_32_32: safari_icon_32_32
-        additional_data_is_root_payload: true
-        apns_env: sandbox
-        players: 0
-        messageable_players: 6
-        apns_p8: apns_p8
-        chrome_web_origin: chrome_web_origin
-        basic_auth_key: basic_auth_key
-        site_name: site_name
-        safari_icon_16_16: safari_icon_16_16
-        chrome_web_default_notification_icon: chrome_web_default_notification_icon
-        organization_id: organization_id
-        name: name
-        safari_apns_certificates: safari_apns_certificates
-        safari_apns_p12_password: safari_apns_p12_password
-        safari_icon_256_256: safari_icon_256_256
-      properties:
-        id:
-          readOnly: true
-          type: string
-        name:
-          description: The name of your app, as displayed on your apps list on the dashboard.  This can be renamed.
-          type: string
-        players:
-          readOnly: true
-          type: integer
-        messageable_players:
-          readOnly: true
-          type: integer
-        updated_at:
-          format: date-time
-          readOnly: true
-          type: string
-        created_at:
-          format: date-time
-          readOnly: true
-          type: string
-        android_gcm_sender_id:
-          description: 'Android: Your Google Project number.  Also known as Sender ID.'
-          type: string
-          writeOnly: true
-        gcm_key:
-          description: 'Android: Your Google Push Messaging Auth Key'
-          type:
-          - string
-          - 'null'
-        chrome_web_origin:
-          description: 'Chrome (All Browsers except Safari) (Recommended): The URL to your website.  This field is required if you wish to enable web push and specify other web push parameters.'
-          type:
-          - string
-          - 'null'
-        chrome_key:
-          description: Not for web push.  Your Google Push Messaging Auth Key if you use Chrome Apps / Extensions.
-          type:
-          - string
-          - 'null'
-        chrome_web_default_notification_icon:
-          description: 'Chrome (All Browsers except Safari): Your default notification icon. Should be 256x256 pixels, min 80x80.'
-          type:
-          - string
-          - 'null'
-        chrome_web_sub_domain:
-          description: 'Chrome (All Browsers except Safari): A subdomain of your choice in order to support Web Push on non-HTTPS websites. This field must be set in order for the chrome_web_gcm_sender_id property to be processed.'
-          type:
-          - string
-          - 'null'
-        apns_env:
-          description: 'iOS: Either sandbox or production'
-          enum:
-          - sandbox
-          - production
-          type:
-          - string
-          - 'null'
-        apns_p12:
-          description: 'iOS: Your apple push notification p12 certificate file, converted to a string and Base64 encoded.'
-          type: string
-          writeOnly: true
-        apns_p12_password:
-          description: 'iOS: Required if using p12 certificate.  Password for the apns_p12 file.'
-          type: string
-          writeOnly: true
-        apns_certificates:
-          readOnly: true
-          type:
-          - string
-          - 'null'
-        safari_apns_certificates:
-          readOnly: true
-          type: string
-        safari_apns_p12:
-          description: 'Safari: Your apple push notification p12 certificate file for Safari Push Notifications, converted to a string and Base64 encoded.'
-          type: string
-          writeOnly: true
-        safari_apns_p12_password:
-          description: 'Safari: Password for safari_apns_p12 file'
-          type: string
-          writeOnly: true
-        apns_key_id:
-          description: 'iOS: Required if using p8. Unique identifier for the p8 authentication key.'
-          type:
-          - string
-          - 'null'
-        apns_team_id:
-          description: 'iOS: Required if using p8. Team ID generated by Apple for your developer account.'
-          type:
-          - string
-          - 'null'
-        apns_bundle_id:
-          description: 'iOS: Required if using p8. Bundle ID for your app in the Apple ecosystem.'
-          type:
-          - string
-          - 'null'
-        apns_p8:
-          description: 'iOS: Required if using p8. Base64 encoded p8 key'
-          type:
-          - string
-          - 'null'
-        safari_site_origin:
-          description: 'Safari (Recommended): The hostname to your website including http(s)://'
-          type:
-          - string
-          - 'null'
-        safari_push_id:
-          readOnly: true
-          type:
-          - string
-          - 'null'
-        safari_icon_16_16:
-          readOnly: true
-          type: string
-        safari_icon_32_32:
-          readOnly: true
-          type: string
-        safari_icon_64_64:
-          readOnly: true
-          type: string
-        safari_icon_128_128:
-          readOnly: true
-          type: string
-        safari_icon_256_256:
-          description: 'Safari: A url for a 256x256 png notification icon. This is the only Safari icon URL you need to provide.'
-          type: string
-        site_name:
-          description: 'All Browsers (Recommended): The Site Name. Requires both chrome_web_origin and safari_site_origin to be set to add or update it.'
-          type:
-          - string
-          - 'null'
-        basic_auth_key:
-          readOnly: true
-          type:
-          - string
-          - 'null'
-        organization_id:
-          description: The Id of the Organization you would like to add this app to.
-          type: string
-          writeOnly: true
-        additional_data_is_root_payload:
-          description: 'iOS: Notification data (additional data) values will be added to the root of the apns payload when sent to the device.  Ignore if you''re not using any other plugins, or not using OneSignal SDK methods to read the payload.'
-          type: boolean
-          writeOnly: true
-      type: object
-    CustomEventsResponse:
       type: object
   securitySchemes:
     rest_api_key:
