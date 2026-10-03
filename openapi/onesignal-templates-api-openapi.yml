@@ -1398,29 +1398,6 @@ paths:
     - url: https://api.onesignal.com
 components:
   schemas:
-    BasicErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-          description: One or more human-readable error messages.
-        success:
-          type: boolean
-          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
-        reference:
-          type: array
-          items:
-            type: string
-          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
-    StructuredErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredErrorItem'
     TemplateResource:
       type: object
       required:
@@ -1451,22 +1428,6 @@ components:
           description: ISO-8601 timestamp when the template was last updated.
         content:
           $ref: '#/components/schemas/TemplateResourceContent'
-    StructuredErrorItem:
-      type: object
-      required:
-      - code
-      - title
-      properties:
-        code:
-          type: string
-          description: Stable error-code identifier. Use this for programmatic branching in your integration.
-        title:
-          type: string
-          description: Human-readable error message intended for logs and operator-facing surfaces.
-        meta:
-          type: object
-          additionalProperties: true
-          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
     TemplateResourceContent:
       type: object
       description: 'The content block of a template. Every field is nullable: a field is populated only when the corresponding channel feature is enabled for the template. For example, push fields (`isAndroid`, `isIos`, `headings`, ...) are populated for push templates; email fields (`isEmail`, `email_body`, ...) for email templates; and SMS fields (`isSMS`, `sms_from`, ...) for SMS templates. Cross-channel templates may have multiple feature blocks populated.'
@@ -1631,6 +1592,85 @@ components:
           - integer
           - 'null'
           description: Absolute value to set the Huawei badge counter to.
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    StructuredErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredErrorItem'
+    StructuredErrorItem:
+      type: object
+      required:
+      - code
+      - title
+      properties:
+        code:
+          type: string
+          description: Stable error-code identifier. Use this for programmatic branching in your integration.
+        title:
+          type: string
+          description: Human-readable error message intended for logs and operator-facing surfaces.
+        meta:
+          type: object
+          additionalProperties: true
+          description: 'Optional structured details about this specific error. The shape of `meta` varies by `code` — for example, the create-user `Conflict` code returns `{ conflicting_aliases: { [alias_label]: alias_id } }`.'
+    TemplateResource_2:
+      example:
+        updated_at: 2000-01-23 04:56:07+00:00
+        name: name
+        channel: push
+        created_at: 2000-01-23 04:56:07+00:00
+        id: id
+        content:
+          key: ''
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        channel:
+          enum:
+          - push
+          - email
+          - sms
+          type:
+          - string
+          - 'null'
+        content:
+          additionalProperties: true
+          description: Rendered content and channel/platform flags for the template.
+          type: object
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
     LanguageStringMap:
       example:
         de: de
@@ -1805,15 +1845,6 @@ components:
           type: string
         vi:
           description: Text in Vietnamese.
-          type: string
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
           type: string
       type: object
     CreateTemplateRequest:
@@ -2010,79 +2041,6 @@ components:
       - contents
       - name
       type: object
-    TemplateResource_2:
-      example:
-        updated_at: 2000-01-23 04:56:07+00:00
-        name: name
-        channel: push
-        created_at: 2000-01-23 04:56:07+00:00
-        id: id
-        content:
-          key: ''
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-        channel:
-          enum:
-          - push
-          - email
-          - sms
-          type:
-          - string
-          - 'null'
-        content:
-          additionalProperties: true
-          description: Rendered content and channel/platform flags for the template.
-          type: object
-      type: object
-    TemplatesListResponse:
-      example:
-        templates:
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
-        - updated_at: 2000-01-23 04:56:07+00:00
-          name: name
-          channel: push
-          created_at: 2000-01-23 04:56:07+00:00
-          id: id
-          content:
-            key: ''
-      properties:
-        templates:
-          items:
-            $ref: '#/components/schemas/TemplateResource_2'
-          type: array
-      type: object
-    CopyTemplateRequest:
-      example:
-        target_app_id: target_app_id
-      properties:
-        target_app_id:
-          description: Destination OneSignal App ID in UUID v4 format.
-          type: string
-      required:
-      - target_app_id
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
-      type: object
     UpdateTemplateRequest:
       example:
         isSMS: true
@@ -2275,6 +2233,48 @@ components:
       properties:
         success:
           type: boolean
+      type: object
+    TemplatesListResponse:
+      example:
+        templates:
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+        - updated_at: 2000-01-23 04:56:07+00:00
+          name: name
+          channel: push
+          created_at: 2000-01-23 04:56:07+00:00
+          id: id
+          content:
+            key: ''
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateResource_2'
+          type: array
+      type: object
+    CopyTemplateRequest:
+      example:
+        target_app_id: target_app_id
+      properties:
+        target_app_id:
+          description: Destination OneSignal App ID in UUID v4 format.
+          type: string
+      required:
+      - target_app_id
+      type: object
+    RateLimitError:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
       type: object
   securitySchemes:
     rest_api_key:
