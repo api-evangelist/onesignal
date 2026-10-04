@@ -1428,6 +1428,29 @@ components:
           description: ISO-8601 timestamp when the template was last updated.
         content:
           $ref: '#/components/schemas/TemplateResourceContent'
+    BasicErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: One or more human-readable error messages.
+        success:
+          type: boolean
+          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
+        reference:
+          type: array
+          items:
+            type: string
+          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
+    StructuredErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredErrorItem'
     TemplateResourceContent:
       type: object
       description: 'The content block of a template. Every field is nullable: a field is populated only when the corresponding channel feature is enabled for the template. For example, push fields (`isAndroid`, `isIos`, `headings`, ...) are populated for push templates; email fields (`isEmail`, `email_body`, ...) for email templates; and SMS fields (`isSMS`, `sms_from`, ...) for SMS templates. Cross-channel templates may have multiple feature blocks populated.'
@@ -1592,29 +1615,6 @@ components:
           - integer
           - 'null'
           description: Absolute value to set the Huawei badge counter to.
-    BasicErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-          description: One or more human-readable error messages.
-        success:
-          type: boolean
-          description: Present (and `false`) on some endpoints (notifications, templates, segments). Not emitted by every endpoint.
-        reference:
-          type: array
-          items:
-            type: string
-          description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
-    StructuredErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredErrorItem'
     StructuredErrorItem:
       type: object
       required:
@@ -1664,188 +1664,22 @@ components:
           description: Rendered content and channel/platform flags for the template.
           type: object
       type: object
-    GenericError:
+    CopyTemplateRequest:
+      example:
+        target_app_id: target_app_id
       properties:
-        errors: {}
+        target_app_id:
+          description: Destination OneSignal App ID in UUID v4 format.
+          type: string
+      required:
+      - target_app_id
+      type: object
+    GenericSuccessBoolResponse:
+      example:
+        success: true
+      properties:
         success:
           type: boolean
-        reference: {}
-      type: object
-    LanguageStringMap:
-      example:
-        de: de
-        hi: hi
-        fi: fi
-        ru: ru
-        pt: pt
-        bg: bg
-        lt: lt
-        hr: hr
-        lv: lv
-        fr: fr
-        hu: hu
-        bs: bs
-        zh-Hans: zh-Hans
-        zh-Hant: zh-Hant
-        ka: ka
-        uk: uk
-        sk: sk
-        id: id
-        ca: ca
-        sr: sr
-        sv: sv
-        ko: ko
-        ms: ms
-        el: el
-        en: en
-        it: it
-        zh: zh
-        es: es
-        et: et
-        cs: cs
-        ar: ar
-        pa: pa
-        vi: vi
-        nb: nb
-        th: th
-        ja: ja
-        fa: fa
-        pl: pl
-        da: da
-        he: he
-        ro: ro
-        nl: nl
-        tr: tr
-      properties:
-        en:
-          description: Text in English.  Will be used as a fallback
-          type: string
-        ar:
-          description: Text in Arabic.
-          type: string
-        bs:
-          description: Text in Bosnian.
-          type: string
-        bg:
-          description: Text in Bulgarian.
-          type: string
-        ca:
-          description: Text in Catalan.
-          type: string
-        zh-Hans:
-          description: Text in Chinese (Simplified).
-          type: string
-        zh-Hant:
-          description: Text in Chinese (Traditional).
-          type: string
-        zh:
-          description: Alias for zh-Hans.
-          type: string
-        hr:
-          description: Text in Croatian.
-          type: string
-        cs:
-          description: Text in Czech.
-          type: string
-        da:
-          description: Text in Danish.
-          type: string
-        nl:
-          description: Text in Dutch.
-          type: string
-        et:
-          description: Text in Estonian.
-          type: string
-        fi:
-          description: Text in Finnish.
-          type: string
-        fr:
-          description: Text in French.
-          type: string
-        ka:
-          description: Text in Georgian.
-          type: string
-        de:
-          description: Text in German.
-          type: string
-        el:
-          description: Text in Greek.
-          type: string
-        hi:
-          description: Text in Hindi.
-          type: string
-        he:
-          description: Text in Hebrew.
-          type: string
-        hu:
-          description: Text in Hungarian.
-          type: string
-        id:
-          description: Text in Indonesian.
-          type: string
-        it:
-          description: Text in Italian.
-          type: string
-        ja:
-          description: Text in Japanese.
-          type: string
-        ko:
-          description: Text in Korean.
-          type: string
-        lv:
-          description: Text in Latvian.
-          type: string
-        lt:
-          description: Text in Lithuanian.
-          type: string
-        ms:
-          description: Text in Malay.
-          type: string
-        nb:
-          description: Text in Norwegian.
-          type: string
-        pl:
-          description: Text in Polish.
-          type: string
-        fa:
-          description: Text in Persian.
-          type: string
-        pt:
-          description: Text in Portugese.
-          type: string
-        pa:
-          description: Text in Punjabi.
-          type: string
-        ro:
-          description: Text in Romanian.
-          type: string
-        ru:
-          description: Text in Russian.
-          type: string
-        sr:
-          description: Text in Serbian.
-          type: string
-        sk:
-          description: Text in Slovak.
-          type: string
-        es:
-          description: Text in Spanish.
-          type: string
-        sv:
-          description: Text in Swedish.
-          type: string
-        th:
-          description: Text in Thai.
-          type: string
-        tr:
-          description: Text in Turkish.
-          type: string
-        uk:
-          description: Text in Ukrainian.
-          type: string
-        vi:
-          description: Text in Vietnamese.
-          type: string
       type: object
     CreateTemplateRequest:
       example:
@@ -2041,6 +1875,182 @@ components:
       - contents
       - name
       type: object
+    LanguageStringMap:
+      example:
+        de: de
+        hi: hi
+        fi: fi
+        ru: ru
+        pt: pt
+        bg: bg
+        lt: lt
+        hr: hr
+        lv: lv
+        fr: fr
+        hu: hu
+        bs: bs
+        zh-Hans: zh-Hans
+        zh-Hant: zh-Hant
+        ka: ka
+        uk: uk
+        sk: sk
+        id: id
+        ca: ca
+        sr: sr
+        sv: sv
+        ko: ko
+        ms: ms
+        el: el
+        en: en
+        it: it
+        zh: zh
+        es: es
+        et: et
+        cs: cs
+        ar: ar
+        pa: pa
+        vi: vi
+        nb: nb
+        th: th
+        ja: ja
+        fa: fa
+        pl: pl
+        da: da
+        he: he
+        ro: ro
+        nl: nl
+        tr: tr
+      properties:
+        en:
+          description: Text in English.  Will be used as a fallback
+          type: string
+        ar:
+          description: Text in Arabic.
+          type: string
+        bs:
+          description: Text in Bosnian.
+          type: string
+        bg:
+          description: Text in Bulgarian.
+          type: string
+        ca:
+          description: Text in Catalan.
+          type: string
+        zh-Hans:
+          description: Text in Chinese (Simplified).
+          type: string
+        zh-Hant:
+          description: Text in Chinese (Traditional).
+          type: string
+        zh:
+          description: Alias for zh-Hans.
+          type: string
+        hr:
+          description: Text in Croatian.
+          type: string
+        cs:
+          description: Text in Czech.
+          type: string
+        da:
+          description: Text in Danish.
+          type: string
+        nl:
+          description: Text in Dutch.
+          type: string
+        et:
+          description: Text in Estonian.
+          type: string
+        fi:
+          description: Text in Finnish.
+          type: string
+        fr:
+          description: Text in French.
+          type: string
+        ka:
+          description: Text in Georgian.
+          type: string
+        de:
+          description: Text in German.
+          type: string
+        el:
+          description: Text in Greek.
+          type: string
+        hi:
+          description: Text in Hindi.
+          type: string
+        he:
+          description: Text in Hebrew.
+          type: string
+        hu:
+          description: Text in Hungarian.
+          type: string
+        id:
+          description: Text in Indonesian.
+          type: string
+        it:
+          description: Text in Italian.
+          type: string
+        ja:
+          description: Text in Japanese.
+          type: string
+        ko:
+          description: Text in Korean.
+          type: string
+        lv:
+          description: Text in Latvian.
+          type: string
+        lt:
+          description: Text in Lithuanian.
+          type: string
+        ms:
+          description: Text in Malay.
+          type: string
+        nb:
+          description: Text in Norwegian.
+          type: string
+        pl:
+          description: Text in Polish.
+          type: string
+        fa:
+          description: Text in Persian.
+          type: string
+        pt:
+          description: Text in Portugese.
+          type: string
+        pa:
+          description: Text in Punjabi.
+          type: string
+        ro:
+          description: Text in Romanian.
+          type: string
+        ru:
+          description: Text in Russian.
+          type: string
+        sr:
+          description: Text in Serbian.
+          type: string
+        sk:
+          description: Text in Slovak.
+          type: string
+        es:
+          description: Text in Spanish.
+          type: string
+        sv:
+          description: Text in Swedish.
+          type: string
+        th:
+          description: Text in Thai.
+          type: string
+        tr:
+          description: Text in Turkish.
+          type: string
+        uk:
+          description: Text in Ukrainian.
+          type: string
+        vi:
+          description: Text in Vietnamese.
+          type: string
+      type: object
     UpdateTemplateRequest:
       example:
         isSMS: true
@@ -2227,12 +2237,14 @@ components:
           - string
           - 'null'
       type: object
-    GenericSuccessBoolResponse:
-      example:
-        success: true
+    RateLimitError:
       properties:
-        success:
-          type: boolean
+        errors:
+          items:
+            type: string
+          type: array
+        limit:
+          type: string
       type: object
     TemplatesListResponse:
       example:
@@ -2257,24 +2269,12 @@ components:
             $ref: '#/components/schemas/TemplateResource_2'
           type: array
       type: object
-    CopyTemplateRequest:
-      example:
-        target_app_id: target_app_id
+    GenericError:
       properties:
-        target_app_id:
-          description: Destination OneSignal App ID in UUID v4 format.
-          type: string
-      required:
-      - target_app_id
-      type: object
-    RateLimitError:
-      properties:
-        errors:
-          items:
-            type: string
-          type: array
-        limit:
-          type: string
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
       type: object
   securitySchemes:
     rest_api_key:

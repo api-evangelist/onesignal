@@ -310,20 +310,6 @@ components:
           items:
             type: string
           description: Documentation URL fragments related to the error. Only emitted by the API-key auth error helpers.
-    ExportSubscriptionsSuccessResponse:
-      example:
-        csv_file_url: csv_file_url
-      properties:
-        csv_file_url:
-          type: string
-      type: object
-    GenericError:
-      properties:
-        errors: {}
-        success:
-          type: boolean
-        reference: {}
-      type: object
     export_subscriptions_request_body:
       properties:
         extra_fields:
@@ -346,6 +332,20 @@ components:
             type: string
           type: array
         limit:
+          type: string
+      type: object
+    GenericError:
+      properties:
+        errors: {}
+        success:
+          type: boolean
+        reference: {}
+      type: object
+    ExportSubscriptionsSuccessResponse:
+      example:
+        csv_file_url: csv_file_url
+      properties:
+        csv_file_url:
           type: string
       type: object
   requestBodies:
