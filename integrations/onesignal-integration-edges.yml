@@ -1,0 +1,52 @@
+edges:
+- partner_name: novu
+  partner: novu
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: one-signal
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: onesignal.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: knock-app
+  partner: knock-app
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/knock-app/blob/main/openapi/knock-app-channel-data-api-openapi.yml
+  contract_reference:
+    repo: knock-app
+    spec_file: knock-app-channel-data-api-openapi.yml
+    value: push_one_signal
+    property: schemas.ChannelData.provider
+    matched_domain: onesignal.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+- partner_name: courier
+  partner: courier
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/courier/blob/main/openapi/courier-device-tokens-api-openapi.yml
+  contract_reference:
+    repo: courier
+    spec_file: courier-device-tokens-api-openapi.yml
+    value: onesignal
+    property: components.schemas.UsersProviderKey
+    matched_domain: onesignal.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-12'
+generated: '2026-10-12'
+method: searched
+checked: []
