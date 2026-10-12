@@ -14,7 +14,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: knock-app
   partner: knock-app
   partner_match: domain
@@ -30,23 +30,7 @@ edges:
     property: schemas.ChannelData.provider
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
-- partner_name: courier
-  partner: courier
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: delivery-provider
-  direction: partner-built
-  evidence: https://github.com/api-evangelist/courier/blob/main/openapi/courier-device-tokens-api-openapi.yml
-  contract_reference:
-    repo: courier
-    spec_file: courier-device-tokens-api-openapi.yml
-    value: onesignal
-    property: components.schemas.UsersProviderKey
-    matched_domain: onesignal.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 generated: '2026-10-12'
 method: searched
 checked: []
