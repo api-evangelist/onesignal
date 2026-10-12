@@ -20,7 +20,7 @@
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: onesignal-knock-app
   label: knock-app
@@ -39,7 +39,7 @@
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: onesignal-courier
   label: courier
@@ -58,5 +58,5 @@
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
