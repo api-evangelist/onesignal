@@ -31,6 +31,59 @@ edges:
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
+- partner_name: Twilio Segment
+  partner: segment
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+  coverage_role:
+  - destination
+  - source
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - onesignal-new
+      status: PUBLIC
+      partner_owned: true
+      connection_modes:
+      - cloud:mobile
+      - cloud:server
+      - cloud:web
+      accepted_methods:
+      - Identify
+      - Track
+    source:
+      catalog_entries:
+      - onesignal
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
+- partner_name: Hightouch
+  partner: hightouch
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://hightouch.com/docs/destinations/onesignal
+  coverage_role:
+  - destination
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - onesignal
+      status: released
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
 generated: '2026-10-12'
 method: searched
-checked: []
+checked:
+- https://hightouch.com/docs/destinations/onesignal
+- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+source:
+- https://hightouch.com/docs/destinations/onesignal
+- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
