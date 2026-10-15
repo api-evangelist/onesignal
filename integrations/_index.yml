@@ -65,3 +65,38 @@
   relationship: connector-coverage
   status: not-a-workflow
   arazzo: null
+- slug: onesignal-a2a-protocol-own-agent-card
+  label: A2A protocol (own Agent Card)
+  partner_name: A2A protocol (own Agent Card)
+  category: A2A agent
+  type: register
+  channel: provider-built
+  evidence: https://documentation.onesignal.com/.well-known/agent-card.json
+  source: edge
+  relationship: compatible
+  contract_reference:
+    register: provider's own /.well-known/agent-card.json
+    spec_file: null
+    standard: A2A
+    role: a2a-agent-card
+    registered_name: OneSignal
+    organization: OneSignal
+    matched_domain: onesignal.com
+    matched_by: own-domain
+    detected_by: sweep-ai-agents.py
+    detected: '2026-10-15'
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-unity-own
+  label: Unity (own)
+  partner: unity
+  partner_name: Unity (own)
+  category: Unity Verified Solutions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://assetstore.unity.com/packages/slug/193316
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null

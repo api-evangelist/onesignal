@@ -112,12 +112,32 @@ edges:
     detected: '2026-10-15'
   detected_by: sweep-ai-agents.py
   first_seen: '2026-10-15'
+- partner_name: Unity (own)
+  partner: unity
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://assetstore.unity.com/packages/slug/193316
+  mirror_of: unity/integrations/unity-integration-edges.yml
+  apps:
+  - OneSignal
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: Unity Verified Solutions
+  publisher_verified:
+  - Unity Verified Solution
 generated: '2026-10-12'
 method: searched
 checked:
 - https://a2aregistry.org/api/agents
 - https://hightouch.com/docs/destinations/onesignal
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+- unity/integrations/unity-integration-edges.yml
 source:
 - https://hightouch.com/docs/destinations/onesignal
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
