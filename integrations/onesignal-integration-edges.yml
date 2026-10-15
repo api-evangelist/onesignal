@@ -131,6 +131,23 @@ edges:
   category: Unity Verified Solutions
   publisher_verified:
   - Unity Verified Solution
+- partner_name: WordPress (own)
+  partner: wordpress
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://wordpress.org/plugins/onesignal-free-web-push-notifications/
+  mirror_of: wordpress/integrations/wordpress-integration-edges.yml
+  apps:
+  - OneSignal – Web Push Notifications
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: WordPress plugin
 generated: '2026-10-12'
 method: searched
 checked:
@@ -138,6 +155,7 @@ checked:
 - https://hightouch.com/docs/destinations/onesignal
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
 - unity/integrations/unity-integration-edges.yml
+- wordpress/integrations/wordpress-integration-edges.yml
 source:
 - https://hightouch.com/docs/destinations/onesignal
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
