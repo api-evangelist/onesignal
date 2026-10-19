@@ -223,3 +223,159 @@
     builder: 'community (Meltano Hub variant maintainers: airbyte)'
   status: not-a-workflow
   arazzo: null
+- slug: onesignal-maven-central
+  label: Maven Central
+  partner: maven-central
+  partner_name: Maven Central
+  category: official SDK (Java/JVM)
+  type: register
+  channel: package-registry
+  evidence: https://central.sonatype.com/artifact/com.onesignal/OneSignal
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: com.onesignal:OneSignal
+      version: 5.10.2
+      released: '2026-09-19'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.onesignal/OneSignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: groupId:onesignal.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-npm-registry
+  label: npm registry
+  partner: npm
+  partner_name: npm registry
+  category: official SDK (JavaScript/TypeScript)
+  type: register
+  channel: package-registry
+  evidence: https://www.npmjs.com/package/@onesignal/node-onesignal
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@onesignal/node-onesignal'
+      version: 5.20.0
+      released: '2026-10-15'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@onesignal/node-onesignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: '@onesignal/onesignal-vue3'
+      version: 2.5.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@onesignal/onesignal-vue3
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-cordova-plugin
+      version: 5.6.1
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-cordova-plugin
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-expo-plugin
+      version: 2.7.2
+      released: '2026-10-02'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-expo-plugin
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-ngx
+      version: 2.4.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-ngx
+      repo_leg: domain:onesignal.com
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-vue
+      version: 2.7.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-vue
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: react-native-onesignal
+      version: 5.5.15
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/react-native-onesignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: react-onesignal
+      version: 3.5.6
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/react-onesignal
+      repo_leg: domain:onesignal.com
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-rubygems
+  label: RubyGems
+  partner: rubygems
+  partner_name: RubyGems
+  category: official SDK (Ruby)
+  type: register
+  channel: package-registry
+  evidence: https://rubygems.org/gems/onesignal
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: RubyGems (public registry JSON)
+    spec_file: null
+    language: Ruby
+    packages:
+    - name: onesignal
+      version: 5.18.0
+      released: '2026-10-15'
+      released_field: version_created_at
+      lapsed: false
+      page: https://rubygems.org/gems/onesignal
+      repo_leg: domain:onesignal.com
+      publisher_leg: org:onesignal
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null

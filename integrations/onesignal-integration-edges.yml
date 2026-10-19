@@ -258,15 +258,175 @@ edges:
     builder: 'community (Meltano Hub variant maintainers: airbyte)'
   detected_by: sweep-data-integration.py
   first_seen: '2026-10-18'
+- partner_name: Maven Central
+  partner: maven-central
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Java/JVM)
+  evidence: https://central.sonatype.com/artifact/com.onesignal/OneSignal
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: com.onesignal:OneSignal
+      version: 5.10.2
+      released: '2026-09-19'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.onesignal/OneSignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: groupId:onesignal.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@onesignal/node-onesignal
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@onesignal/node-onesignal'
+      version: 5.20.0
+      released: '2026-10-15'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@onesignal/node-onesignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: '@onesignal/onesignal-vue3'
+      version: 2.5.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@onesignal/onesignal-vue3
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-cordova-plugin
+      version: 5.6.1
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-cordova-plugin
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-expo-plugin
+      version: 2.7.2
+      released: '2026-10-02'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-expo-plugin
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-ngx
+      version: 2.4.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-ngx
+      repo_leg: domain:onesignal.com
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: onesignal-vue
+      version: 2.7.4
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/onesignal-vue
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: react-native-onesignal
+      version: 5.5.15
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/react-native-onesignal
+      repo_leg: shared-github-org:onesignal
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    - name: react-onesignal
+      version: 3.5.6
+      released: '2026-06-25'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/react-onesignal
+      repo_leg: domain:onesignal.com
+      publisher_leg: email:onesignal.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: RubyGems
+  partner: rubygems
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Ruby)
+  evidence: https://rubygems.org/gems/onesignal
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: RubyGems (public registry JSON)
+    spec_file: null
+    language: Ruby
+    packages:
+    - name: onesignal
+      version: 5.18.0
+      released: '2026-10-15'
+      released_field: version_created_at
+      lapsed: false
+      page: https://rubygems.org/gems/onesignal
+      repo_leg: domain:onesignal.com
+      publisher_leg: org:onesignal
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 generated: '2026-10-12'
 method: searched
 checked:
 - https://a2aregistry.org/api/agents
+- https://api.nuget.org/v3
 - https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
 - https://connectors.airbyte.com/files/registries/v0/oss_registry.json
+- https://crates.io/api/v1
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
 - https://github.com/meltano/hub
 - https://hightouch.com/docs/destinations/onesignal
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
 - https://zapier.com/api/v4/apps/
 - unity/integrations/unity-integration-edges.yml
