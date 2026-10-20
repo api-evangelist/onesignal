@@ -1,3 +1,49 @@
+generated: '2026-10-20'
+method: searched
+source:
+- https://hightouch.com/docs/destinations/onesignal
+- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+- https://zapier.com/apps/onesignal/integrations
+checked:
+- https://a2aregistry.org/api/agents
+- https://api.nuget.org/v3
+- https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
+- https://connectors.airbyte.com/files/registries/v0/oss_registry.json
+- https://crates.io/api/v1
+- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
+- https://github.com/meltano/hub
+- https://hightouch.com/docs/destinations/onesignal
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+- https://zapier.com/api/v4/apps/
+- unity/integrations/unity-integration-edges.yml
+- wordpress/integrations/wordpress-integration-edges.yml
+- https://composio.dev/toolkits/onesignal
+- https://monid.ai/tools/onesignal
+- https://n8n.io/integrations/onesignal/
+- https://zapier.com/apps/onesignal/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: onesignal
+  url: https://zapier.com/apps/onesignal/integrations
+  external_url: https://onesignal.com/?utm_medium=partner&utm_source=zapier
+  partner_tier: GOLD
+  triggers:
+  - key: notification
+    label: New Notification Created
+  actions:
+  - key: PushNotification
+    label: Send Push Notification
+  - key: SendPushNotification2
+    label: Send Advanced Push Notification
+  searches: []
 edges:
 - partner_name: knock-app
   partner: knock-app
@@ -411,27 +457,425 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
-generated: '2026-10-12'
-method: searched
-checked:
-- https://a2aregistry.org/api/agents
-- https://api.nuget.org/v3
-- https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
-- https://connectors.airbyte.com/files/registries/v0/oss_registry.json
-- https://crates.io/api/v1
-- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
-- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
-- https://github.com/meltano/hub
-- https://hightouch.com/docs/destinations/onesignal
-- https://proxy.golang.org
-- https://pypi.org/pypi
-- https://registry.npmjs.org
-- https://repo1.maven.org/maven2
-- https://rubygems.org/api/v1
-- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
-- https://zapier.com/api/v4/apps/
-- unity/integrations/unity-integration-edges.yml
-- wordpress/integrations/wordpress-integration-edges.yml
-source:
-- https://hightouch.com/docs/destinations/onesignal
-- https://www.twilio.com/docs/segment/connections/destinations/catalog/onesignal-new
+- partner_name: Firebase / Firestore
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/firebase
+  direction: third-party
+  category: Databases
+  partner_url: http://www.firebase.com/
+- partner_name: WooCommerce
+  partner: woocommerce
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/woocommerce
+  direction: third-party
+  category: eCommerce
+  partner_url: https://woocommerce.com/products/woocommerce-zapier/?utm_source=zapier&utm_medium=website&utm_campaign=integration
+- partner_name: WordPress
+  partner: wordpress
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/wordpress
+  direction: third-party
+  category: Website Builders
+  partner_url: https://wordpress.org/
+- partner_name: Adalo
+  partner: adalo
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/adalo
+  direction: third-party
+  category: App Builder
+  partner_url: https://www.adalo.com/?utm_campaign=zapier_profile
+- partner_name: ActiveCampaign
+  partner: activecampaign
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/activecampaign
+  direction: third-party
+  category: Marketing Automation
+  partner_url: https://www.activecampaign.com/?utm_source=unpaid_syndication_website&utm_medium=referral&utm_campaign=zapier_listing
+- partner_name: Airtable
+  partner: airtable
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/airtable
+  direction: third-party
+  category: Databases
+  partner_url: https://airtable.com/
+- partner_name: HubSpot
+  partner: hubspot
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/hubspot
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.hubspot.com/
+- partner_name: Mailchimp
+  partner: mailchimp
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/mailchimp
+  direction: third-party
+  category: Marketing Automation
+  partner_url: https://mailchimp.com/
+- partner_name: Base44
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/base44
+  direction: third-party
+  category: AI Assistants
+  partner_url: https://base44.com/
+- partner_name: Google Calendar
+  partner: google-calendar
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/google-calendar
+  direction: third-party
+  category: Calendar
+  partner_url: https://calendar.google.com/
+- partner_name: Mautic
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/mautic
+  direction: third-party
+  category: Marketing Automation
+  partner_url: https://www.mautic.org/
+- partner_name: Bubble
+  partner: bubble
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/bubble
+  direction: third-party
+  category: App Builder
+  partner_url: https://bubble.io/
+- partner_name: WPForms
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/wpforms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: https://wpforms.com/
+- partner_name: Google Forms (Legacy)
+  partner: google-forms
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/google-forms-legacy
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://google.com/
+- partner_name: Wix
+  partner: wix
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/wix
+  direction: third-party
+  category: Website Builders
+  partner_url: https://www.wix.com/
+- partner_name: Gravity Forms
+  partner: gravity-forms
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/gravity-forms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: https://www.gravityforms.com/?utm_campaign=partners&utm_source=zapier-listing-learn-more&utm_medium=free-placement
+- partner_name: Twitch
+  partner: twitch
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/twitch
+  direction: third-party
+  category: Gaming
+  partner_url: http://www.twitch.com/
+- partner_name: Facebook Pages
+  partner: facebook-pages
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/facebook-pages
+  direction: third-party
+  category: Facebook
+  partner_url: https://facebook.com/
+- partner_name: Magento 2.X
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/magento-v2
+  direction: third-party
+  category: eCommerce
+  partner_url: https://magento.com/
+- partner_name: Intercom
+  partner: intercom
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/intercom
+  direction: third-party
+  category: Customer Support
+  partner_url: https://www.intercom.com/welcome-to-intercom?utm_source=external-website&utm_medium=partner&utm_campaign=20220503_all_oc_all_global_gl_all_all_par_extmktplc&utm_term=zapier
+- partner_name: Google Forms
+  partner: google-forms
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/google-forms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://google.com/
+- partner_name: Shopify
+  partner: shopify
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/shopify
+  direction: third-party
+  category: eCommerce
+  partner_url: https://www.shopify.com/
+- partner_name: Glide
+  partner: glide-apps
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/glide-apps
+  direction: third-party
+  category: App Builder
+  partner_url: https://glideapps.com/
+- partner_name: YouTube
+  partner: youtube
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/youtube
+  direction: third-party
+  category: Google
+  partner_url: https://www.youtube.com/
+- partner_name: Google Sheets
+  partner: google-sheets
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/google-sheets
+  direction: third-party
+  category: Google
+  partner_url: http://sheets.google.com/
+- partner_name: RD Station
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/rd-station
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.rdstation.com.br/
+- partner_name: Magento
+  partner: magento
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/magento
+  direction: third-party
+  category: eCommerce
+  partner_url: https://magento.com/
+- partner_name: Klaviyo
+  partner: klaviyo
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/klaviyo
+  direction: third-party
+  category: Marketing Automation
+  partner_url: https://www.klaviyo.com/
+- partner_name: Squarespace Forms
+  partner: squarespace
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/squarespace-forms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: https://www.squarespace.com/
+- partner_name: WhatsApp Notifications
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/onesignal/integrations/whatsapp-notifications
+  direction: third-party
+  category: Communication
+  partner_url: null
+templates:
+- title: Send OneSignal push notifications every week
+  url: https://zapier.com/apps/onesignal/integrations/schedule/11915/send-onesignal-push-notifications-every-week
+  apps:
+  - schedule
+  - onesignal
+- title: Send OneSignal push notifications for new RSS items
+  url: https://zapier.com/apps/onesignal/integrations/rss/8120/send-onesignal-push-notifications-for-new-rss-items
+  apps:
+  - rss
+  - onesignal
+- title: Send OneSignal push notification reminders for upcoming Google Calendar events
+  url: https://zapier.com/apps/google-calendar/integrations/onesignal/11935/send-onesignal-push-notification-reminders-for-upcoming-google-calendar-events
+  apps:
+  - google-calendar
+  - onesignal
+- title: Send advanced push notifications in OneSignal every day
+  url: https://zapier.com/apps/onesignal/integrations/schedule/1014314/send-advanced-push-notifications-in-onesignal-every-day
+  apps:
+  - schedule
+  - onesignal
+- title: Send advanced OneSignal push notifications when new RSS items are created
+  url: https://zapier.com/apps/onesignal/integrations/rss/14774/send-advanced-onesignal-push-notifications-when-new-rss-items-are-created
+  apps:
+  - rss
+  - onesignal
+- title: Post new OneSignal notifications to a Slack channel
+  url: https://zapier.com/apps/onesignal/integrations/slack/12463/post-new-onesignal-notifications-to-a-slack-channel
+  apps:
+  - onesignal
+  - slack
+- title: Send OneSignal push notifications for new Twitch live streams by streamers
+  url: https://zapier.com/apps/onesignal/integrations/twitch/59761/send-onesignal-push-notifications-for-new-twitch-live-streams-by-streamers
+  apps:
+  - twitch
+  - onesignal
+- title: Trigger push notifications in OneSignal for new records in Adalo
+  url: https://zapier.com/apps/adalo/integrations/onesignal/1675079/trigger-push-notifications-in-onesignal-for-new-records-in-adalo
+  apps:
+  - adalo
+  - onesignal
+- title: Send push notifications for new YouTube videos with OneSignal
+  url: https://zapier.com/apps/onesignal/integrations/youtube/1638823/send-push-notifications-for-new-youtube-videos-with-onesignal
+  apps:
+  - youtube
+  - onesignal
+- title: Send push notifications for new Squarespace Forms form submissions with OneSignal
+  url: https://zapier.com/apps/onesignal/integrations/squarespace-forms/1426081/send-push-notifications-for-new-squarespace-forms-form-submissions-with-onesignal
+  apps:
+  - squarespace-forms
+  - onesignal
+- title: Send OneSignal push notifications for new posts on your Wordpress blog
+  url: https://zapier.com/apps/onesignal/integrations/wordpress/8121/send-onesignal-push-notifications-for-new-posts-on-your-wordpress-blog
+  apps:
+  - wordpress
+  - onesignal
+- title: Log new OneSignal notifications on Google Sheets
+  url: https://zapier.com/apps/google-sheets/integrations/onesignal/12464/log-new-onesignal-notifications-on-google-sheets
+  apps:
+  - onesignal
+  - google-sheets
+template_total: 144
