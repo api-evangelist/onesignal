@@ -27,6 +27,12 @@ checked:
 - https://monid.ai/tools/onesignal
 - https://n8n.io/integrations/onesignal/
 - https://zapier.com/apps/onesignal/integrations
+- https://api.github.com
+- https://claude-plugins.dev/sitemap.xml
+- https://github.com/VoltAgent/awesome-agent-skills
+- https://officialskills.sh/sitemap.xml
+- https://skillsmp.com/sitemap.xml
+- https://www.skills.sh/sitemap.xml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -817,6 +823,42 @@ edges:
   direction: third-party
   category: Communication
   partner_url: null
+- partner_name: Agent Skills (own GitHub org)
+  partner: null
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: Agent Skills package
+  evidence: https://github.com/OneSignal/onesignal-ai-skills
+  channel: provider-built
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: own-repo
+  degree: skill-repo
+  report_only: true
+  agent_skills:
+    org: onesignal
+    current: true
+    repos:
+    - repo: OneSignal/onesignal-ai-skills
+      archived: false
+      lapsed: false
+      pushed: '2026-06-11'
+    - repo: OneSignal/onesignal-cursor-plugin
+      archived: false
+      lapsed: false
+      pushed: '2026-07-10'
+  contract_reference:
+    register: 'provider''s own GitHub org (GitHub REST API: repo + git tree holds SKILL.md)'
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-repo
+    matched_org: onesignal
+    matched_by: org-profile-domain-among-claimants:onesignal.com
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
 templates:
 - title: Send OneSignal push notifications every week
   url: https://zapier.com/apps/onesignal/integrations/schedule/11915/send-onesignal-push-notifications-every-week
