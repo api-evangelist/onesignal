@@ -800,6 +800,52 @@
     status: Active
   status: not-a-workflow
   arazzo: null
+- slug: onesignal-cocoapods-trunk
+  label: CocoaPods trunk
+  partner_name: CocoaPods trunk
+  category: iOS SDK (CocoaPods)
+  type: register
+  channel: package-registry
+  evidence: https://cocoapods.org/pods/OneSignal
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: CocoaPods trunk (cdn.cocoapods.org Specs; github.com/CocoaPods/Specs)
+    spec_file: null
+    role: cocoapods-publisher
+    registered_name: Joseph Kalash
+    matched_domain: onesignal.com
+    matched_by: domain
+    pods:
+    - pod: OneSignal
+      version: 5.8.0
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalCore
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalDynamic
+      version: 2.9.3
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalExtension
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalOutcomes
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalXCFramework
+      version: 5.8.0
+      homepage: https://onesignal.com
+      deprecated: false
+    signal_note: latest podspec homepage (domain) + authors (name); pods, versions and counts are context
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
 - slug: onesignal-unity-own
   label: Unity (own)
   partner: unity
@@ -835,6 +881,19 @@
   marketplace: own
   channel: partner-built
   evidence: https://ecosystem.hubspot.com/marketplace/listing/onesignal
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-google-play-developer-google-play-sdk-index
+  label: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_name: Google Play Developer (Google Play SDK Index)
+  category: mobile SDK (analytics, marketing-and-engagement)
+  type: marketplace
+  marketplace: Google Play SDK Index
+  channel: partner-built
+  evidence: https://play.google.com/sdks/details/com-onesignal-onesignal
   source: edge
   relationship: platform-app
   status: not-a-workflow

@@ -39,6 +39,11 @@ checked:
 - https://www.techstars.com/portfolio
 - https://www.ycombinator.com/companies
 - hubspot/integrations/hubspot-integration-edges.yml
+- https://cdn.cocoapods.org/all_pods.txt
+- https://cert.appdefensealliance.org/certifications
+- https://play.google.com/sdks
+- https://search.maven.org/solrsearch/select
+- google-play/integrations/google-play-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -858,6 +863,52 @@ edges:
     status: Active
   detected_by: sweep-accelerator-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: CocoaPods trunk
+  partner: null
+  partner_match: register
+  type: register
+  channel: package-registry
+  relationship: distribution-channel
+  direction: provider-built
+  evidence: https://cocoapods.org/pods/OneSignal
+  category: iOS SDK (CocoaPods)
+  contract_reference:
+    register: CocoaPods trunk (cdn.cocoapods.org Specs; github.com/CocoaPods/Specs)
+    spec_file: null
+    role: cocoapods-publisher
+    registered_name: Joseph Kalash
+    matched_domain: onesignal.com
+    matched_by: domain
+    pods:
+    - pod: OneSignal
+      version: 5.8.0
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalCore
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalDynamic
+      version: 2.9.3
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalExtension
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalOutcomes
+      version: 3.11.0-alpha-01
+      homepage: https://onesignal.com
+      deprecated: false
+    - pod: OneSignalXCFramework
+      version: 5.8.0
+      homepage: https://onesignal.com
+      deprecated: false
+    signal_note: latest podspec homepage (domain) + authors (name); pods, versions and counts are context
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  detected_by: sweep-mobile-sdk-index.py
+  first_seen: '2026-10-21'
 - partner_name: Unity (own)
   partner: unity
   partner_match: mirror
@@ -911,6 +962,25 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: SMS
+- partner_name: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: Google Play SDK Index
+  evidence: https://play.google.com/sdks/details/com-onesignal-onesignal
+  mirror_of: google-play/integrations/google-play-integration-edges.yml
+  apps:
+  - OneSignal
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: mobile SDK (analytics, marketing-and-engagement)
+  publisher_verified:
+  - Registered in Google Play SDK Console
 templates:
 - title: Send OneSignal push notifications every week
   url: https://zapier.com/apps/onesignal/integrations/schedule/11915/send-onesignal-push-notifications-every-week
