@@ -38,6 +38,7 @@ checked:
 - https://www.antler.co/portfolio
 - https://www.techstars.com/portfolio
 - https://www.ycombinator.com/companies
+- hubspot/integrations/hubspot-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -88,42 +89,6 @@ edges:
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
-- partner_name: Unity (own)
-  partner: unity
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://assetstore.unity.com/packages/slug/193316
-  mirror_of: unity/integrations/unity-integration-edges.yml
-  apps:
-  - OneSignal
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: Unity Verified Solutions
-  publisher_verified:
-  - Unity Verified Solution
-- partner_name: WordPress (own)
-  partner: wordpress
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://wordpress.org/plugins/onesignal-free-web-push-notifications/
-  mirror_of: wordpress/integrations/wordpress-integration-edges.yml
-  apps:
-  - OneSignal – Web Push Notifications
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: WordPress plugin
 - partner_name: Maven Central
   partner: maven-central
   partner_match: register
@@ -893,6 +858,59 @@ edges:
     status: Active
   detected_by: sweep-accelerator-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Unity (own)
+  partner: unity
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://assetstore.unity.com/packages/slug/193316
+  mirror_of: unity/integrations/unity-integration-edges.yml
+  apps:
+  - OneSignal
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: Unity Verified Solutions
+  publisher_verified:
+  - Unity Verified Solution
+- partner_name: WordPress (own)
+  partner: wordpress
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://wordpress.org/plugins/onesignal-free-web-push-notifications/
+  mirror_of: wordpress/integrations/wordpress-integration-edges.yml
+  apps:
+  - OneSignal – Web Push Notifications
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: WordPress plugin
+- partner_name: HubSpot (own)
+  partner: hubspot
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/onesignal
+  mirror_of: hubspot/integrations/hubspot-integration-edges.yml
+  apps:
+  - OneSignal
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: SMS
 templates:
 - title: Send OneSignal push notifications every week
   url: https://zapier.com/apps/onesignal/integrations/schedule/11915/send-onesignal-push-notifications-every-week

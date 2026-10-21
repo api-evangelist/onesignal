@@ -146,32 +146,6 @@
     detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
-- slug: onesignal-unity-own
-  label: Unity (own)
-  partner: unity
-  partner_name: Unity (own)
-  category: Unity Verified Solutions
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://assetstore.unity.com/packages/slug/193316
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: onesignal-wordpress-own
-  label: WordPress (own)
-  partner: wordpress
-  partner_name: WordPress (own)
-  category: WordPress plugin
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://wordpress.org/plugins/onesignal-free-web-push-notifications/
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: onesignal-maven-central
   label: Maven Central
   partner: maven-central
@@ -824,5 +798,44 @@
     batch: Summer 2011
     year: '2011'
     status: Active
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-unity-own
+  label: Unity (own)
+  partner: unity
+  partner_name: Unity (own)
+  category: Unity Verified Solutions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://assetstore.unity.com/packages/slug/193316
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-wordpress-own
+  label: WordPress (own)
+  partner: wordpress
+  partner_name: WordPress (own)
+  category: WordPress plugin
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://wordpress.org/plugins/onesignal-free-web-push-notifications/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: onesignal-hubspot-own
+  label: HubSpot (own)
+  partner: hubspot
+  partner_name: HubSpot (own)
+  category: SMS
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/onesignal
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
