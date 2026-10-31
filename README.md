@@ -1,4 +1,4 @@
-# OneSignal (onesignal)
+# OneSignal
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,133 +64,164 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OneSignal is a customer engagement platform with push notifications, in-app messaging, email, SMS, and live activities. Free tier serves billions of messages monthly.
+OneSignal is a lifecycle customer engagement platform for mobile push, web push, email, SMS/RCS, in-app messaging and iOS Live Activities, orchestrated through Journeys, segments and a single REST API at api.onesignal.com. It reports 1.3 trillion messages a year across 200k apps and 1.5 billion monthly active users. The developer surface is a published OpenAPI 3.1 contract, a full set of first-party server and client SDKs, a hosted OAuth-authenticated MCP server, an A2A agent card and six provider-published Agent Skills.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/onesignal/refs/heads/main/apis.yml)
+**Areas:** Notification · Push · Email · SMS · Mobile · Push Notifications · Web Push · Customer Engagement · Marketing Automation · Live Activities · RCS · In-App Messaging
 
-## Tags
+## OneSignal on APIs.io
 
-- Notifications
-- Push
-- Email
-- SMS
-- Mobile
+Everything profiled for OneSignal is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/onesignal/](https://apis.io/providers/onesignal/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (6)
 
-- **Created:** 2026-05-08
-- **Modified:** 2026-05-08
+- [OneSignal Apps API](https://apis.io/apis/onesignal/onesignal-apps-api/) — The Apps API from OneSignal — 21 operation(s) for apps.
+- [OneSignal Notifications API](https://apis.io/apis/onesignal/onesignal-notifications-api/) — The Notifications API from OneSignal — 4 operation(s) for notifications.
+- [OneSignal Players API](https://apis.io/apis/onesignal/onesignal-players-api/) — The Players API from OneSignal — 1 operation(s) for players.
+- [OneSignal Templates API](https://apis.io/apis/onesignal/onesignal-templates-api/) — The Templates API from OneSignal — 3 operation(s) for templates.
+- [OneSignal MCP Server](https://apis.io/apis/onesignal/onesignal-mcp/) — OneSignal's hosted Model Context Protocol server at https://api.onesignal.com/mcp/oauth, connected over browser-based OAuth 2.1 with PKCE. Listed in the…
+- [OneSignal Organizations API](https://apis.io/apis/onesignal/onesignal-organizations-api/) — The Organizations API from OneSignal — 1 operation(s) for organizations.
 
-## APIs
+### Published properties
 
-### OneSignal Messages API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Send push, email, SMS, and Live Activity messages.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://documentation.onesignal.com/reference](https://documentation.onesignal.com/reference)
-- **Base URL:** `https://api.onesignal.com`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Onesignal Webhooks](https://apis.io/asyncapis/onesignal/onesignal-webhooks/)
 
-- Push
-- Email
-- SMS
+#### GraphQL (1)
 
-#### Properties
+GraphQL schemas.
 
-- [Documentation](https://documentation.onesignal.com/reference)
-- [OpenAPI](openapi/onesignal-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/onesignal.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/onesignal.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Moved to /providers/onesignal/](https://apis.io/graphqls/onesignal/onesignal-graphql/)
 
-### OneSignal Users & Subscriptions API
+#### MCP servers (1)
 
-Create, update, view and delete users and their subscriptions.
+Model Context Protocol servers that expose the API to agents.
 
-- **Human URL:** [https://documentation.onesignal.com/reference](https://documentation.onesignal.com/reference)
-- **Base URL:** `https://api.onesignal.com`
+- [OneSignal MCP](https://apis.io/servers/onesignal/onesignal-mcp/)
 
-#### Tags
+#### Collections (5)
 
-- Users
-- Subscriptions
+Postman and Open Collection request collections.
 
-#### Properties
+- [OneSignal](https://apis.io/collections/onesignal/open-onesignal/)
+- [OneSignal Apps API](https://apis.io/collections/onesignal/open-onesignal-apps-api/)
+- [OneSignal Notifications API](https://apis.io/collections/onesignal/open-onesignal-notifications-api/)
+- [OneSignal Players API](https://apis.io/collections/onesignal/open-onesignal-players-api/)
+- [OneSignal Templates API](https://apis.io/collections/onesignal/open-onesignal-templates-api/)
 
-- [Documentation](https://documentation.onesignal.com/reference)
-- [OpenAPI](openapi/onesignal-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/onesignal.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/onesignal.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Overlays (9)
 
-### OneSignal Segments API
+OpenAPI overlays, including conversational phrasing for each operation.
 
-Create and manage dynamic and saved segments for targeting.
+- [Onesignal Apps Api Phrasing Overlay](https://apis.io/overlays/onesignal/onesignal-apps-api-phrasing-overlay/)
+- [Onesignal Apps Overlay](https://apis.io/overlays/onesignal/onesignal-apps-overlay/)
+- [Onesignal Notifications Api Phrasing Overlay](https://apis.io/overlays/onesignal/onesignal-notifications-api-phrasing-overlay/)
+- [Onesignal Notifications Overlay](https://apis.io/overlays/onesignal/onesignal-notifications-overlay/)
+- [Onesignal Organizations Api Phrasing Overlay](https://apis.io/overlays/onesignal/onesignal-organizations-api-phrasing-overlay/)
+- [Onesignal Players Api Phrasing Overlay](https://apis.io/overlays/onesignal/onesignal-players-api-phrasing-overlay/)
+- [Onesignal Players Overlay](https://apis.io/overlays/onesignal/onesignal-players-overlay/)
+- [Onesignal Templates Api Phrasing Overlay](https://apis.io/overlays/onesignal/onesignal-templates-api-phrasing-overlay/)
+- [Onesignal Templates Overlay](https://apis.io/overlays/onesignal/onesignal-templates-overlay/)
 
-- **Human URL:** [https://documentation.onesignal.com/reference](https://documentation.onesignal.com/reference)
-- **Base URL:** `https://api.onesignal.com`
+#### Security (4)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Segmentation
-- Targeting
+- [Onesignal Authentication](https://apis.io/security/onesignal/onesignal-authentication/)
+- [Onesignal Domain Security](https://apis.io/security/onesignal/onesignal-domain-security/)
+- [Onesignal Trust Center](https://apis.io/security/onesignal/onesignal-trust-center/)
+- [Onesignal Vulnerability Disclosure](https://apis.io/security/onesignal/onesignal-vulnerability-disclosure/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://documentation.onesignal.com/reference)
-- [OpenAPI](openapi/onesignal-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/onesignal.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/onesignal.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published plans, tiers and prices.
 
-### OneSignal Apps & Keys API
+- [Onesignal Plans Pricing](https://apis.io/plans/onesignal/onesignal-plans-pricing/)
 
-Manage apps, API keys and templates at the org level.
+#### Rate limits (1)
 
-- **Human URL:** [https://documentation.onesignal.com/reference](https://documentation.onesignal.com/reference)
-- **Base URL:** `https://api.onesignal.com`
+Published request limits.
 
-#### Tags
+- [Onesignal Rate Limits](https://apis.io/rate-limits/onesignal/onesignal-rate-limits/)
 
-- Apps
-- Configuration
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://documentation.onesignal.com/reference)
-- [OpenAPI](openapi/onesignal-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/onesignal.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/onesignal.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Onesignal Finops](https://apis.io/finops/onesignal/onesignal-finops/)
 
-### OneSignal Exports & Analytics API
+## Where to find this API
 
-CSV export of subscriptions and events plus message analytics.
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- **Human URL:** [https://documentation.onesignal.com/reference](https://documentation.onesignal.com/reference)
-- **Base URL:** `https://api.onesignal.com`
-
-#### Tags
-
-- Export
-- Analytics
-
-#### Properties
-
-- [Documentation](https://documentation.onesignal.com/reference)
-- [OpenAPI](openapi/onesignal-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/onesignal.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/onesignal.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/OneSignal)
-- [LinkedIn](https://www.linkedin.com/company/onesignal)
 - [Website](https://onesignal.com/)
-- [Plans](plans/onesignal-plans-pricing.yml)
-- [Rate Limits](rate-limits/onesignal-rate-limits.yml)
-- [Fin Ops](finops/onesignal-finops.yml)
-- [Integrations](https://onesignal.com/integrations)
-- [L L Ms Txt](https://onesignal.com/llms.txt)
+- [Documentation](https://documentation.onesignal.com/)
+- [Getting started](https://documentation.onesignal.com/docs/en/quickstart-guide)
+- [API reference](https://documentation.onesignal.com/reference)
+- [Pricing](https://onesignal.com/pricing)
+- [Sign up](https://dashboard.onesignal.com/signup)
+- [Support](https://onesignal.com/contact)
+- [Blog](https://onesignal.com/blog/feed)
+- [Terms of service](https://onesignal.com/tos)
+- [Privacy policy](https://onesignal.com/privacy)
+- [GitHub](https://github.com/OneSignal)
+- [Status](https://status.onesignal.com)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 74.7** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 62.4 |
+| Contract governance | 4.5 |
+| Operational transparency | 84.2 |
+| Developer ergonomics | 81.0 |
+| Access clarity | 85.5 |
+
+**Agent readiness 71.3** — agent-native
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | verified |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | verified |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 30.0** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/onesignal/](https://apis.io/providers/onesignal/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OneSignal: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/onesignal/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
